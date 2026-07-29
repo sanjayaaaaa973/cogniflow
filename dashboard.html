@@ -1,0 +1,2280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gravitas'26 Dashboard</title>
+
+    <!-- Bootstrap 5 -->
+    <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    />
+    <!-- Bootstrap Icons -->
+    <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+    <!-- Google Font (Inter) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+    href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap"
+    rel="stylesheet"
+    />
+
+    <style>
+        /* ===== CSS Variables / Themes ===== */
+        :root {
+            --bg-body: #f4f6fb;
+            --bg-card: #ffffff;
+            --bg-input: #ffffff;
+            --bg-input-disabled: #e9ecef;
+            --bg-table-stripe: #f8f9fc;
+            --bg-hover: #f0f4ff;
+            --text-primary: #1a1a2e;
+            --text-secondary: #4a4a6a;
+            --text-muted: #6c7a92;
+            --border-color: #e2e8f0;
+            --shadow: 0 12px 40px rgba(0, 20, 40, 0.08);
+            --shadow-hover: 0 16px 48px rgba(0, 20, 40, 0.12);
+            --radius: 16px;
+            --radius-sm: 10px;
+            --accent: #4f46e5;
+            --accent-light: #eef2ff;
+            --accent-gradient: linear-gradient(135deg, #4f46e5, #7c3aed);
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --modal-bg: rgba(255, 255, 255, 0.92);
+            --modal-border: rgba(255, 255, 255, 0.3);
+            --modal-shadow: 0 25px 80px rgba(0, 0, 0, 0.15);
+            --modal-overlay: rgba(0, 0, 0, 0.35);
+            --modal-text: #1a1a2e;
+        }
+
+        [data-theme="dark"] {
+            --bg-body: #0f0f1a;
+            --bg-card: #1a1a2e;
+            --bg-input: #252540;
+            --bg-input-disabled: #2a2a48;
+            --bg-table-stripe: #1e1e36;
+            --bg-hover: #2a2a50;
+            --text-primary: #e8e8f0;
+            --text-secondary: #b0b0cc;
+            --text-muted: #8888aa;
+            --border-color: #333355;
+            --shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+            --shadow-hover: 0 16px 48px rgba(0, 0, 0, 0.8);
+            --accent: #818cf8;
+            --accent-light: #1e1e3a;
+            --modal-bg: rgba(26, 26, 46, 0.95);
+            --modal-border: rgba(255, 255, 255, 0.10);
+            --modal-shadow: 0 25px 80px rgba(0, 0, 0, 0.9);
+            --modal-overlay: rgba(0, 0, 0, 0.6);
+            --modal-text: #f0f0ff;
+        }
+
+        /* ===== Reset & Base ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg-body);
+            color: var(--text-primary);
+            transition: background var(--transition), color var(--transition);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 1.5rem;
+        }
+
+        /* ===== Scrollbar ===== */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-body);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 10px;
+        }
+
+        /* ===== Card ===== */
+        .dashboard-card {
+            max-width: 960px;
+            margin: 0 auto;
+            width: 100%;
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 2rem 2.25rem;
+            transition: background var(--transition), box-shadow var(--transition),
+                transform 0.2s ease;
+            border: 1px solid var(--border-color);
+        }
+
+        .dashboard-card:hover {
+            box-shadow: var(--shadow-hover);
+        }
+
+        /* ===== Header ===== */
+        .brand-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.75rem;
+            padding-bottom: 1.25rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+     .brand-left{
+    display:flex;
+    align-items:center;
+    gap:20px;
+    flex-wrap:wrap;
+}
+
+
+        .brand-logo{
+
+    width:420px;
+
+    max-width:100%;
+
+    height:auto;
+
+    object-fit:contain;
+
+}
+        .brand-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: none; /* hidden, replaced by logo */
+        }
+
+        .brand-sub {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            background: none;
+            letter-spacing: 0.3px;
+        }
+
+        .brand-sub i {
+            margin-right: 0.3rem;
+        }
+
+        .brand-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand-caption {
+            color: var(--text-muted);
+            font-size: 13px;
+            margin-top: 3px;
+        }
+
+        .welcome-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            padding: 0.5rem 0.8rem;
+            border-radius: 999px;
+            background: var(--accent-light);
+            color: var(--accent);
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: 1px solid rgba(79, 70, 229, 0.15);
+        }
+
+        .welcome-pill span {
+            color: var(--text-primary);
+            font-weight: 700;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            max-width: 220px;
+        }
+
+        /* ===== Theme Toggle ===== */
+        .theme-toggle {
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            padding: 0.45rem 0.9rem 0.45rem 0.6rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: all var(--transition);
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            font-weight: 500;
+            font-family: var(--font);
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--accent);
+            background: var(--bg-hover);
+        }
+
+        .theme-toggle .toggle-track {
+            width: 38px;
+            height: 20px;
+            border-radius: 50px;
+            background: var(--border-color);
+            position: relative;
+            transition: background var(--transition);
+            flex-shrink: 0;
+        }
+
+        .theme-toggle .toggle-track .toggle-thumb {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #fff;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            transition: transform var(--transition), background var(--transition);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        [data-theme="dark"] .theme-toggle .toggle-track {
+            background: var(--accent);
+        }
+        [data-theme="dark"] .theme-toggle .toggle-track .toggle-thumb {
+            transform: translateX(18px);
+            background: #fff;
+        }
+
+        .theme-toggle .toggle-label {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        /* ===== Form Elements ===== */
+        .form-label {
+            font-weight: 600;
+            font-size: 0.85rem;
+            letter-spacing: 0.3px;
+            color: var(--text-secondary);
+            margin-bottom: 0.35rem;
+        }
+
+        .form-control,
+        .form-select {
+            background: var(--bg-input);
+            border: 1.5px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+            font-size: 0.92rem;
+            padding: 0.6rem 0.9rem;
+            transition: all var(--transition);
+            font-family: var(--font);
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px var(--accent-light);
+            background: var(--bg-input);
+            color: var(--text-primary);
+        }
+
+        .form-control::placeholder {
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .form-control[type="number"] {
+            -moz-appearance: textfield;
+            text-align: center;
+            width: 60px;
+        }
+        .form-control[type="number"]::-webkit-outer-spin-button,
+        .form-control[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .form-check-input {
+            width: 1.2rem;
+            height: 1.2rem;
+            border-radius: 4px;
+            border: 2px solid var(--border-color);
+            background: var(--bg-input);
+            transition: all var(--transition);
+            cursor: pointer;
+            margin-top: 0;
+        }
+
+        .form-check-input:checked {
+            background-color: var(--accent);
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-light);
+        }
+
+        .form-check-input:focus {
+            box-shadow: 0 0 0 3px var(--accent-light);
+            border-color: var(--accent);
+        }
+
+        /* ===== Section Headers ===== */
+        .section-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-title i {
+            color: var(--accent);
+            font-size: 1.1rem;
+        }
+
+        .divider {
+            border: 0;
+            border-top: 1.5px solid var(--border-color);
+            margin: 1.5rem 0;
+            opacity: 0.6;
+        }
+
+        /* ===== Table ===== */
+        .table-wrap {
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .table {
+            margin-bottom: 0;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+        }
+
+        .table th,
+        .table td {
+            color: var(--text-primary);
+        }
+
+        .table thead th {
+            background: var(--bg-table-stripe);
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1.5px solid var(--border-color);
+            padding: 0.8rem 0.9rem;
+        }
+
+        .table tbody td {
+            border-bottom: 1px solid var(--border-color);
+            padding: 0.5rem 0.9rem;
+            vertical-align: middle;
+            background: var(--bg-card);
+        }
+
+        .table tbody tr:last-child td {
+            border-bottom: 0;
+        }
+
+        .table tbody tr:hover td {
+            background: var(--bg-hover);
+        }
+
+        .table .item-name {
+            font-weight: 500;
+        }
+
+        .qty-control {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .qty-control .btn-qty {
+            background: var(--bg-input);
+            border: 1.5px solid var(--border-color);
+            border-radius: 6px;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--text-primary);
+            transition: all var(--transition);
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
+        }
+
+        .qty-control .btn-qty:hover {
+            background: var(--accent-light);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .qty-control .btn-qty:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .qty-control .qty-input {
+            width: 50px;
+            padding: 0.2rem 0.1rem;
+            font-size: 0.85rem;
+            text-align: center;
+            border: 1.5px solid var(--border-color);
+            border-radius: 6px;
+            background: var(--bg-input);
+            color: var(--text-primary);
+        }
+
+        .qty-control .qty-input:focus {
+            border-color: var(--accent);
+            outline: none;
+            box-shadow: 0 0 0 3px var(--accent-light);
+        }
+
+        /* ===== Search Bar ===== */
+        .search-container {
+            margin-bottom: 0.75rem;
+        }
+
+        .search-container .search-input {
+            background: var(--bg-input);
+            border: 1.5px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            padding: 0.5rem 0.9rem;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            width: 100%;
+            transition: all var(--transition);
+        }
+
+        .search-container .search-input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px var(--accent-light);
+            outline: none;
+        }
+
+        .search-container .search-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        /* ===== Submit Button ===== */
+        .btn-submit {
+            background: var(--accent-gradient);
+            border: none;
+            border-radius: 50px;
+            padding: 0.7rem 2.8rem;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #fff;
+            transition: all var(--transition);
+            box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35);
+            font-family: var(--font);
+            letter-spacing: 0.3px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(79, 70, 229, 0.45);
+            color: #fff;
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+
+        /* ===== PROFESSIONAL MODAL ===== */
+        #modalOverlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 99999;
+            background: var(--modal-overlay);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            justify-content: center;
+            align-items: center;
+            animation: modalFadeIn 0.3s ease;
+        }
+
+        #modalOverlay.active {
+            display: flex;
+        }
+
+        .modal-box {
+            background: var(--modal-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--modal-border);
+            border-radius: var(--radius);
+            box-shadow: var(--modal-shadow);
+            padding: 2rem 2.5rem;
+            max-width: 440px;
+            width: 92%;
+            text-align: center;
+            animation: modalSlideUp 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+        }
+
+        .modal-box .modal-icon {
+            font-size: 3.2rem;
+            margin-bottom: 0.75rem;
+            display: block;
+            line-height: 1;
+        }
+
+        .modal-box .modal-icon.confirm-icon {
+            color: #f59e0b;
+        }
+
+        .modal-box .modal-icon.success-icon {
+            color: #10b981;
+        }
+
+        .modal-box .modal-icon.error-icon {
+            color: #ef4444;
+        }
+
+        .modal-box .modal-icon.info-icon {
+            color: var(--accent);
+        }
+
+        .modal-box .modal-title {
+            font-family: var(--font);
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--modal-text);
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.01em;
+        }
+
+        .modal-box .modal-message {
+            font-family: var(--font);
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+            margin-bottom: 1.75rem;
+        }
+
+        .modal-box .modal-actions {
+            display: flex;
+            gap: 0.75rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .modal-box .modal-btn {
+            font-family: var(--font);
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding: 0.6rem 1.8rem;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            transition: all var(--transition);
+            min-width: 100px;
+        }
+
+        .modal-box .modal-btn-primary {
+            background: var(--accent-gradient);
+            color: #fff;
+            box-shadow: 0 4px 16px rgba(79, 70, 229, 0.3);
+        }
+
+        .modal-box .modal-btn-primary:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 24px rgba(79, 70, 229, 0.45);
+        }
+
+        .modal-box .modal-btn-secondary {
+            background: var(--bg-input);
+            color: var(--text-secondary);
+            border: 1.5px solid var(--border-color);
+        }
+
+        .modal-box .modal-btn-secondary:hover {
+            background: var(--bg-hover);
+            border-color: var(--accent);
+        }
+
+        .modal-box .modal-btn-success {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: #fff;
+            box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);
+        }
+
+        .modal-box .modal-btn-success:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.45);
+        }
+
+        .modal-box .modal-btn-danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: #fff;
+            box-shadow: 0 4px 16px rgba(239, 68, 68, 0.3);
+        }
+
+        .modal-box .modal-btn-danger:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 24px rgba(239, 68, 68, 0.45);
+        }
+
+        .modal-box .modal-close {
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            background: none;
+            border: none;
+            font-size: 1.3rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: color var(--transition);
+            font-family: var(--font);
+            padding: 0 4px;
+            line-height: 1;
+        }
+
+        .modal-box .modal-close:hover {
+            color: var(--text-primary);
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes modalSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 992px) {
+            .dashboard-card {
+                padding: 1.5rem 1.5rem;
+            }
+            .brand-logo {
+                height: 42px;
+            }
+            .brand-sub {
+                font-size: 0.75rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 0.75rem;
+            }
+
+            .dashboard-card {
+                padding: 1.25rem 1rem;
+                border-radius: 12px;
+            }
+
+            .brand-header {
+                flex-direction: column;
+                align-items: center;
+                gap: 0.75rem;
+            }
+
+            .brand-left {
+                justify-content: center;
+                width: 100%;
+            }
+
+            .brand-logo {
+                height: 38px;
+            }
+
+            .brand-sub {
+                text-align: center;
+                display: block;
+                width: 100%;
+                font-size: 0.7rem;
+            }
+
+            .theme-toggle {
+                align-self: center;
+                padding: 0.35rem 0.7rem 0.35rem 0.5rem;
+                font-size: 0.78rem;
+            }
+
+            .theme-toggle .toggle-track {
+                width: 32px;
+                height: 18px;
+            }
+            .theme-toggle .toggle-track .toggle-thumb {
+                width: 14px;
+                height: 14px;
+            }
+            [data-theme="dark"] .theme-toggle .toggle-track .toggle-thumb {
+                transform: translateX(14px);
+            }
+
+            .section-title {
+                font-size: 0.85rem;
+            }
+
+            .form-control,
+            .form-select {
+                font-size: 0.85rem;
+                padding: 0.5rem 0.7rem;
+            }
+
+            .table thead th,
+            .table tbody td {
+                padding: 0.4rem 0.5rem;
+                font-size: 0.8rem;
+            }
+
+            .qty-control .qty-input {
+                width: 42px;
+                font-size: 0.8rem;
+            }
+            .qty-control .btn-qty {
+                width: 26px;
+                height: 26px;
+                font-size: 0.85rem;
+            }
+
+            .btn-submit {
+                padding: 0.6rem 2rem;
+                font-size: 0.85rem;
+                width: 100%;
+            }
+
+            .divider {
+                margin: 1.2rem 0;
+            }
+
+            .row-coord .col-md-4 {
+                margin-bottom: 0.6rem;
+            }
+            .row-coord .col-md-4:last-child {
+                margin-bottom: 0;
+            }
+
+            .search-container .search-input {
+                font-size: 0.85rem;
+                padding: 0.4rem 0.7rem;
+            }
+
+            .modal-box {
+                padding: 1.5rem 1.25rem;
+                max-width: 380px;
+            }
+            .modal-box .modal-title {
+                font-size: 1.1rem;
+            }
+            .modal-box .modal-btn {
+                padding: 0.5rem 1.2rem;
+                font-size: 0.85rem;
+                min-width: 80px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .dashboard-card {
+                padding: 0.9rem 0.7rem;
+            }
+
+            .brand-logo {
+                height: 32px;
+            }
+
+            .table thead th,
+            .table tbody td {
+                padding: 0.3rem 0.3rem;
+                font-size: 0.7rem;
+            }
+
+            .qty-control .qty-input {
+                width: 34px;
+                font-size: 0.7rem;
+                padding: 0.1rem;
+            }
+            .qty-control .btn-qty {
+                width: 22px;
+                height: 22px;
+                font-size: 0.7rem;
+            }
+            .form-check-input {
+                width: 1rem;
+                height: 1rem;
+            }
+
+            .modal-box {
+                padding: 1.25rem 0.9rem;
+                max-width: 340px;
+            }
+        }
+
+        /* ===== Utility ===== */
+        .text-muted-custom {
+            color: var(--text-muted);
+        }
+        .no-items-msg {
+            padding: 1.5rem;
+            text-align: center;
+            color: var(--text-muted);
+            font-style: italic;
+            background: var(--bg-table-stripe);
+            border-radius: var(--radius-sm);
+        }
+
+        #root {
+            width: 100%;
+        }
+    </style>
+</head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+<script>
+emailjs.init("sRZ_ixA1Xm913C0Ru");
+</script>
+<body>
+
+    <div id="root"></div>
+
+    <!-- ===== React & ReactDOM ===== -->
+    <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js">
+    </script>
+
+    <!-- ===== Babel Standalone ===== -->
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.23.9/babel.min.js">
+    </script>
+
+    <script type="text/babel">
+        const { useState, useEffect, useMemo, useCallback, createContext, useContext } = React;
+
+        // --------------------------------------------------------------
+        //  Modal Context for professional popups
+        // --------------------------------------------------------------
+        const ModalContext = createContext();
+
+        const ModalProvider = ({ children }) => {
+            const [modal, setModal] = useState({
+                visible: false,
+                type: 'confirm', // 'confirm' | 'alert' | 'success' | 'error'
+                title: '',
+                message: '',
+                onConfirm: null,
+                onCancel: null,
+                confirmText: 'Confirm',
+                cancelText: 'Cancel',
+                icon: null,
+            });
+
+            const showConfirm = (title, message, onConfirm, onCancel, confirmText = 'Yes, Generate', cancelText = 'Cancel') => {
+                setModal({
+                    visible: true,
+                    type: 'confirm',
+                    title: title || 'Confirm',
+                    message: message || 'Are you sure?',
+                    onConfirm: onConfirm || (() => {}),
+                    onCancel: onCancel || (() => {}),
+                    confirmText,
+                    cancelText,
+                    icon: 'bi bi-question-circle-fill',
+                });
+            };
+
+            const showAlert = (title, message, type = 'success', onClose = null) => {
+                const iconMap = {
+                    success: 'bi bi-check-circle-fill',
+                    error: 'bi bi-exclamation-circle-fill',
+                    info: 'bi bi-info-circle-fill',
+                };
+                setModal({
+                    visible: true,
+                    type: 'alert',
+                    title: title || (type === 'success' ? 'Success' : type === 'error' ? 'Error' : 'Info'),
+                    message: message || '',
+                    onConfirm: onClose || (() => {}),
+                    onCancel: null,
+                    confirmText: type === 'success' ? 'Great!' : 'OK',
+                    cancelText: '',
+                    icon: iconMap[type] || iconMap.info,
+                    alertType: type,
+                });
+            };
+
+            const closeModal = () => {
+                setModal(prev => ({ ...prev, visible: false }));
+            };
+
+            const handleConfirm = () => {
+                if (modal.onConfirm) modal.onConfirm();
+                closeModal();
+            };
+
+            const handleCancel = () => {
+                if (modal.onCancel) modal.onCancel();
+                closeModal();
+            };
+
+            const value = {
+                showConfirm,
+                showAlert,
+                closeModal,
+            };
+
+            const isConfirm = modal.type === 'confirm';
+            const isAlert = modal.type === 'alert';
+            const iconClass = modal.icon || 'bi bi-info-circle-fill';
+            const iconColorClass = modal.alertType === 'success' ? 'success-icon' :
+                                   modal.alertType === 'error' ? 'error-icon' :
+                                   isConfirm ? 'confirm-icon' : 'info-icon';
+
+            return (
+                <ModalContext.Provider value={value}>
+                    {children}
+
+                    {/* Modal Overlay */}
+                    <div id="modalOverlay" className={modal.visible ? 'active' : ''}>
+                        <div className="modal-box">
+                            <button className="modal-close" onClick={closeModal}>&times;</button>
+                            <span className={`modal-icon ${iconColorClass}`}>
+                                <i className={iconClass}></i>
+                            </span>
+                            <div className="modal-title">{modal.title}</div>
+                            <div className="modal-message">{modal.message}</div>
+                            <div className="modal-actions">
+                                {isConfirm && (
+                                    <>
+                                        <button className="modal-btn modal-btn-secondary" onClick={handleCancel}>
+                                            {modal.cancelText}
+                                        </button>
+                                        <button className="modal-btn modal-btn-primary" onClick={handleConfirm}>
+                                            {modal.confirmText}
+                                        </button>
+                                    </>
+                                )}
+                                {isAlert && (
+                                    <button
+                                        className={`modal-btn ${modal.alertType === 'success' ? 'modal-btn-success' : modal.alertType === 'error' ? 'modal-btn-danger' : 'modal-btn-primary'}`}
+                                        onClick={handleConfirm}
+                                    >
+                                        {modal.confirmText}
+                                    </button>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                </ModalContext.Provider>
+            );
+        };
+
+        const useModal = () => useContext(ModalContext);
+
+        // --------------------------------------------------------------
+        //  Data: Categories -> Items
+        // --------------------------------------------------------------
+        const CATEGORIES = [
+            'Stationery',
+            'Cloth',
+            'Electronics',
+            'Chemicals',
+            'Sports',
+            'Agriculture',
+            'Miscellaneous',
+            'Wood'
+        ];
+
+        // Stationery items
+        const STATIONERY_ITEMS = [
+            "A3 Sheets", "A4 Sheet", "Acrylic Paint (pack of 12)", "Acrylic Paint (pack of 6)",
+            "Balloon pump", "Balloons", "Balloons Multicolor (50 pcs)", "Black Bold Pens (pieces)",
+            "Black duct tape", "Black Ribbon(10m)(1/2 inch)", "Cardboard Boxes(Small)", "CardBoard Sheets",
+            "CD Marker black", "CD Marker Blue", "CD Marker red", "CD Marker white", "Cello tapes",
+            "Chalk", "Chart Papers(Black)", "Chart Papers(Blue)", "Chart Papers(Brown)", "Chart Papers(Green)",
+            "Chart Papers(Pink)", "Chart Papers(Purple)", "Chart Papers(Red)", "Chart Papers(White)",
+            "Chart Papers(Yellow)", "Chopsticks(wooden)", "Color Papers(Black)", "Color Papers(Blue)",
+            "Color Papers(Green)", "Color Papers(Orange)", "Color Papers(Pink)", "Color Papers(Purple)",
+            "Color Papers(Red)", "Color Papers(Yellow)", "Color Pencils(Large)", "Color Pencils(Small)",
+            "Colored paper", "Coloured Bullet Pins (Pack of 50)", "Confetti Poppers", "Cotton(50g)",
+            "Cutting Blade", "Decoration paper ribbons", "Diary", "Double Side tape",
+            "Dry Glitter(12 pieces)", "Envelopes", "Eraser", "Fake Money(12 pieces)", "Fevibond",
+            "Fevicol(100 ml)", "Fevikwik(pieces)", "Flag poles", "Flags (different colours)",
+            "Flex kwik", "Flyers", "Folder", "Gift Wrappers", "Glitter (liquid)", "Glitter Pen",
+            "Glitter Sheets", "Glow in dark Paint", "Glow in dark spray paints", "Glowin Dark Bands",
+            "GlowSticks", "Glue Gun", "Glue Sticks (For Glue Gun)", "Hash paper", "Highlighter",
+            "Hula hoops (adult size)", "Ice Cream Sticks (pieces)", "Industrial Adhesives",
+            "Lock set of 8", "Long Steel Scale", "Mill Board", "Non Shimmery Tape", "Notepad",
+            "Oil Pastels", "Origami Sheets (100 sheets)", "Packing Tape", "Paint Brush (5)",
+            "Paints", "Paper Clip", "Paper Clip black 12 pack", "Paper Pins", "Pen", "Pencil",
+            "Pencil led 0.9mm", "Permanent Marker black", "Permanent Marker Red",
+            "Permanent Marker White", "Photo papers", "Plastic bottle", "Plastic forceps/tweezers",
+            "Plastic Knives(Prop)", "Plastic spoons", "Poster colors(set of 12)",
+            "Poster colors(set of 6)", "Ribbons", "Rope(10m)", "Rubber Bands", "Ruler",
+            "Scissors", "Sharpner", "Silver Cellophone Sheet", "Sketch Pens(Big)",
+            "Sketch Pens(Small)", "Smiley Sponge Balls", "Soft Sponge", "Spoon",
+            "Spray Bottles", "Stapler", "Stapler Pins", "Sticky notes",
+            "Calculate(fx-991ex)", "String/Thread", "Thermocol", "Thread spools",
+            "Tissue papers", "UV pen (set of 3)", "Velcro Tape (1 inch width)",
+            "Water colour(12 shades)", "White Board Duster", "White Board Marker(Black)",
+            "White Board Marker(Blue)", "White Board Marker(Red)",
+            "White paper tape(Masking Tape)", "Whitener", "Zip locks", "Nylon Wire"
+        ];
+
+        // Cloth items
+        const CLOTH_ITEMS = [
+            "Black Cloth(per m)",
+            "Black Velvet cloth (for 39 x 32 inch)",
+            "Large Green Cloth(for Green Screen)",
+            "white chiffon cloth",
+            "White Cloth(2m)"
+        ];
+
+        // Electronics items
+        const ELECTRONICS_ITEMS = [
+            "DHT11 Digital humidity and temp sensor",
+            "ESP32 Wi-Fi and Bluetooth Board",
+            "MAX30100 Pulse Oximeter",
+            "Heart rate pulse sensor",
+            "DS1307 Real Time Clock Module",
+            "Push Buttom micro switch",
+            "ESP32-WROVER-B",
+            "Wemos mini esp 8266",
+            "Resistors 220 ohm",
+            "Large Push Button",
+            "Analog Joystick",
+            "NPN BJT BC547",
+            "Breadboard",
+            "Jumper wire(Male to Male)",
+            "Jumper wire(Male to Female)",
+            "RC car",
+            "1 Mega Ohm resistor",
+            "Photodiode Detector",
+            "IR LED",
+            "Green LED",
+            "4.7k Ohm Resistor",
+            "IR Sensor",
+            "2.2K Ohm Resistor",
+            "Aluminum Foil",
+            "Velcro",
+            "Elastic Cloth",
+            "Arduino SMD",
+            "Arduino Uno (from Lab)",
+            "Arduino Cable (From Lab)",
+            "Battery(9V)",
+            "Fairy Lights (10m)red",
+            "Fairy Lights (10m)green",
+            "Fairy Lights (10m)yellow",
+            "Fairy",
+            "Green Light",
+            "Insulation Black Tape",
+            "Laser light",
+            "LED bulb",
+            "LED (RGB 5mm) (Pack of 5)",
+            "LED Strips",
+            "Red and Black Copper wire strips(Total length of 1 pair: 100 cm)",
+            "RED LIGHT",
+            "SMALL permanent magnet DC motor(12 volt)",
+            "UV light Pens",
+            "UV Lights",
+            "Velcro Tape (1 inch width)",
+            "Warm Lights",
+            "F450 frame",
+            "1000kv golden motors",
+            "Generic 30A esc",
+            "Kk flight controller",
+            "Flysky Fsi6 & FS-iA6 Receiver",
+            "3s lipo battery",
+            "B3 Charger",
+            "XT-60 male connector Pigtail",
+            "2 pair of 1045 props",
+            "Soldering Iron",
+            "Solder Wire(noel)",
+            "Solder flux(noel)",
+            "Wire Cutters",
+            "Zero PCB resistors",
+            "Voltage checker",
+            "AA Battery (pack of 4)",
+            "Allen Key m2",
+            "Allen Key m3",
+            "Balsa wood(6mm)",
+            "Corrugated plastic sheets(5mm*30'' * 20'')",
+            "ESC",
+            "XT-60 Connector Pair Male to Female",
+            "T Plug Deans Connector",
+            "LiPo Battery",
+            "Servo Motor",
+            "Servo extension Cable",
+            "Servo Y Cable",
+            "Control rods",
+            "Trasnmitter",
+            "Reciever",
+            "BLDC RC Motor",
+            "Extension Box",
+            "flying wing FT Mini Arrow",
+            "3D MKR2",
+            "U-Tail Wonder MKR2",
+            "MQ 135",
+            "Flame Sensor",
+            "L298N Motor Driver",
+            "DC Motors",
+            "AIR TIGHT BOX-SIZE 444",
+            "USB CABLE",
+            "WHEELS",
+            "CASTOR WHEEL(BALL TYPE)",
+            "SMALL BUZZER",
+            "SWITCH",
+            "SCREWS(2.5 cm length)",
+            "BREAD BOARD(MINI -400 points)",
+            "MINI SCREW DRIVER SET",
+            "12V DC FAN",
+            "PIPE SPIRAL CONDUIT(2m)",
+            "SCREWS(7.5 cm length)",
+            "BATTERY CAPS",
+            "Battery",
+            "Copper Wire",
+            "AAA Batteries",
+            "3D PLA printf Filament",
+            "DnD polyhedral Dice Set",
+            "LDR Sensor",
+            "Ultrasonic sensor",
+            "ADXL Sensor",
+            "Soil Moisture Sensor",
+            "LCD Display",
+            "Connecting wires",
+            "Drone Racing Gates"
+        ];
+
+        // Chemicals items
+        const CHEMICALS_ITEMS = [
+            "Barium Nitrate",
+            "Beaker",
+            "BEAKER",
+            "Citric Acid",
+            "Conical Flask",
+            "copper sulphate",
+            "Cupric Nitrate",
+            "Distilled Water",
+            "Dry Ice",
+            "Gloves",
+            "Gloves",
+            "Glucose",
+            "Graphite Powder",
+            "Hydrogen Peroxide",
+            "Indigo Carmine",
+            "Liquid Soap",
+            "Manganese oxide",
+            "NaOH Pellets",
+            "NaOH Pellets",
+            "petri dish",
+            "Plastic Syringe(10 ml)",
+            "Silica gel pouches",
+            "Silica gel pouches",
+            "Sodium Hypochlorite",
+            "Spatula",
+            "spatula",
+            "Strontium Chloride",
+            "Test Tubes",
+            "Tweezers",
+            "Vegetable Oil",
+            "Stir rod",
+            "Charcoal"
+        ];
+
+        // Sports items
+        const SPORTS_ITEMS = [
+            "Rope (for TUG OF WAR)",
+            "Softballs",
+            "Stopwatch"
+        ];
+
+        // Agriculture items
+        const AGRICULTURE_ITEMS = [
+            "Ferns",
+            "Soil",
+            "Spaghetti-Sticks  500g",
+            "Sphagnum moss",
+            "Succulents (small)",
+            "Terracotta clay",
+            "Cocopeat",
+            "Sand",
+            "Activated Charcoal",
+            "Pebbles",
+            "Gravels"
+        ];
+
+        // Miscellaneous items
+        const MISCELLANEOUS_ITEMS = [
+            "Auction Hammer",
+            "box with latch",
+            "Combination Lock",
+            "small mirror",
+            "Glass jars with lids(300ml)",
+            "Gravels",
+            "Jute Sack bag",
+            "Mirror",
+            "Money Heist Character Mask",
+            "Pebbles",
+            "Sand"
+        ];
+
+        // Wood items
+        const WOOD_ITEMS = [
+            "PVC Sheets (1.5m X 2m)"
+        ];
+
+        // Map category -> array
+        const ITEMS_BY_CATEGORY = {
+            'Stationery': STATIONERY_ITEMS,
+            'Cloth': CLOTH_ITEMS,
+            'Electronics': ELECTRONICS_ITEMS,
+            'Chemicals': CHEMICALS_ITEMS,
+            'Sports': SPORTS_ITEMS,
+            'Agriculture': AGRICULTURE_ITEMS,
+            'Miscellaneous': MISCELLANEOUS_ITEMS,
+            'Wood': WOOD_ITEMS,
+        };
+
+        // Domain & Event lists
+        const DOMAINS = [
+    'Campus Decoration',
+    'Design & Print',
+    'Documentation',
+    'Esports',
+    'Events',
+    'Finance',
+    'General Enquiry',
+    'Guest Care',
+    'Halls and Refreshments',
+    'International Relations',
+    'Official',
+    'Outreach',
+    'Premium Events',
+    'Press and Media',
+    'Pro Events',
+    'Publicity and Marketing',
+    'Purchase',
+    'RnR',
+    'Sales',
+    'Sponsorship and MoUs',
+    'Stalls',
+    'Transport and Logistics',
+    'Web & Tech'
+];
+
+        const EVENTS = [
+            'Event 1',
+            'Event 2',
+            'Event 3',
+            'Event 4',
+            'Event 5',
+            'Event 6',
+            'Event 7',
+            'Event 8',
+        ];
+
+        // Validation Patterns
+        const REG_NO_REGEX = /^\d{2}[A-Za-z]{3}\d{4}$/;
+        const MOBILE_REGEX = /^[6-9]\d{9}$/;
+
+        // --------------------------------------------------------------
+        //  Main App
+        // --------------------------------------------------------------
+        const App = () => {
+            // ----- Theme -----
+            const [theme, setTheme] = useState(() => {
+                const stored = localStorage.getItem('gravitas-theme');
+                if (stored) return stored;
+                return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            });
+
+            useEffect(() => {
+                document.documentElement.setAttribute('data-theme', theme);
+                localStorage.setItem('gravitas-theme', theme);
+            }, [theme]);
+
+            const toggleTheme = () => {
+                setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
+            };
+
+            // ----- User Welcome -----
+            const [userEmail, setUserEmail] = useState(() => {
+                return localStorage.getItem('userEmail') || '';
+            });
+
+            useEffect(() => {
+                const storedEmail = localStorage.getItem('userEmail') || '';
+                setUserEmail(storedEmail);
+            }, []);
+
+            // ----- Modal -----
+            const { showConfirm, showAlert } = useModal();
+
+            // ----- Form State -----
+            const [domain, setDomain] = useState('');
+            const [event, setEvent] = useState('');
+            const [coordName, setCoordName] = useState('');
+            const [coordReg, setCoordReg] = useState('');
+            const [coordMobile, setCoordMobile] = useState('');
+            const [pocName, setPocName] = useState('');
+            const [pocReg, setPocReg] = useState('');
+            const [pocMobile, setPocMobile] = useState('');
+            const [coordRegError, setCoordRegError] = useState('');
+            const [pocRegError, setPocRegError] = useState('');
+            const [coordMobileError, setCoordMobileError] = useState('');
+            const [pocMobileError, setPocMobileError] = useState('');
+            const [category, setCategory] = useState('');
+
+            // ----- Search State -----
+            const [searchTerm, setSearchTerm] = useState('');
+
+            // ----- Items based on category -----
+            const currentItems = useMemo(() => {
+                const items = ITEMS_BY_CATEGORY[category] || [];
+                return items.map((name, index) => ({
+                    id: `${category || 'category'}-${index}-${name}`.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''),
+                    name
+                }));
+            }, [category]);
+
+            // ----- Item quantities: { itemName: { quantity, category } } -----
+            const [itemQuantities, setItemQuantities] = useState({});
+            const [customItems, setCustomItems] = useState([]);
+
+            function addCustomItem() {
+                setCustomItems(prev => [
+                    ...prev,
+                    {
+                        id: Date.now(),
+                        category: '',
+                        name: '',
+                        quantity: 1
+                    }
+                ]);
+            }
+
+            // Preserve selections across categories and initialize newly visible items
+            useEffect(() => {
+                setItemQuantities(prev => {
+                    const next = { ...prev };
+                    currentItems.forEach((item) => {
+                        if (!Object.prototype.hasOwnProperty.call(next, item.id)) {
+                            next[item.id] = { quantity: 0, category, name: item.name };
+                        }
+                    });
+                    return next;
+                });
+                setSearchTerm('');
+            }, [currentItems, category]);
+
+            // ----- Filtered & sorted items based on search -----
+            const filteredItems = useMemo(() => {
+                if (!searchTerm.trim()) return currentItems;
+                const term = searchTerm.trim().toLowerCase();
+                const matches = currentItems.filter((item) =>
+                    item.name.toLowerCase().includes(term)
+                );
+                matches.sort((a, b) => {
+                    const aStarts = a.name.toLowerCase().startsWith(term);
+                    const bStarts = b.name.toLowerCase().startsWith(term);
+                    if (aStarts && !bStarts) return -1;
+                    if (!aStarts && bStarts) return 1;
+                    return a.name.localeCompare(b.name);
+                });
+                return matches;
+            }, [currentItems, searchTerm]);
+
+            // ----- Handlers for quantity -----
+            const handleIncrement = (id) => {
+                setItemQuantities(prev => {
+                    const currentItem = currentItems.find((item) => item.id === id);
+                    const current = prev[id] || { quantity: 0, category, name: currentItem?.name || '' };
+                    return {
+                        ...prev,
+                        [id]: {
+                            ...current,
+                            quantity: current.quantity + 1,
+                            category: current.category || category,
+                            name: current.name || currentItem?.name || ''
+                        }
+                    };
+                });
+            };
+
+            const handleDecrement = (id) => {
+                setItemQuantities(prev => {
+                    const currentItem = currentItems.find((item) => item.id === id);
+                    const current = prev[id] || { quantity: 0, category, name: currentItem?.name || '' };
+                    if (current.quantity <= 0) return prev;
+                    return {
+                        ...prev,
+                        [id]: {
+                            ...current,
+                            quantity: current.quantity - 1,
+                            category: current.category || category,
+                            name: current.name || currentItem?.name || ''
+                        }
+                    };
+                });
+            };
+
+            const handleQtyChange = (id, value) => {
+                const num = parseInt(value, 10);
+                if (isNaN(num) || num < 0) return;
+                setItemQuantities(prev => {
+                    const currentItem = currentItems.find((item) => item.id === id);
+                    const current = prev[id] || { quantity: 0, category, name: currentItem?.name || '' };
+                    return {
+                        ...prev,
+                        [id]: {
+                            ...current,
+                            quantity: num,
+                            category: current.category || category,
+                            name: current.name || currentItem?.name || ''
+                        }
+                    };
+                });
+            };
+
+            const toggleSelect = (id) => {
+                setItemQuantities(prev => {
+                    const currentItem = currentItems.find((item) => item.id === id);
+                    const current = prev[id] || { quantity: 0, category, name: currentItem?.name || '' };
+                    const nextQuantity = current.quantity > 0 ? 0 : 1;
+                    return {
+                        ...prev,
+                        [id]: {
+                            ...current,
+                            quantity: nextQuantity,
+                            category: current.category || category,
+                            name: current.name || currentItem?.name || ''
+                        }
+                    };
+                });
+            };
+
+            // ----- Count selected items -----
+            const selectedCount = useMemo(() => {
+                return Object.values(itemQuantities).filter((item) => item?.quantity > 0).length;
+            }, [itemQuantities]);
+
+            // ---------- PDF Function ----------
+            const generatePDF = async (payload) => {
+                if (!window.jspdf || !window.jspdf.jsPDF) {
+                    showAlert('PDF Error', 'PDF library is not available.', 'error');
+                    return;
+                }
+
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF('p', 'mm', 'a4');
+
+                try {
+                    const templatePaths = ['images/purchase-template.png', 'images/purchase-template.png.png'];
+                    let templateLoaded = false;
+
+                    for (const templatePath of templatePaths) {
+                        const img = new Image();
+                        img.src = templatePath;
+
+                        await new Promise((resolve) => {
+                            img.onload = () => {
+                                templateLoaded = true;
+                                resolve();
+                            };
+                            img.onerror = resolve;
+                        });
+
+                        if (templateLoaded) {
+                            doc.addImage(img, 'PNG', 0, 0, 210, 297);
+                            break;
+                        }
+                    }
+
+                    if (!templateLoaded) {
+                        doc.setFillColor(245, 247, 250);
+                        doc.rect(0, 0, 210, 297, 'F');
+                        doc.setTextColor(20, 20, 20);
+                    }
+
+                    const today = new Date().toLocaleDateString('en-IN');
+                    doc.setFont('helvetica', 'bold');
+                    doc.setFontSize(16);
+                    doc.text('Purchase Requisition', 15, 20);
+                    doc.setFontSize(10);
+                    doc.setTextColor(40, 40, 40);
+                    doc.text(`Date : ${today}`, 190, 40, { align: 'right' });
+                    doc.setDrawColor(120);
+                    doc.line(150, 42, 190, 42);
+
+                    let y = 55;
+
+                    doc.setFontSize(11);
+                    doc.setFont('helvetica', 'bold');
+                    doc.text('Domain :', 15, y);
+                    doc.setFont('helvetica', 'normal');
+                    doc.text(payload.domain || 'N/A', 40, y);
+
+                    doc.setFont('helvetica', 'bold');
+                    doc.text('Event :', 120, y);
+                    doc.setFont('helvetica', 'normal');
+                    doc.text(payload.event || 'N/A', 140, y);
+
+                    y += 10;
+
+                    doc.setFont('helvetica', 'bold');
+                    doc.text('Student Coordinator :', 15, y);
+                    doc.setFont('helvetica', 'normal');
+                    doc.text(payload.coordinator?.name || 'N/A', 60, y);
+
+                    y += 7;
+                    doc.setFont('helvetica', 'bold');
+                    doc.text('Reg No. :', 15, y);
+                    doc.setFont('helvetica', 'normal');
+                    doc.text(payload.coordinator?.reg || 'N/A', 40, y);
+
+                    y += 7;
+                    doc.setFont('helvetica', 'bold');
+                    doc.text('Mobile :', 15, y);
+                    doc.setFont('helvetica', 'normal');
+                    doc.text(payload.coordinator?.mobile || 'N/A', 40, y);
+
+                    y += 10;
+                    doc.setFont('helvetica', 'bold');
+                    doc.text('POC :', 15, y);
+                    doc.setFont('helvetica', 'normal');
+                    doc.text(payload.poc?.name || 'N/A', 35, y);
+
+                    y += 7;
+                    doc.setFont('helvetica', 'bold');
+                    doc.text('POC Reg No. :', 15, y);
+                    doc.setFont('helvetica', 'normal');
+                    doc.text(payload.poc?.reg || 'N/A', 45, y);
+
+                    y += 7;
+                    doc.setFont('helvetica', 'bold');
+                    doc.text('POC Mobile :', 15, y);
+                    doc.setFont('helvetica', 'normal');
+                    doc.text(payload.poc?.mobile || 'N/A', 45, y);
+
+                    const rows = (payload.items || []).map((item, index) => [index + 1, item.category || 'N/A', item.name, item.quantity]);
+
+                    if (typeof doc.autoTable === 'function') {
+                        doc.autoTable({
+                            startY: y + 8,
+                            head: [['Item No', 'Category', 'Item Name', 'Quantity']],
+                            body: rows,
+                            theme: 'grid',
+                            styles: { fontSize: 10 },
+                            margin: { left: 15, right: 15 }
+                        });
+                    } else {
+                        let tableY = y + 8;
+                        doc.setFont('helvetica', 'bold');
+                        doc.text('Item No', 15, tableY);
+                        doc.text('Category', 35, tableY);
+                        doc.text('Item Name', 75, tableY);
+                        doc.text('Quantity', 160, tableY);
+                        doc.line(15, tableY + 2, 195, tableY + 2);
+                        doc.setFont('helvetica', 'normal');
+
+                        rows.forEach((row) => {
+                            tableY += 6;
+                            doc.text(String(row[0]), 15, tableY);
+                            doc.text(String(row[1]), 35, tableY);
+                            doc.text(String(row[2]), 75, tableY);
+                            doc.text(String(row[3]), 160, tableY);
+                        });
+                    }
+
+                    let signY = Math.max(doc.lastAutoTable ? doc.lastAutoTable.finalY + 30 : 230, 230);
+
+                    doc.line(20, signY, 60, signY);
+                    doc.line(85, signY, 125, signY);
+                    doc.line(150, signY, 190, signY);
+
+                    doc.setFont('helvetica', 'bold');
+                    doc.setFontSize(11);
+
+                    doc.text('Student Organizer', 40, signY + 6, { align: 'center' });
+                    doc.text('Faculty Co-ordinator', 105, signY + 6, { align: 'center' });
+                    doc.text('Faculty Organizer', 170, signY + 6, { align: 'center' });
+
+                    signY += 28;
+
+                    doc.line(10, signY, 65, signY);
+                    doc.line(78, signY, 132, signY);
+                    doc.line(145, signY, 200, signY);
+
+                    doc.setFontSize(10);
+
+                    doc.text('FO OF PURCHASE', 37, signY + 6, { align: 'center' });
+                    doc.text('CO-CONVENOR OF PURCHASE', 105, signY + 6, { align: 'center' });
+                    doc.text('CONVENOR', 172, signY + 6, { align: 'center' });
+
+                    doc.save(`purchase-requisition-${Date.now()}.pdf`);
+                } catch (error) {
+                    console.error(error);
+                    showAlert('PDF Error', 'PDF generation failed. Please try again.', 'error');
+                }
+            };
+
+            // ----- Submit -----
+            const handleSubmit = async (e) => {
+                e.preventDefault();
+
+                if (!domain) { showAlert('Missing Field', 'Please select a Domain.', 'error'); return; }
+                if (!event) { showAlert('Missing Field', 'Please select an Event.', 'error'); return; }
+                if (!coordName.trim()) { showAlert('Missing Field', 'Please enter Student Coordinator Name.', 'error'); return; }
+                if (!coordReg.trim()) { showAlert('Missing Field', 'Please enter Student Coordinator Registration Number.', 'error'); return; }
+                if (!coordMobile.trim()) { showAlert('Missing Field', 'Please enter Student Coordinator Mobile.', 'error'); return; }
+                if (!pocName.trim()) { showAlert('Missing Field', 'Please enter POC Name.', 'error'); return; }
+                if (!pocReg.trim()) { showAlert('Missing Field', 'Please enter POC Registration Number.', 'error'); return; }
+                if (!pocMobile.trim()) { showAlert('Missing Field', 'Please enter POC Mobile.', 'error'); return; }
+                if (!category) { showAlert('Missing Field', 'Please select an Item Category.', 'error'); return; }
+
+                const selectedItems = Object.entries(itemQuantities)
+                    .filter(([, entry]) => entry?.quantity > 0)
+                    .map(([, entry]) => ({
+                        name: entry.name || '',
+                        quantity: entry.quantity,
+                        category: entry.category || category
+                    }));
+
+                const manualItems = customItems
+                    .filter((item) => item.name.trim() !== '')
+                    .map((item) => ({
+                        name: item.name,
+                        category: item.category || 'Other',
+                        quantity: item.quantity
+                    }));
+
+                const allItems = [
+                    ...selectedItems,
+                    ...manualItems
+                ];
+
+                if (allItems.length === 0) {
+                    showAlert('No Items', 'Please select at least one item.', 'error');
+                    return;
+                }
+
+                const payload = {
+                    domain,
+                    event,
+                    coordinator: { name: coordName, reg: coordReg, mobile: coordMobile },
+                    poc: { name: pocName, reg: pocReg, mobile: pocMobile },
+                    category,
+                    items: allItems,
+                };
+
+                console.log(payload);
+
+                // Professional confirmation
+                showConfirm(
+                    'Confirm Submission',
+                    'Generate PDF and send Purchase Requisition to Staff?',
+                    async () => {
+                        // On Confirm
+                        await generatePDF(payload);
+
+                        let itemList = '';
+
+                        payload.items.forEach((item, index) => {
+                            itemList += `${index + 1}. ${item.name} (${item.category || 'N/A'}) | Qty: ${item.quantity}\n`;
+                        });
+
+                        emailjs.send(
+                            'service_1796a5g',
+                            'template_fwul7bo',
+                            {
+                                domain: payload.domain,
+                                event: payload.event,
+                                category: payload.category,
+                                student: payload.coordinator.name,
+                                student_reg: payload.coordinator.reg,
+                                student_mobile: payload.coordinator.mobile,
+                                poc: payload.poc.name,
+                                poc_reg: payload.poc.reg,
+                                poc_mobile: payload.poc.mobile,
+                                item_list: itemList,
+                                to_email: 'sanjaygs2406@gmail.com'
+                            }
+                        )
+                        .then(() => {
+                            showAlert('Success!', 'PDF downloaded and Email sent successfully.', 'success');
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                            showAlert('Email Error', 'PDF downloaded but email sending failed.', 'error');
+                        });
+                    },
+                    () => {
+                        // On Cancel - do nothing
+                        console.log('Submission cancelled');
+                    },
+                    'Yes, Generate',
+                    'Cancel'
+                );
+            };
+
+            // ----- Render -----
+            const themeIcon = theme === 'light' ? 'bi-sun-fill' : 'bi-moon-fill';
+            const themeLabel = theme === 'light' ? 'Light' : 'Dark';
+            const placeholderText = category ? `Search in ${category}` : 'Search items...';
+
+            return (
+                <div className="dashboard-card">
+                    {/* Header */}
+                  <header className="brand-header">
+
+    <div className="brand-left">
+
+        <img
+            src="../images/gravitas-logo.png"
+            alt="Gravitas'26"
+            className="brand-logo"
+        />
+
+        <div className="brand-text">
+
+            <span className="brand-sub">
+                <i className="bi bi-grid-3x3-gap-fill"></i>
+                Purchase Requisition System
+            </span>
+
+            <small className="brand-caption">
+                Event Management Dashboard
+            </small>
+
+        </div>
+
+    </div>
+
+    <div className="d-flex align-items-center gap-2 flex-wrap">
+        {userEmail && (
+            <div className="welcome-pill">
+                <i className="bi bi-person-circle"></i>
+                <span>Welcome, {userEmail}</span>
+            </div>
+        )}
+
+        <button
+            className="theme-toggle"
+            onClick={toggleTheme}
+            type="button"
+        >
+            <span className="toggle-track">
+                <span className="toggle-thumb"></span>
+            </span>
+
+            <span className="toggle-label">
+                <i className={`bi ${themeIcon}`}></i>
+                {themeLabel}
+            </span>
+        </button>
+    </div>
+
+</header>
+
+                    {/* Form */}
+                    <form onSubmit={handleSubmit} noValidate>
+                        {/* Domain */}
+                        <div className="mb-3">
+                            <label className="form-label" htmlFor="domainSelect">
+                                <i className="bi bi-tag me-1" /> Domain
+                            </label>
+                            <select
+                                className="form-select"
+                                id="domainSelect"
+                                value={domain}
+                                onChange={(e) => setDomain(e.target.value)}
+                            >
+                                <option value="">Select Domain</option>
+                                {DOMAINS.map((d) => (
+                                    <option key={d} value={d}>{d}</option>
+                                ))}
+                            </select>
+                        </div>
+
+                        {/* Event */}
+                        <div className="mb-3">
+                            <label className="form-label" htmlFor="eventSelect">
+                                <i className="bi bi-calendar-event me-1" /> Event
+                            </label>
+                            <select
+                                className="form-select"
+                                id="eventSelect"
+                                value={event}
+                                onChange={(e) => setEvent(e.target.value)}
+                            >
+                                <option value="">Select Event</option>
+                                {EVENTS.map((e) => (
+                                    <option key={e} value={e}>{e}</option>
+                                ))}
+                            </select>
+                        </div>
+
+                        <hr className="divider" />
+
+                        {/* Student Coordinator */}
+                        <div className="section-title">
+                            <i className="bi bi-person-badge" />
+                            Student Coordinator
+                        </div>
+                        <div className="row row-coord g-3">
+                            <div className="col-md-4">
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    placeholder="Name"
+                                    value={coordName}
+                                    onChange={(e) => setCoordName(e.target.value)}
+                                />
+                            </div>
+                            <div className="col-md-4">
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    placeholder="YYXXX1234 (e.g., 23MIS0042)"
+                                    value={coordReg}
+                                    onChange={(e) => {
+                                        let value = e.target.value.toUpperCase();
+
+                                        value = value.replace(/[^A-Z0-9]/g, "");
+
+                                        if (value.length > 9) return;
+
+                                        setCoordReg(value);
+
+                                        if (value === "") {
+                                            setCoordRegError("");
+                                            return;
+                                        }
+
+                                        if (!/^\d{2}[A-Z]{3}\d{4}$/.test(value)) {
+                                            setCoordRegError("Expected format: YYXXX1234 (e.g., 23MIS0042)");
+                                        } else {
+                                            setCoordRegError("");
+                                        }
+                                    }}
+                                />
+                                {coordRegError && (
+                                    <small className="text-danger">
+                                        {coordRegError}
+                                    </small>
+                                )}
+                            </div>
+                            <div className="col-md-4">
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    placeholder="Mobile"
+                                    value={coordMobile}
+                                    onChange={(e) => {
+                                        let value = e.target.value.replace(/\D/g, "");
+
+                                        if (value.length > 10) return;
+
+                                        setCoordMobile(value);
+
+                                        if (value === "") {
+                                            setCoordMobileError("");
+                                            return;
+                                        }
+
+                                        if (value.length < 10) {
+                                            setCoordMobileError("Enter a 10-digit mobile number");
+                                        } else {
+                                            setCoordMobileError("");
+                                        }
+                                    }}
+                                />
+                                {coordMobileError && (
+                                    <small className="text-danger">
+                                        {coordMobileError}
+                                    </small>
+                                )}
+                            </div>
+                        </div>
+
+                        <hr className="divider" />
+
+                        {/* POC */}
+                        <div className="section-title">
+                            <i className="bi bi-person-check" />
+                            POC
+                        </div>
+                        <div className="row row-coord g-3">
+                            <div className="col-md-4">
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    placeholder="Name"
+                                    value={pocName}
+                                    onChange={(e) => setPocName(e.target.value)}
+                                />
+                            </div>
+                            <div className="col-md-4">
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    placeholder="YYXXX1234 (e.g., 23MIS0042)"
+                                    value={pocReg}
+                                    onChange={(e) => {
+                                        let value = e.target.value.toUpperCase();
+
+                                        value = value.replace(/[^A-Z0-9]/g, "");
+
+                                        if (value.length > 9) return;
+
+                                        setPocReg(value);
+
+                                        if (value === "") {
+                                            setPocRegError("");
+                                            return;
+                                        }
+
+                                        if (!/^\d{2}[A-Z]{3}\d{4}$/.test(value)) {
+                                            setPocRegError("Expected format: YYXXX1234 (e.g., 23MIS0042)");
+                                        } else {
+                                            setPocRegError("");
+                                        }
+                                    }}
+                                />
+                                {pocRegError && (
+                                    <small className="text-danger">
+                                        {pocRegError}
+                                    </small>
+                                )}
+                            </div>
+                            <div className="col-md-4">
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    placeholder="Mobile"
+                                    value={pocMobile}
+                                    onChange={(e) => {
+                                        let value = e.target.value.replace(/\D/g, "");
+
+                                        if (value.length > 10) return;
+
+                                        setPocMobile(value);
+
+                                        if (value === "") {
+                                            setPocMobileError("");
+                                            return;
+                                        }
+
+                                        if (value.length < 10) {
+                                            setPocMobileError("Enter a 10-digit mobile number");
+                                        } else {
+                                            setPocMobileError("");
+                                        }
+                                    }}
+                                />
+                                {pocMobileError && (
+                                    <small className="text-danger">
+                                        {pocMobileError}
+                                    </small>
+                                )}
+                            </div>
+                        </div>
+
+                        <hr className="divider" />
+
+                        {/* Item Category */}
+                        <div className="mb-4">
+                            <label className="form-label" htmlFor="categorySelect">
+                                <i className="bi bi-tags me-1" /> Item Category
+                            </label>
+                            <select
+                                className="form-select"
+                                id="categorySelect"
+                                value={category}
+                                onChange={(e) => setCategory(e.target.value)}
+                            >
+                                <option value="">Select Category</option>
+                                {CATEGORIES.map((c) => (
+                                    <option key={c} value={c}>{c}</option>
+                                ))}
+                            </select>
+                        </div>
+
+                        {/* Items */}
+                        <div className="section-title">
+                            <i className="bi bi-box-seam" />
+                            Items
+                            {selectedCount > 0 && (
+                                <span className="badge bg-primary rounded-pill ms-2" style={{ fontSize: '0.7rem' }}>
+                                    {selectedCount} selected
+                                </span>
+                            )}
+                        </div>
+
+                        {/* Search Bar */}
+                        <div className="search-container">
+                            <input
+                                type="text"
+                                className="search-input"
+                                placeholder={placeholderText}
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                                disabled={!category}
+                            />
+                        </div>
+
+                        <div className="table-wrap">
+                            <table className="table">
+                                <thead>
+                                    <tr>
+                                        <th style={{ width: '52px' }}>Select</th>
+                                        <th>Item</th>
+                                        <th style={{ width: '220px' }}>Quantity</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {filteredItems.length === 0 ? (
+                                        <tr>
+                                            <td colSpan="3" className="no-items-msg">
+                                                {category
+                                                    ? (searchTerm.trim()
+                                                        ? 'No items match your search.'
+                                                        : 'No items defined for this category.')
+                                                    : 'Please select a category to view items.'}
+                                            </td>
+                                        </tr>
+                                    ) : (
+                                        filteredItems.map((item) => {
+                                            const itemState = itemQuantities[item.id] || { quantity: 0, category, name: item.name };
+                                            const qty = itemState.quantity;
+                                            const checked = qty > 0;
+                                            return (
+                                                <tr key={item.id}>
+                                                    <td>
+                                                        <input
+                                                            className="form-check-input"
+                                                            type="checkbox"
+                                                            checked={checked}
+                                                            onChange={() => toggleSelect(item.id)}
+                                                        />
+                                                    </td>
+                                                    <td className="item-name">{item.name}</td>
+                                                    <td>
+                                                        <div className="qty-control">
+                                                            <button
+                                                                type="button"
+                                                                className="btn-qty"
+                                                                onClick={() => handleDecrement(item.id)}
+                                                                disabled={qty <= 0}
+                                                            >
+                                                                <i className="bi bi-dash"></i>
+                                                            </button>
+                                                            <input
+                                                                type="number"
+                                                                className="qty-input"
+                                                                value={qty}
+                                                                min="0"
+                                                                onChange={(e) => handleQtyChange(item.id, e.target.value)}
+                                                                disabled={!checked}
+                                                            />
+                                                            <button
+                                                                type="button"
+                                                                className="btn-qty"
+                                                                onClick={() => handleIncrement(item.id)}
+                                                            >
+                                                                <i className="bi bi-plus"></i>
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            );
+                                        })
+                                    )}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <hr />
+                        <h5>Other Items (Not Available Above)</h5>
+                        <button
+                            className="btn btn-success mb-3"
+                            type="button"
+                            onClick={addCustomItem}
+                        >
+                            + Add Custom Item
+                        </button>
+
+                        {customItems.map((item) => (
+                            <div className="row mb-2" key={item.id}>
+                                <div className="col-md-3">
+                                    <select
+                                        className="form-select"
+                                        value={item.category}
+                                        onChange={(e) => {
+                                            setCustomItems(prev =>
+                                                prev.map((x) =>
+                                                    x.id === item.id
+                                                        ? { ...x, category: e.target.value }
+                                                        : x
+                                                )
+                                            );
+                                        }}
+                                    >
+                                        <option value="">Category</option>
+                                        {CATEGORIES.map((c) => (
+                                            <option key={c} value={c}>{c}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div className="col-md-5">
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        placeholder="Enter Item Name"
+                                        value={item.name}
+                                        onChange={(e) => {
+                                            setCustomItems(prev =>
+                                                prev.map((x) =>
+                                                    x.id === item.id
+                                                        ? { ...x, name: e.target.value }
+                                                        : x
+                                                )
+                                            );
+                                        }}
+                                    />
+                                </div>
+                                <div className="col-md-2">
+                                    <div className="qty-control">
+                                        <button
+                                            type="button"
+                                            className="btn-qty"
+                                            onClick={() => {
+                                                setCustomItems(prev =>
+                                                    prev.map((x) =>
+                                                        x.id === item.id
+                                                            ? { ...x, quantity: Math.max(1, x.quantity - 1) }
+                                                            : x
+                                                    )
+                                                );
+                                            }}
+                                            disabled={item.quantity <= 1}
+                                        >
+                                            <i className="bi bi-dash"></i>
+                                        </button>
+                                        <input
+                                            type="number"
+                                            min="1"
+                                            className="qty-input"
+                                            value={item.quantity}
+                                            onChange={(e) => {
+                                                const nextValue = Number(e.target.value);
+                                                setCustomItems(prev =>
+                                                    prev.map((x) =>
+                                                        x.id === item.id
+                                                            ? { ...x, quantity: Number.isNaN(nextValue) ? 1 : Math.max(1, nextValue) }
+                                                            : x
+                                                    )
+                                                );
+                                            }}
+                                        />
+                                        <button
+                                            type="button"
+                                            className="btn-qty"
+                                            onClick={() => {
+                                                setCustomItems(prev =>
+                                                    prev.map((x) =>
+                                                        x.id === item.id
+                                                            ? { ...x, quantity: x.quantity + 1 }
+                                                            : x
+                                                    )
+                                                );
+                                            }}
+                                        >
+                                            <i className="bi bi-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div className="col-md-2">
+                                    <button
+                                        className="btn btn-danger w-100"
+                                        type="button"
+                                        onClick={() => {
+                                            setCustomItems(prev => prev.filter((x) => x.id !== item.id));
+                                        }}
+                                    >
+                                        Remove
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+
+                        {/* Submit */}
+                        <div className="text-center mt-4">
+                            <button
+                                className="btn-submit"
+                                type="submit"
+                                disabled={
+                                    coordRegError ||
+                                    pocRegError ||
+                                    coordMobileError ||
+                                    pocMobileError
+                                }
+                            >
+                                <i className="bi bi-check2-circle me-2" />
+                                Generate PDF
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            );
+        };
+
+        // --------------------------------------------------------------
+        //  Mount with Modal Provider
+        // --------------------------------------------------------------
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(
+            <ModalProvider>
+                <App />
+            </ModalProvider>
+        );
+    </script>
+</body>
+</html>

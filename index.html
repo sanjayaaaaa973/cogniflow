@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gravitas'26 | Login</title>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Google Font (Inter) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+
+    <style>
+        /* ===== CSS Variables / Themes ===== */
+        :root {
+            --bg-body: #f0f2f8;
+            --bg-card: rgba(255, 255, 255, 0.75);
+            --backdrop-blur: 20px;
+            --border-card: rgba(255, 255, 255, 0.3);
+            --bg-input: rgba(255, 255, 255, 0.8);
+            --text-primary: #1a1a2e;
+            --text-secondary: #3d3d5c;
+            --text-muted: #7a7a9e;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --shadow-card: 0 20px 60px rgba(0, 0, 0, 0.10);
+            --shadow-hover: 0 30px 80px rgba(0, 0, 0, 0.15);
+            --radius: 24px;
+            --radius-sm: 12px;
+            --accent-start: #4f46e5;
+            --accent-end: #7c3aed;
+            --accent-gradient: linear-gradient(135deg, var(--accent-start), var(--accent-end));
+            --accent-light: rgba(79, 70, 229, 0.12);
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --toast-bg: rgba(255, 255, 255, 0.92);
+            --toast-border: rgba(255, 255, 255, 0.3);
+            --toast-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            --toast-text: #1a1a2e;
+        }
+
+        [data-theme="dark"] {
+            --bg-body: #0c0c18;
+            --bg-card: rgba(26, 26, 46, 0.92);
+            --border-card: rgba(255, 255, 255, 0.10);
+            --bg-input: rgba(45, 45, 70, 0.95);
+            --text-primary: #f0f0ff;
+            --text-secondary: #d0d0ec;
+            --text-muted: #b0b0d0;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --shadow-card: 0 20px 60px rgba(0, 0, 0, 0.8);
+            --shadow-hover: 0 30px 80px rgba(0, 0, 0, 0.9);
+            --accent-light: rgba(129, 140, 248, 0.20);
+            --toast-bg: rgba(26, 26, 46, 0.95);
+            --toast-border: rgba(255, 255, 255, 0.10);
+            --toast-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+            --toast-text: #f0f0ff;
+        }
+
+        /* ===== Base ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg-body);
+            color: var(--text-primary);
+            transition: background var(--transition), color var(--transition);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            perspective: 1200px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* ===== 3D Background Canvas ===== */
+        #three-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.5;
+            transition: opacity 0.8s ease;
+        }
+        [data-theme="dark"] #three-canvas {
+            opacity: 0.3;
+        }
+
+        /* ===== Login Card ===== */
+        .login-card {
+            position: relative;
+            z-index: 1;
+            width: 430px;
+            max-width: 100%;
+            background: var(--bg-card);
+            backdrop-filter: var(--backdrop-blur);
+            -webkit-backdrop-filter: var(--backdrop-blur);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-card);
+            box-shadow: var(--shadow-card);
+            padding: 2.5rem 2.5rem;
+            transition: all var(--transition);
+            transform-style: preserve-3d;
+            transform: rotateX(0deg) rotateY(0deg);
+            will-change: transform;
+        }
+
+        .login-card:hover {
+            box-shadow: var(--shadow-hover);
+        }
+
+        /* ===== Logo & Brand ===== */
+        .logo {
+            width: 260px;
+            display: block;
+            margin: 0 auto 1.25rem auto;
+        }
+
+        .title {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        /* ===== Theme Toggle ===== */
+        .theme-toggle-wrapper {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 0.75rem;
+        }
+
+        .theme-toggle {
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            padding: 0.3rem 0.7rem 0.3rem 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            cursor: pointer;
+            transition: all var(--transition);
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            font-weight: 600;
+            font-family: var(--font);
+            backdrop-filter: blur(4px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--accent-start);
+            background: var(--accent-light);
+            transform: scale(1.02);
+        }
+
+        .theme-toggle .toggle-track {
+            width: 32px;
+            height: 18px;
+            border-radius: 50px;
+            background: var(--border-color);
+            position: relative;
+            transition: background var(--transition);
+            flex-shrink: 0;
+        }
+
+        .theme-toggle .toggle-track .toggle-thumb {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #fff;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            transition: transform var(--transition), background var(--transition);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        [data-theme="dark"] .theme-toggle .toggle-track {
+            background: var(--accent-start);
+        }
+        [data-theme="dark"] .theme-toggle .toggle-track .toggle-thumb {
+            transform: translateX(14px);
+            background: #fff;
+        }
+
+        .theme-toggle .toggle-label {
+            display: flex;
+            align-items: center;
+            gap: 0.2rem;
+        }
+
+        /* ===== Form Elements ===== */
+        .form-label {
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-secondary);
+            margin-bottom: 0.4rem;
+        }
+
+        .form-control {
+            background: var(--bg-input);
+            border: 1.5px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+            font-size: 0.92rem;
+            padding: 0.7rem 1rem;
+            transition: all var(--transition);
+            font-family: var(--font);
+            backdrop-filter: blur(4px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            height: 50px;
+        }
+
+        .form-control:focus {
+            border-color: var(--accent-start);
+            box-shadow: 0 0 0 4px var(--accent-light), 0 2px 8px rgba(79,70,229,0.1);
+            background: var(--bg-input);
+            color: var(--text-primary);
+        }
+
+        .form-control::placeholder {
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .input-group-text {
+            background: var(--bg-input);
+            border: 1.5px solid var(--border-color);
+            border-right: none;
+            border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+            color: var(--text-muted);
+        }
+
+        .input-group .form-control {
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+        }
+
+        /* Password toggle button */
+        .btn-outline-secondary {
+            background: var(--bg-input);
+            border: 1.5px solid var(--border-color);
+            border-left: none;
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            color: var(--text-muted);
+            transition: all var(--transition);
+        }
+
+        .btn-outline-secondary:hover {
+            background: var(--accent-light);
+            border-color: var(--accent-start);
+            color: var(--accent-start);
+        }
+
+        .btn-outline-secondary:focus {
+            box-shadow: none;
+        }
+
+        /* ===== Login Button ===== */
+        .btn-login {
+            width: 100%;
+            height: 50px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 700;
+            background: var(--accent-gradient);
+            border: none;
+            color: #fff;
+            transition: all var(--transition);
+            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.35);
+            font-family: var(--font);
+            letter-spacing: 0.3px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-login::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 10px 30px rgba(79, 70, 229, 0.5);
+        }
+
+        .btn-login:hover::after {
+            opacity: 1;
+        }
+
+        .btn-login:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        .btn-login:disabled {
+            opacity: 0.7;
+            transform: scale(0.98);
+        }
+
+        .spinner-border {
+            display: none;
+            width: 20px;
+            height: 20px;
+            margin-right: 8px;
+        }
+
+        /* ===== Footer ===== */
+        .footer {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-color);
+            padding-top: 1.2rem;
+        }
+
+        /* ===== TOAST / CUSTOM NOTIFICATION ===== */
+        #toastOverlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        #toastOverlay.active {
+            display: flex;
+        }
+
+        .toast-box {
+            background: var(--toast-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--toast-border);
+            border-radius: var(--radius);
+            box-shadow: var(--toast-shadow);
+            padding: 2rem 2.5rem;
+            max-width: 420px;
+            width: 90%;
+            text-align: center;
+            animation: slideUp 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+        }
+
+        .toast-box .toast-icon {
+            font-size: 3rem;
+            color: #dc3545;
+            margin-bottom: 0.75rem;
+            display: block;
+        }
+
+        .toast-box .toast-title {
+            font-family: var(--font);
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--toast-text);
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.01em;
+        }
+
+        .toast-box .toast-message {
+            font-family: var(--font);
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .toast-box .toast-btn {
+            background: var(--accent-gradient);
+            border: none;
+            border-radius: 50px;
+            padding: 0.6rem 2rem;
+            font-family: var(--font);
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #fff;
+            transition: all var(--transition);
+            box-shadow: 0 4px 16px rgba(79, 70, 229, 0.3);
+            cursor: pointer;
+        }
+
+        .toast-box .toast-btn:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 24px rgba(79, 70, 229, 0.45);
+        }
+
+        .toast-box .toast-btn:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        /* Toast close X button */
+        .toast-box .toast-close {
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            background: none;
+            border: none;
+            font-size: 1.3rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: color var(--transition);
+            font-family: var(--font);
+            padding: 0 4px;
+        }
+
+        .toast-box .toast-close:hover {
+            color: var(--text-primary);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px) scale(0.96);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 576px) {
+            body {
+                padding: 1rem;
+            }
+            .login-card {
+                padding: 1.75rem 1.25rem;
+            }
+            .logo {
+                width: 200px;
+            }
+            .title {
+                font-size: 1.2rem;
+            }
+            .form-control {
+                height: 44px;
+                font-size: 0.85rem;
+            }
+            .btn-login {
+                height: 44px;
+                font-size: 0.9rem;
+            }
+            .theme-toggle {
+                font-size: 0.7rem;
+                padding: 0.2rem 0.5rem 0.2rem 0.4rem;
+            }
+            .theme-toggle .toggle-track {
+                width: 28px;
+                height: 16px;
+            }
+            .theme-toggle .toggle-track .toggle-thumb {
+                width: 12px;
+                height: 12px;
+            }
+            [data-theme="dark"] .theme-toggle .toggle-track .toggle-thumb {
+                transform: translateX(12px);
+            }
+            .toast-box {
+                padding: 1.5rem 1.25rem;
+            }
+            .toast-box .toast-title {
+                font-size: 1.1rem;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .login-card {
+                padding: 1.25rem 0.9rem;
+            }
+            .logo {
+                width: 160px;
+            }
+        }
+
+        /* ===== Scrollbar ===== */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-body);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-start);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<script type="module" src="login.js"></script>
+<body>
+
+    <!-- 3D Background Canvas -->
+    <div id="three-canvas"></div>
+
+    <!-- ===== TOAST OVERLAY ===== -->
+    <div id="toastOverlay">
+        <div class="toast-box">
+            <button class="toast-close" id="toastClose">&times;</button>
+            <span class="toast-icon"><i class="bi bi-exclamation-circle-fill"></i></span>
+            <div class="toast-title" id="toastTitle">Invalid Credentials</div>
+            <div class="toast-message" id="toastMessage">Please check your email and password and try again.</div>
+            <button class="toast-btn" id="toastBtn">Try Again</button>
+        </div>
+    </div>
+
+    <!-- Login Card -->
+    <div class="login-card" id="loginCard">
+
+        <!-- Theme Toggle -->
+        <div class="theme-toggle-wrapper">
+            <button class="theme-toggle" id="themeToggle" type="button">
+                <span class="toggle-track">
+                    <span class="toggle-thumb"></span>
+                </span>
+                <span class="toggle-label">
+                    <i class="bi bi-sun-fill" id="themeIcon"></i>
+                    <span id="themeLabel">Light</span>
+                </span>
+            </button>
+        </div>
+
+        <!-- Logo & Brand -->
+        <img src="images/gravitas-logo.png" class="logo" alt="Gravitas Logo">
+        <div class="title">Purchase Requisition Portal</div>
+        <div class="subtitle">Authorized Users Only</div>
+
+        <!-- Email -->
+        <div class="mb-3">
+            <label class="form-label">Email</label>
+            <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-envelope-fill"></i></span>
+                <input type="email" id="email" class="form-control" placeholder="Enter your VIT Email" autocomplete="username">
+            </div>
+        </div>
+
+        <!-- Password -->
+        <div class="mb-4">
+            <label class="form-label">Password</label>
+            <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+                <input type="password" id="password" class="form-control" placeholder="Enter Password" autocomplete="current-password">
+                <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                    <i class="bi bi-eye"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Login Button -->
+        <button id="loginBtn" class="btn btn-login">
+            <span class="spinner-border spinner-border-sm" id="loader"></span>
+            Login
+        </button>
+
+        <div class="footer">© 2026 Gravitas'26 • VIT</div>
+    </div>
+
+    <!-- ===== Three.js ===== -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js">
+    </script>
+
+    <!-- ===== Main Script ===== -->
+    <script>
+        // =============================================================
+        // 1. Three.js Background
+        // =============================================================
+        (function initThree() {
+            const container = document.getElementById('three-canvas');
+            if (!container) return;
+
+            const getTheme = () => {
+                const stored = localStorage.getItem('gravitas-theme');
+                if (stored) return stored;
+                return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            };
+            let theme = getTheme();
+
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.set(0, 0, 8);
+
+            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            container.appendChild(renderer.domElement);
+
+            const ambientLight = new THREE.AmbientLight(0x404060);
+            scene.add(ambientLight);
+            const dirLight = new THREE.DirectionalLight(0xffffff, 1);
+            dirLight.position.set(1, 1, 2);
+            scene.add(dirLight);
+            const backLight = new THREE.DirectionalLight(0x4f46e5, 0.5);
+            backLight.position.set(-1, -1, -2);
+            scene.add(backLight);
+
+            const geometry = new THREE.IcosahedronGeometry(1.8, 0);
+            const material = new THREE.MeshPhysicalMaterial({
+                color: theme === 'dark' ? 0x818cf8 : 0x4f46e5,
+                wireframe: true,
+                transparent: true,
+                opacity: 0.25,
+                roughness: 0.2,
+                metalness: 0.1,
+                emissive: theme === 'dark' ? 0x1a1a3e : 0xeef2ff,
+                emissiveIntensity: 0.1,
+            });
+            const mesh = new THREE.Mesh(geometry, material);
+            scene.add(mesh);
+
+            const knotGeo = new THREE.TorusKnotGeometry(0.8, 0.25, 64, 8);
+            const knotMat = new THREE.MeshPhysicalMaterial({
+                color: theme === 'dark' ? 0x7c3aed : 0x7c3aed,
+                transparent: true,
+                opacity: 0.15,
+                roughness: 0.3,
+                metalness: 0.2,
+            });
+            const knot = new THREE.Mesh(knotGeo, knotMat);
+            knot.position.set(1.5, -1, -1);
+            scene.add(knot);
+
+            const particlesGeo = new THREE.BufferGeometry();
+            const particlesCount = 300;
+            const posArray = new Float32Array(particlesCount * 3);
+            for (let i = 0; i < particlesCount * 3; i += 3) {
+                posArray[i] = (Math.random() - 0.5) * 20;
+                posArray[i+1] = (Math.random() - 0.5) * 20;
+                posArray[i+2] = (Math.random() - 0.5) * 20 - 4;
+            }
+            particlesGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+            const particlesMat = new THREE.PointsMaterial({
+                color: theme === 'dark' ? 0x818cf8 : 0x4f46e5,
+                size: 0.04,
+                transparent: true,
+                opacity: 0.6,
+            });
+            const particles = new THREE.Points(particlesGeo, particlesMat);
+            scene.add(particles);
+
+            let mouseX = 0, mouseY = 0;
+            const handleMouseMove = (e) => {
+                mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+                mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+            };
+            window.addEventListener('mousemove', handleMouseMove);
+
+            let time = 0;
+            const animate = () => {
+                requestAnimationFrame(animate);
+                time += 0.002;
+                mesh.rotation.x = time * 0.2 + mouseY * 0.1;
+                mesh.rotation.y = time * 0.3 + mouseX * 0.1;
+                knot.rotation.x = time * 0.4;
+                knot.rotation.y = time * 0.5;
+                particles.rotation.y = time * 0.02;
+                renderer.render(scene, camera);
+            };
+            animate();
+
+            const handleResize = () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            };
+            window.addEventListener('resize', handleResize);
+
+            const updateColors = (newTheme) => {
+                theme = newTheme;
+                const mainColor = theme === 'dark' ? 0x818cf8 : 0x4f46e5;
+                const emissive = theme === 'dark' ? 0x1a1a3e : 0xeef2ff;
+                material.color.setHex(mainColor);
+                material.emissive.setHex(emissive);
+                particlesMat.color.setHex(mainColor);
+            };
+
+            window.__threeUpdateColors = updateColors;
+        })();
+
+        // =============================================================
+        // 2. Theme Toggle
+        // =============================================================
+        (function themeToggle() {
+            const toggleBtn = document.getElementById('themeToggle');
+            const themeIcon = document.getElementById('themeIcon');
+            const themeLabel = document.getElementById('themeLabel');
+
+            const getTheme = () => {
+                const stored = localStorage.getItem('gravitas-theme');
+                if (stored) return stored;
+                return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            };
+
+            let currentTheme = getTheme();
+
+            const applyTheme = (theme) => {
+                document.documentElement.setAttribute('data-theme', theme);
+                localStorage.setItem('gravitas-theme', theme);
+                currentTheme = theme;
+
+                if (theme === 'light') {
+                    themeIcon.className = 'bi bi-sun-fill';
+                    themeLabel.textContent = 'Light';
+                } else {
+                    themeIcon.className = 'bi bi-moon-fill';
+                    themeLabel.textContent = 'Dark';
+                }
+
+                if (window.__threeUpdateColors) {
+                    window.__threeUpdateColors(theme);
+                }
+            };
+
+            applyTheme(currentTheme);
+
+            toggleBtn.addEventListener('click', () => {
+                const next = currentTheme === 'light' ? 'dark' : 'light';
+                applyTheme(next);
+            });
+        })();
+
+        // =============================================================
+        // 3. Login Card Tilt Effect
+        // =============================================================
+        (function cardTilt() {
+            const card = document.getElementById('loginCard');
+            if (!card) return;
+
+            const handleMouseMove = (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / rect.width - 0.5;
+                const y = (e.clientY - rect.top) / rect.height - 0.5;
+                const rotateX = -y * 6;
+                const rotateY = x * 6;
+                card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            };
+
+            const handleMouseLeave = () => {
+                card.style.transform = 'rotateX(0deg) rotateY(0deg)';
+            };
+
+            card.addEventListener('mousemove', handleMouseMove);
+            card.addEventListener('mouseleave', handleMouseLeave);
+        })();
+
+        // =============================================================
+        // 4. TOAST / Custom Notification System
+        // =============================================================
+        (function toastSystem() {
+            const overlay = document.getElementById('toastOverlay');
+            const closeBtn = document.getElementById('toastClose');
+            const toastBtn = document.getElementById('toastBtn');
+            const toastTitle = document.getElementById('toastTitle');
+            const toastMessage = document.getElementById('toastMessage');
+
+            window.showToast = function(title, message) {
+                toastTitle.textContent = title || 'Invalid Credentials';
+                toastMessage.textContent = message || 'Please check your email and password and try again.';
+                overlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            };
+
+            const hideToast = function() {
+                overlay.classList.remove('active');
+                document.body.style.overflow = '';
+            };
+
+            closeBtn.addEventListener('click', hideToast);
+            toastBtn.addEventListener('click', hideToast);
+
+            overlay.addEventListener('click', function(e) {
+                if (e.target === overlay) {
+                    hideToast();
+                }
+            });
+
+            // Escape key closes toast
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && overlay.classList.contains('active')) {
+                    hideToast();
+                }
+            });
+        })();
+
+        // =============================================================
+        // 5. Login Logic (with custom toast)
+        // =============================================================
+        
+    </script>
+
+</body>
+</html>
