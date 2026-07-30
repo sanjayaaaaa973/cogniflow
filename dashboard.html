@@ -135,34 +135,18 @@
             border-bottom: 1px solid var(--border-color);
         }
 
-     .brand-left{
-    display:flex;
-    align-items:center;
-    gap:20px;
-    flex-wrap:wrap;
-}
+        .brand-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
 
-
-        .brand-logo{
-
-    width:420px;
-
-    max-width:100%;
-
-    height:auto;
-
-    object-fit:contain;
-
-}
-        .brand-title {
-            font-size: 1.75rem;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            background: var(--accent-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            display: none; /* hidden, replaced by logo */
+        .brand-logo {
+            width: 420px;
+            max-width: 100%;
+            height: auto;
+            object-fit: contain;
         }
 
         .brand-sub {
@@ -266,6 +250,54 @@
             display: flex;
             align-items: center;
             gap: 0.3rem;
+        }
+
+        /* ===== REQUEST TYPE TOGGLE ===== */
+        .request-toggle {
+            display: flex;
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1.5px solid var(--accent);
+            background: var(--bg-input);
+        }
+
+        .request-toggle button {
+            flex: 1;
+            padding: 12px 14px;
+            background: var(--bg-input);
+            border: none;
+            color: var(--text-secondary);
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: var(--font);
+            letter-spacing: 0.3px;
+        }
+
+        .request-toggle button:hover {
+            background: var(--accent-light);
+        }
+
+        .request-toggle button.active {
+            background: var(--accent-gradient);
+            color: #fff;
+            box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35);
+        }
+
+        [data-theme="dark"] .request-toggle button {
+            background: var(--bg-input);
+            color: var(--text-secondary);
+        }
+
+        [data-theme="dark"] .request-toggle button.active {
+            background: var(--accent-gradient);
+            color: #fff;
+        }
+
+        [data-theme="dark"] .request-toggle {
+            border-color: var(--accent);
         }
 
         /* ===== Form Elements ===== */
@@ -690,6 +722,7 @@
             }
             .brand-logo {
                 height: 42px;
+                width: auto;
             }
             .brand-sub {
                 font-size: 0.75rem;
@@ -719,6 +752,7 @@
 
             .brand-logo {
                 height: 38px;
+                width: auto;
             }
 
             .brand-sub {
@@ -806,6 +840,11 @@
                 font-size: 0.85rem;
                 min-width: 80px;
             }
+
+            .request-toggle button {
+                padding: 10px 12px;
+                font-size: 13px;
+            }
         }
 
         @media (max-width: 400px) {
@@ -815,6 +854,7 @@
 
             .brand-logo {
                 height: 32px;
+                width: auto;
             }
 
             .table thead th,
@@ -841,6 +881,11 @@
             .modal-box {
                 padding: 1.25rem 0.9rem;
                 max-width: 340px;
+            }
+
+            .request-toggle button {
+                padding: 8px 10px;
+                font-size: 12px;
             }
         }
 
@@ -896,7 +941,7 @@ emailjs.init("sRZ_ixA1Xm913C0Ru");
         const ModalProvider = ({ children }) => {
             const [modal, setModal] = useState({
                 visible: false,
-                type: 'confirm', // 'confirm' | 'alert' | 'success' | 'error'
+                type: 'confirm',
                 title: '',
                 message: '',
                 onConfirm: null,
@@ -971,7 +1016,6 @@ emailjs.init("sRZ_ixA1Xm913C0Ru");
                 <ModalContext.Provider value={value}>
                     {children}
 
-                    {/* Modal Overlay */}
                     <div id="modalOverlay" className={modal.visible ? 'active' : ''}>
                         <div className="modal-box">
                             <button className="modal-close" onClick={closeModal}>&times;</button>
@@ -1022,7 +1066,6 @@ emailjs.init("sRZ_ixA1Xm913C0Ru");
             'Wood'
         ];
 
-        // Stationery items
         const STATIONERY_ITEMS = [
             "A3 Sheets", "A4 Sheet", "Acrylic Paint (pack of 12)", "Acrylic Paint (pack of 6)",
             "Balloon pump", "Balloons", "Balloons Multicolor (50 pcs)", "Black Bold Pens (pieces)",
@@ -1058,7 +1101,6 @@ emailjs.init("sRZ_ixA1Xm913C0Ru");
             "White paper tape(Masking Tape)", "Whitener", "Zip locks", "Nylon Wire"
         ];
 
-        // Cloth items
         const CLOTH_ITEMS = [
             "Black Cloth(per m)",
             "Black Velvet cloth (for 39 x 32 inch)",
@@ -1067,7 +1109,6 @@ emailjs.init("sRZ_ixA1Xm913C0Ru");
             "White Cloth(2m)"
         ];
 
-        // Electronics items
         const ELECTRONICS_ITEMS = [
             "DHT11 Digital humidity and temp sensor",
             "ESP32 Wi-Fi and Bluetooth Board",
@@ -1182,7 +1223,6 @@ emailjs.init("sRZ_ixA1Xm913C0Ru");
             "Drone Racing Gates"
         ];
 
-        // Chemicals items
         const CHEMICALS_ITEMS = [
             "Barium Nitrate",
             "Beaker",
@@ -1218,14 +1258,12 @@ emailjs.init("sRZ_ixA1Xm913C0Ru");
             "Charcoal"
         ];
 
-        // Sports items
         const SPORTS_ITEMS = [
             "Rope (for TUG OF WAR)",
             "Softballs",
             "Stopwatch"
         ];
 
-        // Agriculture items
         const AGRICULTURE_ITEMS = [
             "Ferns",
             "Soil",
@@ -1240,7 +1278,6 @@ emailjs.init("sRZ_ixA1Xm913C0Ru");
             "Gravels"
         ];
 
-        // Miscellaneous items
         const MISCELLANEOUS_ITEMS = [
             "Auction Hammer",
             "box with latch",
@@ -1255,12 +1292,10 @@ emailjs.init("sRZ_ixA1Xm913C0Ru");
             "Sand"
         ];
 
-        // Wood items
         const WOOD_ITEMS = [
             "PVC Sheets (1.5m X 2m)"
         ];
 
-        // Map category -> array
         const ITEMS_BY_CATEGORY = {
             'Stationery': STATIONERY_ITEMS,
             'Cloth': CLOTH_ITEMS,
@@ -1272,47 +1307,75 @@ emailjs.init("sRZ_ixA1Xm913C0Ru");
             'Wood': WOOD_ITEMS,
         };
 
-        // Domain & Event lists
         const DOMAINS = [
-    'Campus Decoration',
-    'Design & Print',
-    'Documentation',
-    'Esports',
-    'Events',
-    'Finance',
-    'General Enquiry',
-    'Guest Care',
-    'Halls and Refreshments',
-    'International Relations',
-    'Official',
-    'Outreach',
-    'Premium Events',
-    'Press and Media',
-    'Pro Events',
-    'Publicity and Marketing',
-    'Purchase',
-    'RnR',
-    'Sales',
-    'Sponsorship and MoUs',
-    'Stalls',
-    'Transport and Logistics',
-    'Web & Tech'
-];
-
-        const EVENTS = [
-            'Event 1',
-            'Event 2',
-            'Event 3',
-            'Event 4',
-            'Event 5',
-            'Event 6',
-            'Event 7',
-            'Event 8',
+            'Campus Decoration',
+            'Design & Print',
+            'Documentation',
+            'Esports',
+            'Events',
+            'Finance',
+            'General Enquiry',
+            'Guest Care',
+            'Halls and Refreshments',
+            'International Relations',
+            'Official',
+            'Outreach',
+            'Premium Events',
+            'Press and Media',
+            'Pro Events',
+            'Publicity and Marketing',
+            'Purchase',
+            'RnR',
+            'Sales',
+            'Sponsorship and MoUs',
+            'Stalls',
+            'Transport and Logistics',
+            'Web & Tech'
         ];
 
-        // Validation Patterns
-        const REG_NO_REGEX = /^\d{2}[A-Za-z]{3}\d{4}$/;
-        const MOBILE_REGEX = /^[6-9]\d{9}$/;
+        const CLUBS = [
+            'Club 1',
+            'Club 2',
+            'Club 3',
+            'Club 4',
+            'Club 5',
+            'Club 6',
+            'Club 7',
+            'Club 8'
+        ];
+
+        const REQUEST_TYPES = ['Domain', 'Club'];
+
+        // --------------------------------------------------------------
+        //  Helper: Darken image using Canvas
+        // --------------------------------------------------------------
+        const darkenImage = (img, amount = 50) => {
+            return new Promise((resolve, reject) => {
+                try {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0);
+
+                    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                    const data = imageData.data;
+
+                    // Darken each pixel by reducing RGB values
+                    for (let i = 0; i < data.length; i += 4) {
+                        data[i] = Math.max(0, data[i] - amount);     // R
+                        data[i+1] = Math.max(0, data[i+1] - amount); // G
+                        data[i+2] = Math.max(0, data[i+2] - amount); // B
+                        // Alpha stays unchanged
+                    }
+
+                    ctx.putImageData(imageData, 0, 0);
+                    resolve(canvas.toDataURL('image/png'));
+                } catch (err) {
+                    reject(err);
+                }
+            });
+        };
 
         // --------------------------------------------------------------
         //  Main App
@@ -1348,8 +1411,9 @@ emailjs.init("sRZ_ixA1Xm913C0Ru");
             const { showConfirm, showAlert } = useModal();
 
             // ----- Form State -----
+            const [requestType, setRequestType] = useState('Domain');
             const [domain, setDomain] = useState('');
-            const [event, setEvent] = useState('');
+            const [club, setClub] = useState('');
             const [coordName, setCoordName] = useState('');
             const [coordReg, setCoordReg] = useState('');
             const [coordMobile, setCoordMobile] = useState('');
@@ -1374,7 +1438,7 @@ emailjs.init("sRZ_ixA1Xm913C0Ru");
                 }));
             }, [category]);
 
-            // ----- Item quantities: { itemName: { quantity, category } } -----
+            // ----- Item quantities -----
             const [itemQuantities, setItemQuantities] = useState({});
             const [customItems, setCustomItems] = useState([]);
 
@@ -1383,14 +1447,13 @@ emailjs.init("sRZ_ixA1Xm913C0Ru");
                     ...prev,
                     {
                         id: Date.now(),
-                        category: '',
+                        category: 'Others',
                         name: '',
                         quantity: 1
                     }
                 ]);
             }
 
-            // Preserve selections across categories and initialize newly visible items
             useEffect(() => {
                 setItemQuantities(prev => {
                     const next = { ...prev };
@@ -1495,7 +1558,7 @@ emailjs.init("sRZ_ixA1Xm913C0Ru");
                 return Object.values(itemQuantities).filter((item) => item?.quantity > 0).length;
             }, [itemQuantities]);
 
-            // ---------- PDF Function ----------
+            // ---------- UPDATED PDF FUNCTION with SPACING FIX ----------
             const generatePDF = async (payload) => {
                 if (!window.jspdf || !window.jspdf.jsPDF) {
                     showAlert('PDF Error', 'PDF library is not available.', 'error');
@@ -1506,8 +1569,10 @@ emailjs.init("sRZ_ixA1Xm913C0Ru");
                 const doc = new jsPDF('p', 'mm', 'a4');
 
                 try {
+                    // ===== LOAD AND DARKEN TEMPLATE =====
                     const templatePaths = ['images/purchase-template.png', 'images/purchase-template.png.png'];
-                    let templateLoaded = false;
+                    let watermarkAdded = false;
+                    let templateImg = null;
 
                     for (const templatePath of templatePaths) {
                         const img = new Image();
@@ -1515,104 +1580,183 @@ emailjs.init("sRZ_ixA1Xm913C0Ru");
 
                         await new Promise((resolve) => {
                             img.onload = () => {
-                                templateLoaded = true;
+                                templateImg = img;
                                 resolve();
                             };
                             img.onerror = resolve;
                         });
 
-                        if (templateLoaded) {
-                            doc.addImage(img, 'PNG', 0, 0, 210, 297);
-                            break;
-                        }
+                        if (templateImg) break;
                     }
 
-                    if (!templateLoaded) {
+                    if (templateImg) {
+                        // Darken the image using canvas (reduce brightness by 50 units)
+                        const darkenedDataUrl = await darkenImage(templateImg, 55);
+
+                        // Add the darkened image as watermark with 0.35 opacity
+                        doc.saveGraphicsState();
+                        doc.setGState(new doc.GState({ opacity: 0.35 }));
+                        doc.addImage(darkenedDataUrl, 'PNG', 0, 0, 210, 297);
+                        doc.restoreGraphicsState();
+                        watermarkAdded = true;
+                    }
+
+                    if (!watermarkAdded) {
+                        // Fallback: if no template, use a subtle background
                         doc.setFillColor(245, 247, 250);
                         doc.rect(0, 0, 210, 297, 'F');
-                        doc.setTextColor(20, 20, 20);
                     }
 
+                    // ===== DATE =====
                     const today = new Date().toLocaleDateString('en-IN');
                     doc.setFont('helvetica', 'bold');
-                    doc.setFontSize(16);
-                    doc.text('Purchase Requisition', 15, 20);
                     doc.setFontSize(10);
-                    doc.setTextColor(40, 40, 40);
-                    doc.text(`Date : ${today}`, 190, 40, { align: 'right' });
-                    doc.setDrawColor(120);
-                    doc.line(150, 42, 190, 42);
+                    doc.text(`Date : ${today}`, 190, 42, { align: 'right' });
 
-                    let y = 55;
-
+                    // ===== REQUEST TYPE & DOMAIN/CLUB with TIGHT SPACING =====
+                    let y = 58;
                     doc.setFontSize(11);
                     doc.setFont('helvetica', 'bold');
-                    doc.text('Domain :', 15, y);
+                    doc.text('Request Type :', 15, y);
                     doc.setFont('helvetica', 'normal');
-                    doc.text(payload.domain || 'N/A', 40, y);
+                    doc.text(payload.requestType || 'N/A', 45, y);
 
                     doc.setFont('helvetica', 'bold');
-                    doc.text('Event :', 120, y);
-                    doc.setFont('helvetica', 'normal');
-                    doc.text(payload.event || 'N/A', 140, y);
+                    if (payload.requestType === 'Domain') {
+                        doc.text('Domain :', 115, y);
+                        doc.setFont('helvetica', 'normal');
+                        // TIGHT SPACING: moved from 148 to 145
+                        doc.text(payload.department || 'N/A', 145, y);
+                    } else {
+                        doc.text('Club :', 115, y);
+                        doc.setFont('helvetica', 'normal');
+                        // TIGHT SPACING: moved from 138 to 130
+                        doc.text(payload.department || 'N/A', 130, y);
+                    }
 
-                    y += 10;
+                    y += 12;
 
-                    doc.setFont('helvetica', 'bold');
-                    doc.text('Student Coordinator :', 15, y);
-                    doc.setFont('helvetica', 'normal');
-                    doc.text(payload.coordinator?.name || 'N/A', 60, y);
+                    // ===== COORDINATOR & POC SECTION =====
+                    if (payload.requestType === 'Domain') {
+                        // Vertical layout for Domain
+                        doc.setFont('helvetica', 'bold');
+                        doc.text('Student Coordinator :', 15, y);
+                        doc.setFont('helvetica', 'normal');
+                        doc.text(payload.coordinator?.name || 'N/A', 60, y);
 
-                    y += 7;
-                    doc.setFont('helvetica', 'bold');
-                    doc.text('Reg No. :', 15, y);
-                    doc.setFont('helvetica', 'normal');
-                    doc.text(payload.coordinator?.reg || 'N/A', 40, y);
+                        y += 7;
+                        doc.setFont('helvetica', 'bold');
+                        doc.text('Reg No :', 15, y);
+                        doc.setFont('helvetica', 'normal');
+                        doc.text(payload.coordinator?.reg || 'N/A', 40, y);
 
-                    y += 7;
-                    doc.setFont('helvetica', 'bold');
-                    doc.text('Mobile :', 15, y);
-                    doc.setFont('helvetica', 'normal');
-                    doc.text(payload.coordinator?.mobile || 'N/A', 40, y);
+                        y += 7;
+                        doc.setFont('helvetica', 'bold');
+                        doc.text('Mobile :', 15, y);
+                        doc.setFont('helvetica', 'normal');
+                        doc.text(payload.coordinator?.mobile || 'N/A', 40, y);
 
-                    y += 10;
-                    doc.setFont('helvetica', 'bold');
-                    doc.text('POC :', 15, y);
-                    doc.setFont('helvetica', 'normal');
-                    doc.text(payload.poc?.name || 'N/A', 35, y);
+                    } else {
+                        // Horizontal layout for Club
+                        // Left: Student Coordinator
+                        doc.setFont('helvetica', 'bold');
+                        doc.text('Student Coordinator', 15, y);
 
-                    y += 7;
-                    doc.setFont('helvetica', 'bold');
-                    doc.text('POC Reg No. :', 15, y);
-                    doc.setFont('helvetica', 'normal');
-                    doc.text(payload.poc?.reg || 'N/A', 45, y);
+                        let yLeft = y + 7;
+                        doc.setFont('helvetica', 'bold');
+                        doc.text('Name :', 15, yLeft);
+                        doc.setFont('helvetica', 'normal');
+                        doc.text(payload.coordinator?.name || 'N/A', 35, yLeft);
 
-                    y += 7;
-                    doc.setFont('helvetica', 'bold');
-                    doc.text('POC Mobile :', 15, y);
-                    doc.setFont('helvetica', 'normal');
-                    doc.text(payload.poc?.mobile || 'N/A', 45, y);
+                        yLeft += 7;
+                        doc.setFont('helvetica', 'bold');
+                        doc.text('Reg No :', 15, yLeft);
+                        doc.setFont('helvetica', 'normal');
+                        doc.text(payload.coordinator?.reg || 'N/A', 35, yLeft);
 
-                    const rows = (payload.items || []).map((item, index) => [index + 1, item.category || 'N/A', item.name, item.quantity]);
+                        yLeft += 7;
+                        doc.setFont('helvetica', 'bold');
+                        doc.text('Mobile :', 15, yLeft);
+                        doc.setFont('helvetica', 'normal');
+                        doc.text(payload.coordinator?.mobile || 'N/A', 35, yLeft);
+
+                        // Right: POC
+                        let yRight = y;
+                        doc.setFont('helvetica', 'bold');
+                        doc.text('POC', 115, yRight);
+
+                        yRight += 7;
+                        doc.setFont('helvetica', 'bold');
+                        doc.text('Name :', 115, yRight);
+                        doc.setFont('helvetica', 'normal');
+                        doc.text(payload.poc?.name || 'N/A', 135, yRight);
+
+                        yRight += 7;
+                        doc.setFont('helvetica', 'bold');
+                        doc.text('Reg No :', 115, yRight);
+                        doc.setFont('helvetica', 'normal');
+                        doc.text(payload.poc?.reg || 'N/A', 135, yRight);
+
+                        yRight += 7;
+                        doc.setFont('helvetica', 'bold');
+                        doc.text('Mobile :', 115, yRight);
+                        doc.setFont('helvetica', 'normal');
+                        doc.text(payload.poc?.mobile || 'N/A', 135, yRight);
+
+                        y = Math.max(yLeft, yRight) + 5;
+                    }
+
+                    // ===== LIGHT HORIZONTAL DIVIDER =====
+                    y += 4;
+                    doc.setDrawColor(180);
+                    doc.line(15, y, 195, y);
+                    y += 8;
+
+                    // ===== ITEMS TABLE =====
+                    const rows = (payload.items || []).map((item, index) => [
+                        index + 1,
+                        item.category || 'N/A',
+                        item.name,
+                        item.quantity
+                    ]);
 
                     if (typeof doc.autoTable === 'function') {
                         doc.autoTable({
-                            startY: y + 8,
+                            startY: y,
                             head: [['Item No', 'Category', 'Item Name', 'Quantity']],
                             body: rows,
                             theme: 'grid',
-                            styles: { fontSize: 10 },
+                            styles: {
+                                fontSize: 9,
+                                cellPadding: 3,
+                                textColor: [30, 30, 30],
+                            },
+                            headStyles: {
+                                fillColor: [0, 184, 170],
+                                textColor: [255, 255, 255],
+                                fontSize: 10,
+                                fontStyle: 'bold',
+                                halign: 'center',
+                            },
+                            columnStyles: {
+                                0: { cellWidth: 20, halign: 'center' },
+                                1: { cellWidth: 40, halign: 'left' },
+                                2: { cellWidth: 80, halign: 'left' },
+                                3: { cellWidth: 30, halign: 'center' },
+                            },
                             margin: { left: 15, right: 15 }
                         });
                     } else {
-                        let tableY = y + 8;
+                        let tableY = y;
                         doc.setFont('helvetica', 'bold');
+                        doc.setFontSize(10);
                         doc.text('Item No', 15, tableY);
                         doc.text('Category', 35, tableY);
                         doc.text('Item Name', 75, tableY);
                         doc.text('Quantity', 160, tableY);
                         doc.line(15, tableY + 2, 195, tableY + 2);
                         doc.setFont('helvetica', 'normal');
+                        doc.setFontSize(9);
 
                         rows.forEach((row) => {
                             tableY += 6;
@@ -1623,30 +1767,27 @@ emailjs.init("sRZ_ixA1Xm913C0Ru");
                         });
                     }
 
-                    let signY = Math.max(doc.lastAutoTable ? doc.lastAutoTable.finalY + 30 : 230, 230);
+                    // ===== SIGNATURES =====
+                    const signY = Math.max(doc.lastAutoTable ? doc.lastAutoTable.finalY + 30 : 230, 230);
 
-                    doc.line(20, signY, 60, signY);
-                    doc.line(85, signY, 125, signY);
-                    doc.line(150, signY, 190, signY);
+                    doc.line(15, signY, 60, signY);
+                    doc.line(82, signY, 127, signY);
+                    doc.line(149, signY, 194, signY);
 
                     doc.setFont('helvetica', 'bold');
-                    doc.setFontSize(11);
-
-                    doc.text('Student Organizer', 40, signY + 6, { align: 'center' });
-                    doc.text('Faculty Co-ordinator', 105, signY + 6, { align: 'center' });
-                    doc.text('Faculty Organizer', 170, signY + 6, { align: 'center' });
-
-                    signY += 28;
-
-                    doc.line(10, signY, 65, signY);
-                    doc.line(78, signY, 132, signY);
-                    doc.line(145, signY, 200, signY);
-
                     doc.setFontSize(10);
 
-                    doc.text('FO OF PURCHASE', 37, signY + 6, { align: 'center' });
-                    doc.text('CO-CONVENOR OF PURCHASE', 105, signY + 6, { align: 'center' });
-                    doc.text('CONVENOR', 172, signY + 6, { align: 'center' });
+                    // Left
+                    doc.text('Faculty Organiser', 37.5, signY + 7, { align: 'center' });
+                    const deptLabel = payload.department ? payload.department.toUpperCase() : 'N/A';
+                    doc.text(`(${deptLabel})`, 37.5, signY + 13, { align: 'center' });
+
+                    // Middle
+                    doc.text('Faculty Organiser', 104.5, signY + 7, { align: 'center' });
+                    doc.text('(PURCHASE)', 104.5, signY + 13, { align: 'center' });
+
+                    // Right
+                    doc.text('Convenor', 171.5, signY + 7, { align: 'center' });
 
                     doc.save(`purchase-requisition-${Date.now()}.pdf`);
                 } catch (error) {
@@ -1659,15 +1800,15 @@ emailjs.init("sRZ_ixA1Xm913C0Ru");
             const handleSubmit = async (e) => {
                 e.preventDefault();
 
-                if (!domain) { showAlert('Missing Field', 'Please select a Domain.', 'error'); return; }
-                if (!event) { showAlert('Missing Field', 'Please select an Event.', 'error'); return; }
+                if (!requestType) { showAlert('Missing Field', 'Please select a request type.', 'error'); return; }
+                if (requestType === 'Domain' && !domain) { showAlert('Missing Field', 'Please select a Domain.', 'error'); return; }
+                if (requestType === 'Club' && !club) { showAlert('Missing Field', 'Please select a Club.', 'error'); return; }
                 if (!coordName.trim()) { showAlert('Missing Field', 'Please enter Student Coordinator Name.', 'error'); return; }
                 if (!coordReg.trim()) { showAlert('Missing Field', 'Please enter Student Coordinator Registration Number.', 'error'); return; }
                 if (!coordMobile.trim()) { showAlert('Missing Field', 'Please enter Student Coordinator Mobile.', 'error'); return; }
-                if (!pocName.trim()) { showAlert('Missing Field', 'Please enter POC Name.', 'error'); return; }
-                if (!pocReg.trim()) { showAlert('Missing Field', 'Please enter POC Registration Number.', 'error'); return; }
-                if (!pocMobile.trim()) { showAlert('Missing Field', 'Please enter POC Mobile.', 'error'); return; }
-                if (!category) { showAlert('Missing Field', 'Please select an Item Category.', 'error'); return; }
+                if (requestType === 'Club' && !pocName.trim()) { showAlert('Missing Field', 'Please enter POC Name.', 'error'); return; }
+                if (requestType === 'Club' && !pocReg.trim()) { showAlert('Missing Field', 'Please enter POC Registration Number.', 'error'); return; }
+                if (requestType === 'Club' && !pocMobile.trim()) { showAlert('Missing Field', 'Please enter POC Mobile.', 'error'); return; }
 
                 const selectedItems = Object.entries(itemQuantities)
                     .filter(([, entry]) => entry?.quantity > 0)
@@ -1681,7 +1822,7 @@ emailjs.init("sRZ_ixA1Xm913C0Ru");
                     .filter((item) => item.name.trim() !== '')
                     .map((item) => ({
                         name: item.name,
-                        category: item.category || 'Other',
+                        category: 'Others',
                         quantity: item.quantity
                     }));
 
@@ -1695,9 +1836,11 @@ emailjs.init("sRZ_ixA1Xm913C0Ru");
                     return;
                 }
 
+                const department = requestType === 'Domain' ? domain : club;
+
                 const payload = {
-                    domain,
-                    event,
+                    requestType,
+                    department,
                     coordinator: { name: coordName, reg: coordReg, mobile: coordMobile },
                     poc: { name: pocName, reg: pocReg, mobile: pocMobile },
                     category,
@@ -1706,16 +1849,13 @@ emailjs.init("sRZ_ixA1Xm913C0Ru");
 
                 console.log(payload);
 
-                // Professional confirmation
                 showConfirm(
                     'Confirm Submission',
                     'Generate PDF and send Purchase Requisition to Staff?',
                     async () => {
-                        // On Confirm
                         await generatePDF(payload);
 
                         let itemList = '';
-
                         payload.items.forEach((item, index) => {
                             itemList += `${index + 1}. ${item.name} (${item.category || 'N/A'}) | Qty: ${item.quantity}\n`;
                         });
@@ -1724,8 +1864,8 @@ emailjs.init("sRZ_ixA1Xm913C0Ru");
                             'service_1796a5g',
                             'template_fwul7bo',
                             {
-                                domain: payload.domain,
-                                event: payload.event,
+                                request_type: payload.requestType,
+                                department: payload.department,
                                 category: payload.category,
                                 student: payload.coordinator.name,
                                 student_reg: payload.coordinator.reg,
@@ -1746,7 +1886,6 @@ emailjs.init("sRZ_ixA1Xm913C0Ru");
                         });
                     },
                     () => {
-                        // On Cancel - do nothing
                         console.log('Submission cancelled');
                     },
                     'Yes, Generate',
@@ -1761,99 +1900,103 @@ emailjs.init("sRZ_ixA1Xm913C0Ru");
 
             return (
                 <div className="dashboard-card">
-                    {/* Header */}
-                  <header className="brand-header">
+                    <header className="brand-header">
+                        <div className="brand-left">
+                            <img
+                                src="../images/gravitas-logo.png"
+                                alt="Gravitas'26"
+                                className="brand-logo"
+                            />
+                            <div className="brand-text">
+                                <span className="brand-sub">
+                                    <i className="bi bi-grid-3x3-gap-fill"></i>
+                                    Purchase Requisition System
+                                </span>
+                                <small className="brand-caption">
+                                    Event Management Dashboard
+                                </small>
+                            </div>
+                        </div>
 
-    <div className="brand-left">
+                        <div className="d-flex align-items-center gap-2 flex-wrap">
+                            {userEmail && (
+                                <div className="welcome-pill">
+                                    <i className="bi bi-person-circle"></i>
+                                    <span>Welcome, {userEmail}</span>
+                                </div>
+                            )}
+                            <button className="theme-toggle" onClick={toggleTheme} type="button">
+                                <span className="toggle-track">
+                                    <span className="toggle-thumb"></span>
+                                </span>
+                                <span className="toggle-label">
+                                    <i className={`bi ${themeIcon}`}></i>
+                                    {themeLabel}
+                                </span>
+                            </button>
+                        </div>
+                    </header>
 
-        <img
-            src="../images/gravitas-logo.png"
-            alt="Gravitas'26"
-            className="brand-logo"
-        />
-
-        <div className="brand-text">
-
-            <span className="brand-sub">
-                <i className="bi bi-grid-3x3-gap-fill"></i>
-                Purchase Requisition System
-            </span>
-
-            <small className="brand-caption">
-                Event Management Dashboard
-            </small>
-
-        </div>
-
-    </div>
-
-    <div className="d-flex align-items-center gap-2 flex-wrap">
-        {userEmail && (
-            <div className="welcome-pill">
-                <i className="bi bi-person-circle"></i>
-                <span>Welcome, {userEmail}</span>
-            </div>
-        )}
-
-        <button
-            className="theme-toggle"
-            onClick={toggleTheme}
-            type="button"
-        >
-            <span className="toggle-track">
-                <span className="toggle-thumb"></span>
-            </span>
-
-            <span className="toggle-label">
-                <i className={`bi ${themeIcon}`}></i>
-                {themeLabel}
-            </span>
-        </button>
-    </div>
-
-</header>
-
-                    {/* Form */}
                     <form onSubmit={handleSubmit} noValidate>
-                        {/* Domain */}
+                        {/* ===== REQUEST TYPE TOGGLE ===== */}
                         <div className="mb-3">
-                            <label className="form-label" htmlFor="domainSelect">
-                                <i className="bi bi-tag me-1" /> Domain
+                            <label className="form-label">
+                                <i className="bi bi-toggle-on me-1" /> Request Type
                             </label>
-                            <select
-                                className="form-select"
-                                id="domainSelect"
-                                value={domain}
-                                onChange={(e) => setDomain(e.target.value)}
-                            >
-                                <option value="">Select Domain</option>
-                                {DOMAINS.map((d) => (
-                                    <option key={d} value={d}>{d}</option>
+                            <div className="request-toggle">
+                                {REQUEST_TYPES.map((type) => (
+                                    <button
+                                        key={type}
+                                        type="button"
+                                        className={requestType === type ? 'active' : ''}
+                                        onClick={() => setRequestType(type)}
+                                    >
+                                        {type}
+                                    </button>
                                 ))}
-                            </select>
+                            </div>
                         </div>
 
-                        {/* Event */}
-                        <div className="mb-3">
-                            <label className="form-label" htmlFor="eventSelect">
-                                <i className="bi bi-calendar-event me-1" /> Event
-                            </label>
-                            <select
-                                className="form-select"
-                                id="eventSelect"
-                                value={event}
-                                onChange={(e) => setEvent(e.target.value)}
-                            >
-                                <option value="">Select Event</option>
-                                {EVENTS.map((e) => (
-                                    <option key={e} value={e}>{e}</option>
-                                ))}
-                            </select>
-                        </div>
+                        {/* ===== Domain OR Club (Conditional) ===== */}
+                        {requestType === 'Domain' ? (
+                            <div className="mb-3">
+                                <label className="form-label" htmlFor="domainSelect">
+                                    <i className="bi bi-tag me-1" /> Domain
+                                </label>
+                                <select
+                                    className="form-select"
+                                    id="domainSelect"
+                                    value={domain}
+                                    onChange={(e) => setDomain(e.target.value)}
+                                >
+                                    <option value="">Select Domain</option>
+                                    {DOMAINS.map((d) => (
+                                        <option key={d} value={d}>{d}</option>
+                                    ))}
+                                </select>
+                            </div>
+                        ) : (
+                            <div className="mb-3">
+                                <label className="form-label" htmlFor="clubSelect">
+                                    <i className="bi bi-people me-1" /> Club
+                                </label>
+                                <select
+                                    className="form-select"
+                                    id="clubSelect"
+                                    value={club}
+                                    onChange={(e) => setClub(e.target.value)}
+                                >
+                                    <option value="">Select Club</option>
+                                    {CLUBS.map((c) => (
+                                        <option key={c} value={c}>{c}</option>
+                                    ))}
+                                </select>
+                            </div>
+                        )}
 
                         <hr className="divider" />
 
-                        {/* Student Coordinator */}
+                        {/* ===== Student Coordinator ===== */}
                         <div className="section-title">
                             <i className="bi bi-person-badge" />
                             Student Coordinator
@@ -1876,18 +2019,13 @@ emailjs.init("sRZ_ixA1Xm913C0Ru");
                                     value={coordReg}
                                     onChange={(e) => {
                                         let value = e.target.value.toUpperCase();
-
                                         value = value.replace(/[^A-Z0-9]/g, "");
-
                                         if (value.length > 9) return;
-
                                         setCoordReg(value);
-
                                         if (value === "") {
                                             setCoordRegError("");
                                             return;
                                         }
-
                                         if (!/^\d{2}[A-Z]{3}\d{4}$/.test(value)) {
                                             setCoordRegError("Expected format: YYXXX1234 (e.g., 23MIS0042)");
                                         } else {
@@ -1895,11 +2033,7 @@ emailjs.init("sRZ_ixA1Xm913C0Ru");
                                         }
                                     }}
                                 />
-                                {coordRegError && (
-                                    <small className="text-danger">
-                                        {coordRegError}
-                                    </small>
-                                )}
+                                {coordRegError && <small className="text-danger">{coordRegError}</small>}
                             </div>
                             <div className="col-md-4">
                                 <input
@@ -1909,16 +2043,12 @@ emailjs.init("sRZ_ixA1Xm913C0Ru");
                                     value={coordMobile}
                                     onChange={(e) => {
                                         let value = e.target.value.replace(/\D/g, "");
-
                                         if (value.length > 10) return;
-
                                         setCoordMobile(value);
-
                                         if (value === "") {
                                             setCoordMobileError("");
                                             return;
                                         }
-
                                         if (value.length < 10) {
                                             setCoordMobileError("Enter a 10-digit mobile number");
                                         } else {
@@ -1926,100 +2056,82 @@ emailjs.init("sRZ_ixA1Xm913C0Ru");
                                         }
                                     }}
                                 />
-                                {coordMobileError && (
-                                    <small className="text-danger">
-                                        {coordMobileError}
-                                    </small>
-                                )}
+                                {coordMobileError && <small className="text-danger">{coordMobileError}</small>}
                             </div>
                         </div>
+
+                        {/* ===== POC (Only for Club) ===== */}
+                        {requestType === 'Club' && (
+                            <>
+                                <hr className="divider" />
+                                <div className="section-title">
+                                    <i className="bi bi-person-check" />
+                                    POC
+                                </div>
+                                <div className="row row-coord g-3">
+                                    <div className="col-md-4">
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            placeholder="Name"
+                                            value={pocName}
+                                            onChange={(e) => setPocName(e.target.value)}
+                                        />
+                                    </div>
+                                    <div className="col-md-4">
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            placeholder="YYXXX1234 (e.g., 23MIS0042)"
+                                            value={pocReg}
+                                            onChange={(e) => {
+                                                let value = e.target.value.toUpperCase();
+                                                value = value.replace(/[^A-Z0-9]/g, "");
+                                                if (value.length > 9) return;
+                                                setPocReg(value);
+                                                if (value === "") {
+                                                    setPocRegError("");
+                                                    return;
+                                                }
+                                                if (!/^\d{2}[A-Z]{3}\d{4}$/.test(value)) {
+                                                    setPocRegError("Expected format: YYXXX1234 (e.g., 23MIS0042)");
+                                                } else {
+                                                    setPocRegError("");
+                                                }
+                                            }}
+                                        />
+                                        {pocRegError && <small className="text-danger">{pocRegError}</small>}
+                                    </div>
+                                    <div className="col-md-4">
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            placeholder="Mobile"
+                                            value={pocMobile}
+                                            onChange={(e) => {
+                                                let value = e.target.value.replace(/\D/g, "");
+                                                if (value.length > 10) return;
+                                                setPocMobile(value);
+                                                if (value === "") {
+                                                    setPocMobileError("");
+                                                    return;
+                                                }
+                                                if (value.length < 10) {
+                                                    setPocMobileError("Enter a 10-digit mobile number");
+                                                } else {
+                                                    setPocMobileError("");
+                                                }
+                                            }}
+                                        />
+                                        {pocMobileError && <small className="text-danger">{pocMobileError}</small>}
+                                    </div>
+                                </div>
+                            </>
+                        )}
 
                         <hr className="divider" />
 
-                        {/* POC */}
-                        <div className="section-title">
-                            <i className="bi bi-person-check" />
-                            POC
-                        </div>
-                        <div className="row row-coord g-3">
-                            <div className="col-md-4">
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    placeholder="Name"
-                                    value={pocName}
-                                    onChange={(e) => setPocName(e.target.value)}
-                                />
-                            </div>
-                            <div className="col-md-4">
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    placeholder="YYXXX1234 (e.g., 23MIS0042)"
-                                    value={pocReg}
-                                    onChange={(e) => {
-                                        let value = e.target.value.toUpperCase();
-
-                                        value = value.replace(/[^A-Z0-9]/g, "");
-
-                                        if (value.length > 9) return;
-
-                                        setPocReg(value);
-
-                                        if (value === "") {
-                                            setPocRegError("");
-                                            return;
-                                        }
-
-                                        if (!/^\d{2}[A-Z]{3}\d{4}$/.test(value)) {
-                                            setPocRegError("Expected format: YYXXX1234 (e.g., 23MIS0042)");
-                                        } else {
-                                            setPocRegError("");
-                                        }
-                                    }}
-                                />
-                                {pocRegError && (
-                                    <small className="text-danger">
-                                        {pocRegError}
-                                    </small>
-                                )}
-                            </div>
-                            <div className="col-md-4">
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    placeholder="Mobile"
-                                    value={pocMobile}
-                                    onChange={(e) => {
-                                        let value = e.target.value.replace(/\D/g, "");
-
-                                        if (value.length > 10) return;
-
-                                        setPocMobile(value);
-
-                                        if (value === "") {
-                                            setPocMobileError("");
-                                            return;
-                                        }
-
-                                        if (value.length < 10) {
-                                            setPocMobileError("Enter a 10-digit mobile number");
-                                        } else {
-                                            setPocMobileError("");
-                                        }
-                                    }}
-                                />
-                                {pocMobileError && (
-                                    <small className="text-danger">
-                                        {pocMobileError}
-                                    </small>
-                                )}
-                            </div>
-                        </div>
-
-                        <hr className="divider" />
-
-                        {/* Item Category */}
+                        {/* ===== Item Category ===== */}
                         <div className="mb-4">
                             <label className="form-label" htmlFor="categorySelect">
                                 <i className="bi bi-tags me-1" /> Item Category
@@ -2037,7 +2149,7 @@ emailjs.init("sRZ_ixA1Xm913C0Ru");
                             </select>
                         </div>
 
-                        {/* Items */}
+                        {/* ===== Items ===== */}
                         <div className="section-title">
                             <i className="bi bi-box-seam" />
                             Items
@@ -2048,7 +2160,6 @@ emailjs.init("sRZ_ixA1Xm913C0Ru");
                             )}
                         </div>
 
-                        {/* Search Bar */}
                         <div className="search-container">
                             <input
                                 type="text"
@@ -2133,37 +2244,13 @@ emailjs.init("sRZ_ixA1Xm913C0Ru");
 
                         <hr />
                         <h5>Other Items (Not Available Above)</h5>
-                        <button
-                            className="btn btn-success mb-3"
-                            type="button"
-                            onClick={addCustomItem}
-                        >
-                            + Add Custom Item
+                        <button className="btn btn-success mb-3" type="button" onClick={addCustomItem}>
+                            + Add Another
                         </button>
 
                         {customItems.map((item) => (
-                            <div className="row mb-2" key={item.id}>
-                                <div className="col-md-3">
-                                    <select
-                                        className="form-select"
-                                        value={item.category}
-                                        onChange={(e) => {
-                                            setCustomItems(prev =>
-                                                prev.map((x) =>
-                                                    x.id === item.id
-                                                        ? { ...x, category: e.target.value }
-                                                        : x
-                                                )
-                                            );
-                                        }}
-                                    >
-                                        <option value="">Category</option>
-                                        {CATEGORIES.map((c) => (
-                                            <option key={c} value={c}>{c}</option>
-                                        ))}
-                                    </select>
-                                </div>
-                                <div className="col-md-5">
+                            <div className="row mb-2 g-2" key={item.id}>
+                                <div className="col-md-8">
                                     <input
                                         type="text"
                                         className="form-control"
@@ -2245,20 +2332,18 @@ emailjs.init("sRZ_ixA1Xm913C0Ru");
                             </div>
                         ))}
 
-                        {/* Submit */}
                         <div className="text-center mt-4">
                             <button
                                 className="btn-submit"
                                 type="submit"
                                 disabled={
                                     coordRegError ||
-                                    pocRegError ||
                                     coordMobileError ||
-                                    pocMobileError
+                                    (requestType === 'Club' && (pocRegError || pocMobileError))
                                 }
                             >
                                 <i className="bi bi-check2-circle me-2" />
-                                Generate PDF
+                                Submit
                             </button>
                         </div>
                     </form>
@@ -2266,9 +2351,6 @@ emailjs.init("sRZ_ixA1Xm913C0Ru");
             );
         };
 
-        // --------------------------------------------------------------
-        //  Mount with Modal Provider
-        // --------------------------------------------------------------
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(
             <ModalProvider>
