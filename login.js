@@ -1,7 +1,14 @@
-import { auth } from "./firebase.js";
+import { auth, db } from "./firebase.js";
 import {
-  signInWithEmailAndPassword
+  signInWithEmailAndPassword,
+  signOut
 } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
+import {
+  collection,
+  query,
+  where,
+  getDocs
+} from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 
 function initLogin() {
   const loginBtn = document.getElementById("loginBtn");
@@ -33,6 +40,7 @@ function initLogin() {
 
     const email = emailInput.value.trim();
     const password = passwordInput.value.trim();
+    const loginType = document.querySelector('input[name="loginType"]:checked')?.value || "user";
 
     if (!email || !password) {
       showToast("Missing Fields", "Please enter Email and Password");
@@ -42,22 +50,70 @@ function initLogin() {
     setLoadingState(true);
 
     try {
-      const user = await signInWithEmailAndPassword(auth, email, password);
-      localStorage.setItem("userEmail", user.user.email || email);
-      window.location.href = "dashboard.html";
-    } catch (error) {
-      const errorCode = error?.code || "";
-      const isInvalidCred = [
-        "auth/invalid-credential",
-        "auth/user-not-found",
-        "auth/wrong-password",
-        "auth/invalid-email"
-      ].includes(errorCode);
 
-      showToast(
-        "Login Failed",
-        isInvalidCred ? "Invalid email or password." : "Unable to sign in right now. Please try again."
-      );
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+
+        const user = userCredential.user;
+
+        const loginType = document.querySelector(
+            'input[name="loginType"]:checked'
+        ).value;
+
+        localStorage.setItem("userEmail", user.email);
+
+        // Check whether the logged-in email is an admin
+        const q = query(
+            collection(db, "admins"),
+            where("email", "==", user.email)
+        );
+
+        const snapshot = await getDocs(q);
+
+        if (loginType === "admin") {
+
+            // Admin login selected
+            if (snapshot.empty) {
+
+                await signOut(auth);
+
+                showToast(
+                    "Access Denied",
+                    "This email is not authorized as an Admin."
+                );
+
+                return;
+            }
+
+            window.location.href = "admin.html";
+            return;
+
+        } else {
+
+            // User login selected
+            if (!snapshot.empty) {
+
+                await signOut(auth);
+
+                showToast(
+                    "Wrong Login",
+                    "This account is an Admin. Please use the Admin login."
+                );
+
+                return;
+            }
+
+            window.location.href = "dashboard.html";
+            return;
+        }
+
+    }
+    catch(error){
+
+        showToast(
+            "Login Failed",
+            "Invalid Email or Password"
+        );
+
     } finally {
       setLoadingState(false);
     }

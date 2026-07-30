@@ -1,27 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Gravitas'26 Dashboard</title>
 
     <!-- Bootstrap 5 -->
-    <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-    />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" />
     <!-- Bootstrap Icons -->
-    <link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-    />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
     <!-- Google Font (Inter) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-    href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap"
-    rel="stylesheet"
-    />
+        href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap"
+        rel="stylesheet" />
 
     <style>
         /* ===== CSS Variables / Themes ===== */
@@ -97,9 +91,11 @@
             width: 6px;
             height: 6px;
         }
+
         ::-webkit-scrollbar-track {
             background: var(--bg-body);
         }
+
         ::-webkit-scrollbar-thumb {
             background: var(--accent);
             border-radius: 10px;
@@ -241,6 +237,7 @@
         [data-theme="dark"] .theme-toggle .toggle-track {
             background: var(--accent);
         }
+
         [data-theme="dark"] .theme-toggle .toggle-track .toggle-thumb {
             transform: translateX(18px);
             background: #fff;
@@ -339,6 +336,7 @@
             text-align: center;
             width: 60px;
         }
+
         .form-control[type="number"]::-webkit-outer-spin-button,
         .form-control[type="number"]::-webkit-inner-spin-button {
             -webkit-appearance: none;
@@ -700,8 +698,13 @@
         }
 
         @keyframes modalFadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
         }
 
         @keyframes modalSlideUp {
@@ -709,6 +712,7 @@
                 opacity: 0;
                 transform: translateY(40px) scale(0.95);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0) scale(1);
@@ -720,10 +724,12 @@
             .dashboard-card {
                 padding: 1.5rem 1.5rem;
             }
+
             .brand-logo {
                 height: 42px;
                 width: auto;
             }
+
             .brand-sub {
                 font-size: 0.75rem;
             }
@@ -772,10 +778,12 @@
                 width: 32px;
                 height: 18px;
             }
+
             .theme-toggle .toggle-track .toggle-thumb {
                 width: 14px;
                 height: 14px;
             }
+
             [data-theme="dark"] .theme-toggle .toggle-track .toggle-thumb {
                 transform: translateX(14px);
             }
@@ -800,6 +808,7 @@
                 width: 42px;
                 font-size: 0.8rem;
             }
+
             .qty-control .btn-qty {
                 width: 26px;
                 height: 26px;
@@ -819,6 +828,7 @@
             .row-coord .col-md-4 {
                 margin-bottom: 0.6rem;
             }
+
             .row-coord .col-md-4:last-child {
                 margin-bottom: 0;
             }
@@ -832,9 +842,11 @@
                 padding: 1.5rem 1.25rem;
                 max-width: 380px;
             }
+
             .modal-box .modal-title {
                 font-size: 1.1rem;
             }
+
             .modal-box .modal-btn {
                 padding: 0.5rem 1.2rem;
                 font-size: 0.85rem;
@@ -868,11 +880,13 @@
                 font-size: 0.7rem;
                 padding: 0.1rem;
             }
+
             .qty-control .btn-qty {
                 width: 22px;
                 height: 22px;
                 font-size: 0.7rem;
             }
+
             .form-check-input {
                 width: 1rem;
                 height: 1rem;
@@ -893,6 +907,7 @@
         .text-muted-custom {
             color: var(--text-muted);
         }
+
         .no-items-msg {
             padding: 1.5rem;
             text-align: center;
@@ -914,8 +929,9 @@
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
 <script>
-emailjs.init("sRZ_ixA1Xm913C0Ru");
+    emailjs.init("sRZ_ixA1Xm913C0Ru");
 </script>
+
 <body>
 
     <div id="root"></div>
@@ -930,7 +946,14 @@ emailjs.init("sRZ_ixA1Xm913C0Ru");
     <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.23.9/babel.min.js">
     </script>
 
-    <script type="text/babel">
+    <script type="text/babel" data-type="module">
+        import { db } from "./firebase.js";
+        import {
+            collection,
+            addDoc,
+            serverTimestamp
+        } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+
         const { useState, useEffect, useMemo, useCallback, createContext, useContext } = React;
 
         // --------------------------------------------------------------
@@ -957,8 +980,8 @@ emailjs.init("sRZ_ixA1Xm913C0Ru");
                     type: 'confirm',
                     title: title || 'Confirm',
                     message: message || 'Are you sure?',
-                    onConfirm: onConfirm || (() => {}),
-                    onCancel: onCancel || (() => {}),
+                    onConfirm: onConfirm || (() => { }),
+                    onCancel: onCancel || (() => { }),
                     confirmText,
                     cancelText,
                     icon: 'bi bi-question-circle-fill',
@@ -976,7 +999,7 @@ emailjs.init("sRZ_ixA1Xm913C0Ru");
                     type: 'alert',
                     title: title || (type === 'success' ? 'Success' : type === 'error' ? 'Error' : 'Info'),
                     message: message || '',
-                    onConfirm: onClose || (() => {}),
+                    onConfirm: onClose || (() => { }),
                     onCancel: null,
                     confirmText: type === 'success' ? 'Great!' : 'OK',
                     cancelText: '',
@@ -1009,8 +1032,8 @@ emailjs.init("sRZ_ixA1Xm913C0Ru");
             const isAlert = modal.type === 'alert';
             const iconClass = modal.icon || 'bi bi-info-circle-fill';
             const iconColorClass = modal.alertType === 'success' ? 'success-icon' :
-                                   modal.alertType === 'error' ? 'error-icon' :
-                                   isConfirm ? 'confirm-icon' : 'info-icon';
+                modal.alertType === 'error' ? 'error-icon' :
+                    isConfirm ? 'confirm-icon' : 'info-icon';
 
             return (
                 <ModalContext.Provider value={value}>
@@ -1364,8 +1387,8 @@ emailjs.init("sRZ_ixA1Xm913C0Ru");
                     // Darken each pixel by reducing RGB values
                     for (let i = 0; i < data.length; i += 4) {
                         data[i] = Math.max(0, data[i] - amount);     // R
-                        data[i+1] = Math.max(0, data[i+1] - amount); // G
-                        data[i+2] = Math.max(0, data[i+2] - amount); // B
+                        data[i + 1] = Math.max(0, data[i + 1] - amount); // G
+                        data[i + 2] = Math.max(0, data[i + 2] - amount); // B
                         // Alpha stays unchanged
                     }
 
@@ -1853,6 +1876,30 @@ emailjs.init("sRZ_ixA1Xm913C0Ru");
                     'Confirm Submission',
                     'Generate PDF and send Purchase Requisition to Staff?',
                     async () => {
+                        // Save request to Firestore
+                        try {
+                            await addDoc(collection(db, "purchaseRequests"), {
+                                requestType: payload.requestType,
+                                department: payload.department,
+                                coordinator: payload.coordinator,
+                                poc: payload.poc,
+                                category: payload.category,
+                                items: payload.items,
+                                createdAt: serverTimestamp(),
+                                createdDate: new Date().toLocaleDateString("en-IN"),
+                                createdTime: new Date().toLocaleTimeString("en-IN")
+                            });
+                            console.log("Saved to Firestore");
+                        } catch (err) {
+                            console.error(err);
+                            showAlert(
+                                "Database Error",
+                                "Unable to save request.",
+                                "error"
+                            );
+                            return;
+                        }
+
                         await generatePDF(payload);
 
                         let itemList = '';
@@ -1877,13 +1924,13 @@ emailjs.init("sRZ_ixA1Xm913C0Ru");
                                 to_email: 'sanjaygs2406@gmail.com'
                             }
                         )
-                        .then(() => {
-                            showAlert('Success!', 'PDF downloaded and Email sent successfully.', 'success');
-                        })
-                        .catch((err) => {
-                            console.log(err);
-                            showAlert('Email Error', 'PDF downloaded but email sending failed.', 'error');
-                        });
+                            .then(() => {
+                                showAlert('Success!', 'PDF downloaded and Email sent successfully.', 'success');
+                            })
+                            .catch((err) => {
+                                console.log(err);
+                                showAlert('Email Error', 'PDF downloaded but email sending failed.', 'error');
+                            });
                     },
                     () => {
                         console.log('Submission cancelled');
@@ -2359,4 +2406,5 @@ emailjs.init("sRZ_ixA1Xm913C0Ru");
         );
     </script>
 </body>
+
 </html>
