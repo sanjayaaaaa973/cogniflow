@@ -1378,19 +1378,6 @@
             'Web & Tech'
         ];
 
-        const CLUBS = [
-            'Club 1',
-            'Club 2',
-            'Club 3',
-            'Club 4',
-            'Club 5',
-            'Club 6',
-            'Club 7',
-            'Club 8'
-        ];
-
-        const REQUEST_TYPES = ['Domain', 'Club'];
-
         // --------------------------------------------------------------
         //  Helper: Darken image using Canvas
         // --------------------------------------------------------------
@@ -1466,19 +1453,13 @@
             const { showConfirm, showAlert } = useModal();
 
             // ----- Form State -----
-            const [requestType, setRequestType] = useState('Domain');
+            const requestType = 'Domain';
             const [domain, setDomain] = useState('');
-            const [club, setClub] = useState('');
             const [coordName, setCoordName] = useState('');
             const [coordReg, setCoordReg] = useState('');
             const [coordMobile, setCoordMobile] = useState('');
-            const [pocName, setPocName] = useState('');
-            const [pocReg, setPocReg] = useState('');
-            const [pocMobile, setPocMobile] = useState('');
             const [coordRegError, setCoordRegError] = useState('');
-            const [pocRegError, setPocRegError] = useState('');
             const [coordMobileError, setCoordMobileError] = useState('');
-            const [pocMobileError, setPocMobileError] = useState('');
             const [category, setCategory] = useState('');
 
             // ----- Search State -----
@@ -1668,94 +1649,38 @@
                     doc.setFontSize(10);
                     doc.text(`Date : ${today}`, 190, 42, { align: 'right' });
 
-                    // ===== REQUEST TYPE & DOMAIN/CLUB with TIGHT SPACING =====
+                    // ===== REQUEST TYPE & DOMAIN =====
                     let y = 58;
                     doc.setFontSize(11);
                     doc.setFont('helvetica', 'bold');
                     doc.text('Request Type :', 15, y);
                     doc.setFont('helvetica', 'normal');
-                    doc.text(payload.requestType || 'N/A', 45, y);
+                    doc.text(payload.requestType || 'Domain', 45, y);
 
                     doc.setFont('helvetica', 'bold');
-                    if (payload.requestType === 'Domain') {
-                        doc.text('Domain :', 115, y);
-                        doc.setFont('helvetica', 'normal');
-                        doc.text(payload.department || 'N/A', 145, y);
-                    } else {
-                        doc.text('Club :', 115, y);
-                        doc.setFont('helvetica', 'normal');
-                        doc.text(payload.department || 'N/A', 130, y);
-                    }
+                    doc.text('Domain :', 115, y);
+                    doc.setFont('helvetica', 'normal');
+                    doc.text(payload.department || 'N/A', 145, y);
 
                     y += 12;
 
-                    // ===== COORDINATOR & POC SECTION =====
-                    if (payload.requestType === 'Domain') {
-                        // Vertical layout for Domain
-                        doc.setFont('helvetica', 'bold');
-                        doc.text('Student Organizer :', 15, y);
-                        doc.setFont('helvetica', 'normal');
-                        doc.text(payload.coordinator?.name || 'N/A', 60, y);
+                    // ===== COORDINATOR SECTION =====
+                    doc.setFont('helvetica', 'bold');
+                    doc.text('Student Organizer :', 15, y);
+                    doc.setFont('helvetica', 'normal');
+                    doc.text(payload.coordinator?.name || 'N/A', 60, y);
 
-                        y += 7;
-                        doc.setFont('helvetica', 'bold');
-                        doc.text('Reg No :', 15, y);
-                        doc.setFont('helvetica', 'normal');
-                        doc.text(payload.coordinator?.reg || 'N/A', 40, y);
+                    y += 7;
+                    doc.setFont('helvetica', 'bold');
+                    doc.text('Reg No :', 15, y);
+                    doc.setFont('helvetica', 'normal');
+                    doc.text(payload.coordinator?.reg || 'N/A', 40, y);
 
-                        y += 7;
-                        doc.setFont('helvetica', 'bold');
-                        doc.text('Mobile :', 15, y);
-                        doc.setFont('helvetica', 'normal');
-                        doc.text(payload.coordinator?.mobile || 'N/A', 40, y);
-
-                    } else {
-                        // Horizontal layout for Club
-                        doc.setFont('helvetica', 'bold');
-                        doc.text('Student Organizer', 15, y);
-
-                        let yLeft = y + 7;
-                        doc.setFont('helvetica', 'bold');
-                        doc.text('Name :', 15, yLeft);
-                        doc.setFont('helvetica', 'normal');
-                        doc.text(payload.coordinator?.name || 'N/A', 35, yLeft);
-
-                        yLeft += 7;
-                        doc.setFont('helvetica', 'bold');
-                        doc.text('Reg No :', 15, yLeft);
-                        doc.setFont('helvetica', 'normal');
-                        doc.text(payload.coordinator?.reg || 'N/A', 35, yLeft);
-
-                        yLeft += 7;
-                        doc.setFont('helvetica', 'bold');
-                        doc.text('Mobile :', 15, yLeft);
-                        doc.setFont('helvetica', 'normal');
-                        doc.text(payload.coordinator?.mobile || 'N/A', 35, yLeft);
-
-                        let yRight = y;
-                        doc.setFont('helvetica', 'bold');
-                        doc.text('POC', 115, yRight);
-
-                        yRight += 7;
-                        doc.setFont('helvetica', 'bold');
-                        doc.text('Name :', 115, yRight);
-                        doc.setFont('helvetica', 'normal');
-                        doc.text(payload.poc?.name || 'N/A', 135, yRight);
-
-                        yRight += 7;
-                        doc.setFont('helvetica', 'bold');
-                        doc.text('Reg No :', 115, yRight);
-                        doc.setFont('helvetica', 'normal');
-                        doc.text(payload.poc?.reg || 'N/A', 135, yRight);
-
-                        yRight += 7;
-                        doc.setFont('helvetica', 'bold');
-                        doc.text('Mobile :', 115, yRight);
-                        doc.setFont('helvetica', 'normal');
-                        doc.text(payload.poc?.mobile || 'N/A', 135, yRight);
-
-                        y = Math.max(yLeft, yRight) + 5;
-                    }
+                    y += 7;
+                    doc.setFont('helvetica', 'bold');
+                    doc.text('Mobile :', 15, y);
+                    doc.setFont('helvetica', 'normal');
+                    doc.text(payload.coordinator?.mobile || 'N/A', 40, y);
 
                     // ===== LIGHT HORIZONTAL DIVIDER =====
                     y += 4;
@@ -1900,15 +1825,10 @@
             const handleSubmit = async (e) => {
                 e.preventDefault();
 
-                if (!requestType) { showAlert('Missing Field', 'Please select a request type.', 'error'); return; }
-                if (requestType === 'Domain' && !domain) { showAlert('Missing Field', 'Please select a Domain.', 'error'); return; }
-                if (requestType === 'Club' && !club) { showAlert('Missing Field', 'Please select a Club.', 'error'); return; }
+                if (!domain) { showAlert('Missing Field', 'Please select a Domain.', 'error'); return; }
                 if (!coordName.trim()) { showAlert('Missing Field', 'Please enter Student Organizer Name.', 'error'); return; }
                 if (!coordReg.trim()) { showAlert('Missing Field', 'Please enter Student Organizer Registration Number.', 'error'); return; }
                 if (!coordMobile.trim()) { showAlert('Missing Field', 'Please enter Student Organizer Mobile.', 'error'); return; }
-                if (requestType === 'Club' && !pocName.trim()) { showAlert('Missing Field', 'Please enter POC Name.', 'error'); return; }
-                if (requestType === 'Club' && !pocReg.trim()) { showAlert('Missing Field', 'Please enter POC Registration Number.', 'error'); return; }
-                if (requestType === 'Club' && !pocMobile.trim()) { showAlert('Missing Field', 'Please enter POC Mobile.', 'error'); return; }
 
                 const selectedItems = Object.entries(itemQuantities)
                     .filter(([, entry]) => entry?.quantity > 0)
@@ -1936,13 +1856,12 @@
                     return;
                 }
 
-                const department = requestType === 'Domain' ? domain : club;
+                const department = domain;
 
                 const payload = {
-                    requestType,
+                    requestType: 'Domain',
                     department,
                     coordinator: { name: coordName, reg: coordReg, mobile: coordMobile },
-                    poc: { name: pocName, reg: pocReg, mobile: pocMobile },
                     category,
                     items: allItems,
                 };
@@ -1959,7 +1878,6 @@
                                 requestType: payload.requestType,
                                 department: payload.department,
                                 coordinator: payload.coordinator,
-                                poc: payload.poc,
                                 category: payload.category,
                                 items: payload.items,
                                 createdAt: serverTimestamp(),
@@ -1979,17 +1897,12 @@
 
                         await generatePDF(payload);
 
-                        let purchaseDetails = '';
                         const department = payload.department || '';
                         const coordName = payload.coordinator?.name || '';
                         const coordReg = payload.coordinator?.reg || '';
                         const coordMobile = payload.coordinator?.mobile || '';
-                        const pocName = payload.poc?.name || '';
-                        const pocReg = payload.poc?.reg || '';
-                        const pocMobile = payload.poc?.mobile || '';
 
-                        if (payload.requestType === 'Domain') {
-                            purchaseDetails = `
+                        const purchaseDetails = `
 <table border="1" cellpadding="8" cellspacing="0" style="border-collapse:collapse;width:100%;">
 
 <tr>
@@ -2019,53 +1932,6 @@
 
 </table>
 `;
-                        } else {
-                            purchaseDetails = `
-<table border="1" cellpadding="8" cellspacing="0" style="border-collapse:collapse;width:100%;">
-
-<tr>
-<td><b>Request Type</b></td>
-<td>Club</td>
-</tr>
-
-<tr>
-<td><b>Club</b></td>
-<td>${department}</td>
-</tr>
-
-<tr>
-<td><b>Student Organiser</b></td>
-<td>${coordName}</td>
-</tr>
-
-<tr>
-<td><b>Reg No</b></td>
-<td>${coordReg}</td>
-</tr>
-
-<tr>
-<td><b>Mobile</b></td>
-<td>${coordMobile}</td>
-</tr>
-
-<tr>
-<td><b>POC</b></td>
-<td>${pocName}</td>
-</tr>
-
-<tr>
-<td><b>POC Reg No</b></td>
-<td>${pocReg}</td>
-</tr>
-
-<tr>
-<td><b>POC Mobile</b></td>
-<td>${pocMobile}</td>
-</tr>
-
-</table>
-`;
-                        }
 
                         let itemList = '';
                         payload.items.forEach((item, index) => {
@@ -2157,61 +2023,23 @@
                     </header>
 
                     <form onSubmit={handleSubmit} noValidate>
-                        {/* ===== REQUEST TYPE TOGGLE ===== */}
+                        {/* ===== Domain Select ===== */}
                         <div className="mb-3">
-                            <label className="form-label">
-                                <i className="bi bi-toggle-on me-1" /> Request Type
+                            <label className="form-label" htmlFor="domainSelect">
+                                <i className="bi bi-tag me-1" /> Domain
                             </label>
-                            <div className="request-toggle">
-                                {REQUEST_TYPES.map((type) => (
-                                    <button
-                                        key={type}
-                                        type="button"
-                                        className={requestType === type ? 'active' : ''}
-                                        onClick={() => setRequestType(type)}
-                                    >
-                                        {type}
-                                    </button>
+                            <select
+                                className="form-select"
+                                id="domainSelect"
+                                value={domain}
+                                onChange={(e) => setDomain(e.target.value)}
+                            >
+                                <option value="">Select Domain</option>
+                                {DOMAINS.map((d) => (
+                                    <option key={d} value={d}>{d}</option>
                                 ))}
-                            </div>
+                            </select>
                         </div>
-
-                        {/* ===== Domain OR Club (Conditional) ===== */}
-                        {requestType === 'Domain' ? (
-                            <div className="mb-3">
-                                <label className="form-label" htmlFor="domainSelect">
-                                    <i className="bi bi-tag me-1" /> Domain
-                                </label>
-                                <select
-                                    className="form-select"
-                                    id="domainSelect"
-                                    value={domain}
-                                    onChange={(e) => setDomain(e.target.value)}
-                                >
-                                    <option value="">Select Domain</option>
-                                    {DOMAINS.map((d) => (
-                                        <option key={d} value={d}>{d}</option>
-                                    ))}
-                                </select>
-                            </div>
-                        ) : (
-                            <div className="mb-3">
-                                <label className="form-label" htmlFor="clubSelect">
-                                    <i className="bi bi-people me-1" /> Club
-                                </label>
-                                <select
-                                    className="form-select"
-                                    id="clubSelect"
-                                    value={club}
-                                    onChange={(e) => setClub(e.target.value)}
-                                >
-                                    <option value="">Select Club</option>
-                                    {CLUBS.map((c) => (
-                                        <option key={c} value={c}>{c}</option>
-                                    ))}
-                                </select>
-                            </div>
-                        )}
 
                         <hr className="divider" />
 
@@ -2278,75 +2106,6 @@
                                 {coordMobileError && <small className="text-danger">{coordMobileError}</small>}
                             </div>
                         </div>
-
-                        {/* ===== POC (Only for Club) ===== */}
-                        {requestType === 'Club' && (
-                            <>
-                                <hr className="divider" />
-                                <div className="section-title">
-                                    <i className="bi bi-person-check" />
-                                    POC
-                                </div>
-                                <div className="row row-coord g-3">
-                                    <div className="col-md-4">
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            placeholder="Name"
-                                            value={pocName}
-                                            onChange={(e) => setPocName(e.target.value)}
-                                        />
-                                    </div>
-                                    <div className="col-md-4">
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            placeholder="YYXXX1234 (e.g., 23MIS0042)"
-                                            value={pocReg}
-                                            onChange={(e) => {
-                                                let value = e.target.value.toUpperCase();
-                                                value = value.replace(/[^A-Z0-9]/g, "");
-                                                if (value.length > 9) return;
-                                                setPocReg(value);
-                                                if (value === "") {
-                                                    setPocRegError("");
-                                                    return;
-                                                }
-                                                if (!/^\d{2}[A-Z]{3}\d{4}$/.test(value)) {
-                                                    setPocRegError("Expected format: YYXXX1234 (e.g., 23MIS0042)");
-                                                } else {
-                                                    setPocRegError("");
-                                                }
-                                            }}
-                                        />
-                                        {pocRegError && <small className="text-danger">{pocRegError}</small>}
-                                    </div>
-                                    <div className="col-md-4">
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            placeholder="Mobile"
-                                            value={pocMobile}
-                                            onChange={(e) => {
-                                                let value = e.target.value.replace(/\D/g, "");
-                                                if (value.length > 10) return;
-                                                setPocMobile(value);
-                                                if (value === "") {
-                                                    setPocMobileError("");
-                                                    return;
-                                                }
-                                                if (value.length < 10) {
-                                                    setPocMobileError("Enter a 10-digit mobile number");
-                                                } else {
-                                                    setPocMobileError("");
-                                                }
-                                            }}
-                                        />
-                                        {pocMobileError && <small className="text-danger">{pocMobileError}</small>}
-                                    </div>
-                                </div>
-                            </>
-                        )}
 
                         <hr className="divider" />
 
@@ -2557,8 +2316,7 @@
                                 type="submit"
                                 disabled={
                                     coordRegError ||
-                                    coordMobileError ||
-                                    (requestType === 'Club' && (pocRegError || pocMobileError))
+                                    coordMobileError
                                 }
                             >
                                 <i className="bi bi-check2-circle me-2" />

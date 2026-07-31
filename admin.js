@@ -4,7 +4,9 @@ import {
     collection,
     getDocs,
     query,
-    orderBy
+    orderBy,
+    doc,
+    deleteDoc
 } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 
 import {
@@ -16,7 +18,6 @@ const tbody = document.getElementById("tableBody");
 
 const totalRequests = document.getElementById("totalRequests");
 const domainCount = document.getElementById("domainCount");
-const clubCount = document.getElementById("clubCount");
 const todayCount = document.getElementById("todayCount");
 
 const adminEmail = document.getElementById("adminEmail");
@@ -48,13 +49,11 @@ onAuthStateChanged(auth, (user) => {
 const searchInput = document.getElementById("search");
 const filterTypeSelect = document.getElementById("filterType");
 
-function renderTable() {
-    tbody.innerHTML = "";
-
+function getFilteredRequests() {
     const searchTerm = searchInput ? searchInput.value.trim().toLowerCase() : "";
     const selectedType = filterTypeSelect ? filterTypeSelect.value : "";
 
-    const filteredRequests = requests.filter((d) => {
+    return requests.filter((d) => {
         // Filter by Type ("Domain" or "Club")
         if (selectedType && selectedType !== "All" && d.requestType !== selectedType) {
             return false;
@@ -84,6 +83,12 @@ function renderTable() {
 
         return true;
     });
+}
+
+function renderTable() {
+    tbody.innerHTML = "";
+
+    const filteredRequests = getFilteredRequests();
 
     if (filteredRequests.length === 0) {
         tbody.innerHTML = `
@@ -103,17 +108,41 @@ function renderTable() {
             <td>${d.coordinator?.name || "-"}</td>
             <td>${d.coordinator?.mobile || "-"}</td>
             <td>${d.items ? d.items.length : 0}</td>
-            <td>
+            <td style="white-space: nowrap;">
                 <button
-                    class="btn btn-primary btn-sm"
+                    class="btn btn-primary btn-sm me-1"
                     onclick="viewRequest('${d.id}')">
                     View
+                </button>
+                <button
+                    class="btn btn-danger btn-sm"
+                    onclick="deleteRequest('${d.id}')">
+                    <i class="bi bi-trash"></i> Delete
                 </button>
             </td>
         </tr>
         `;
     });
 }
+
+/* ---------------- DELETE REQUEST ---------------- */
+
+window.deleteRequest = async function (id) {
+    const reqToDelete = requests.find(r => r.id === id);
+    const deptName = reqToDelete ? (reqToDelete.department || "Request") : "this request";
+
+    if (!confirm(`Are you sure you want to delete "${deptName}"?`)) {
+        return;
+    }
+
+    try {
+        await deleteDoc(doc(db, "purchaseRequests", id));
+        await loadRequests();
+    } catch (err) {
+        console.error("Error deleting request:", err);
+        alert("Failed to delete request: " + err.message);
+    }
+};
 
 if (searchInput) searchInput.addEventListener("input", renderTable);
 if (filterTypeSelect) filterTypeSelect.addEventListener("change", renderTable);
@@ -127,7 +156,6 @@ async function loadRequests() {
     requests = [];
 
     let domain = 0;
-    let club = 0;
     let today = 0;
 
     const todayDate = new Date().toLocaleDateString("en-IN");
@@ -145,11 +173,8 @@ async function loadRequests() {
             ...d
         });
 
-        if (d.requestType === "Domain")
+        if (d.requestType === "Domain" || !d.requestType)
             domain++;
-
-        if (d.requestType === "Club")
-            club++;
 
         if (d.createdDate === todayDate)
             today++;
@@ -158,7 +183,6 @@ async function loadRequests() {
 
     totalRequests.innerHTML = requests.length;
     domainCount.innerHTML = domain;
-    clubCount.innerHTML = club;
     todayCount.innerHTML = today;
 
     renderTable();
@@ -347,92 +371,38 @@ const generateAdminPDF = async (data) => {
         doc.setFontSize(10);
         doc.text(`Date : ${today}`, 190, 42, { align: 'right' });
 
-        // ===== REQUEST TYPE & DOMAIN/CLUB with TIGHT SPACING =====
+        // ===== REQUEST TYPE & DOMAIN =====
         let y = 58;
         doc.setFontSize(11);
         doc.setFont('helvetica', 'bold');
         doc.text('Request Type :', 15, y);
         doc.setFont('helvetica', 'normal');
-        doc.text(data.requestType || 'N/A', 45, y);
+        doc.text(data.requestType || 'Domain', 45, y);
 
         doc.setFont('helvetica', 'bold');
-        if (data.requestType === 'Domain') {
-            doc.text('Domain :', 115, y);
-            doc.setFont('helvetica', 'normal');
-            doc.text(data.department || 'N/A', 145, y);
-        } else {
-            doc.text('Club :', 115, y);
-            doc.setFont('helvetica', 'normal');
-            doc.text(data.department || 'N/A', 130, y);
-        }
+        doc.text('Domain :', 115, y);
+        doc.setFont('helvetica', 'normal');
+        doc.text(data.department || 'N/A', 145, y);
 
         y += 12;
 
-        // ===== COORDINATOR & POC SECTION =====
-        if (data.requestType === 'Domain') {
-            doc.setFont('helvetica', 'bold');
-            doc.text('Student Organizer :', 15, y);
-            doc.setFont('helvetica', 'normal');
-            doc.text(data.coordinator?.name || 'N/A', 60, y);
+        // ===== COORDINATOR SECTION =====
+        doc.setFont('helvetica', 'bold');
+        doc.text('Student Organizer :', 15, y);
+        doc.setFont('helvetica', 'normal');
+        doc.text(data.coordinator?.name || 'N/A', 60, y);
 
-            y += 7;
-            doc.setFont('helvetica', 'bold');
-            doc.text('Reg No :', 15, y);
-            doc.setFont('helvetica', 'normal');
-            doc.text(data.coordinator?.reg || 'N/A', 40, y);
+        y += 7;
+        doc.setFont('helvetica', 'bold');
+        doc.text('Reg No :', 15, y);
+        doc.setFont('helvetica', 'normal');
+        doc.text(data.coordinator?.reg || 'N/A', 40, y);
 
-            y += 7;
-            doc.setFont('helvetica', 'bold');
-            doc.text('Mobile :', 15, y);
-            doc.setFont('helvetica', 'normal');
-            doc.text(data.coordinator?.mobile || 'N/A', 40, y);
-
-        } else {
-            doc.setFont('helvetica', 'bold');
-            doc.text('Student Organizer', 15, y);
-
-            let yLeft = y + 7;
-            doc.setFont('helvetica', 'bold');
-            doc.text('Name :', 15, yLeft);
-            doc.setFont('helvetica', 'normal');
-            doc.text(data.coordinator?.name || 'N/A', 35, yLeft);
-
-            yLeft += 7;
-            doc.setFont('helvetica', 'bold');
-            doc.text('Reg No :', 15, yLeft);
-            doc.setFont('helvetica', 'normal');
-            doc.text(data.coordinator?.reg || 'N/A', 35, yLeft);
-
-            yLeft += 7;
-            doc.setFont('helvetica', 'bold');
-            doc.text('Mobile :', 15, yLeft);
-            doc.setFont('helvetica', 'normal');
-            doc.text(data.coordinator?.mobile || 'N/A', 35, yLeft);
-
-            let yRight = y;
-            doc.setFont('helvetica', 'bold');
-            doc.text('POC', 115, yRight);
-
-            yRight += 7;
-            doc.setFont('helvetica', 'bold');
-            doc.text('Name :', 115, yRight);
-            doc.setFont('helvetica', 'normal');
-            doc.text(data.poc?.name || 'N/A', 135, yRight);
-
-            yRight += 7;
-            doc.setFont('helvetica', 'bold');
-            doc.text('Reg No :', 115, yRight);
-            doc.setFont('helvetica', 'normal');
-            doc.text(data.poc?.reg || 'N/A', 135, yRight);
-
-            yRight += 7;
-            doc.setFont('helvetica', 'bold');
-            doc.text('Mobile :', 115, yRight);
-            doc.setFont('helvetica', 'normal');
-            doc.text(data.poc?.mobile || 'N/A', 135, yRight);
-
-            y = Math.max(yLeft, yRight) + 5;
-        }
+        y += 7;
+        doc.setFont('helvetica', 'bold');
+        doc.text('Mobile :', 15, y);
+        doc.setFont('helvetica', 'normal');
+        doc.text(data.coordinator?.mobile || 'N/A', 40, y);
 
         // ===== LIGHT HORIZONTAL DIVIDER =====
         y += 4;
@@ -585,9 +555,16 @@ if (excelBtn) {
             return;
         }
 
+        const presentRequests = getFilteredRequests();
+
+        if (presentRequests.length === 0) {
+            alert("No active requests to export");
+            return;
+        }
+
         const wb = XLSX.utils.book_new();
 
-        requests.forEach((req, index) => {
+        presentRequests.forEach((req, index) => {
 
             const data = [];
 
@@ -596,24 +573,14 @@ if (excelBtn) {
 
             data.push(["Date", req.createdDate || ""]);
             data.push(["Time", req.createdTime || ""]);
-            data.push(["Request Type", req.requestType || ""]);
-            data.push(["Department / Club", req.department || ""]);
+            data.push(["Request Type", req.requestType || "Domain"]);
+            data.push(["Department", req.department || ""]);
 
             data.push([]);
 
             data.push(["Coordinator Name", req.coordinator?.name || ""]);
             data.push(["Coordinator Reg No", req.coordinator?.reg || ""]);
             data.push(["Coordinator Mobile", req.coordinator?.mobile || ""]);
-
-            if (req.requestType === "Club") {
-
-                data.push([]);
-
-                data.push(["POC Name", req.poc?.name || ""]);
-                data.push(["POC Reg No", req.poc?.reg || ""]);
-                data.push(["POC Mobile", req.poc?.mobile || ""]);
-
-            }
 
             data.push([]);
 
