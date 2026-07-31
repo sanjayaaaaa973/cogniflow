@@ -545,6 +545,49 @@ const generateAdminPDF = async (data) => {
 
 /* ---------------- EXPORT EXCEL ---------------- */
 
+const DEFAULT_DOMAINS = [
+    'Campus Decoration',
+    'Design & Printing',
+    'Documentation',
+    'E-sports and creative techno sports ideas',
+    'Events',
+    'Finance',
+    'General Enquiry',
+    'Guest Care - Men',
+    'Guest Care - Women',
+    'Halls & Refreshments',
+    'International Participants',
+    'Premium Events',
+    'Press & Media',
+    'Pro-Events',
+    'Publicity & Marketing',
+    'Purchase',
+    'Registration & Reception',
+    'Sales',
+    'Sponsorship & MoU',
+    'Stalls',
+    'Transport & Logistics',
+    'Web & Tech'
+];
+
+function getCleanSheetName(name, usedNames) {
+    let clean = name.replace(/[\\/?*\[\]:]/g, "").trim();
+    if (!clean) clean = "Sheet";
+    if (clean.length > 31) {
+        clean = clean.substring(0, 31).trim();
+    }
+    let uniqueName = clean;
+    let counter = 1;
+    while (usedNames.has(uniqueName.toLowerCase())) {
+        const suffix = `_${counter}`;
+        const maxLen = 31 - suffix.length;
+        uniqueName = clean.substring(0, maxLen) + suffix;
+        counter++;
+    }
+    usedNames.add(uniqueName.toLowerCase());
+    return uniqueName;
+}
+
 const excelBtn = document.getElementById("excelBtn");
 if (excelBtn) {
     excelBtn.onclick = () => {
@@ -557,72 +600,159 @@ if (excelBtn) {
 
         const presentRequests = getFilteredRequests();
 
-        if (presentRequests.length === 0) {
-            alert("No active requests to export");
-            return;
-        }
+        // Build list of all domains to create sheets for:
+        // Start with default domains, plus any other departments present in active requests
+        const allDomains = [...DEFAULT_DOMAINS];
+        presentRequests.forEach((req) => {
+            const dept = req.department ? req.department.trim() : "";
+            if (dept && !allDomains.some(d => d.toLowerCase() === dept.toLowerCase())) {
+                allDomains.push(dept);
+            }
+        });
+
+        // Group requests by domain (case-insensitive key matching)
+        const requestsByDomain = {};
+        allDomains.forEach(domain => {
+            requestsByDomain[domain] = [];
+        });
+
+        presentRequests.forEach((req) => {
+            const dept = req.department ? req.department.trim() : "Other";
+            const matchedDomain = allDomains.find(d => d.toLowerCase() === dept.toLowerCase()) || dept;
+            if (!requestsByDomain[matchedDomain]) {
+                requestsByDomain[matchedDomain] = [];
+            }
+            requestsByDomain[matchedDomain].push(req);
+        });
 
         const wb = XLSX.utils.book_new();
+        const usedSheetNames = new Set();
 
-        presentRequests.forEach((req, index) => {
-
+        allDomains.forEach((domainName) => {
+            const domainRequests = requestsByDomain[domainName] || [];
             const data = [];
 
-            data.push(["Purchase Requisition"]);
-            data.push([]);
+            // Sort domain requests chronologically by time ascending (oldest first, newer below)
+            domainRequests.sort((a, b) => {
+                let tA = 0;
+                let tB = 0;
+                if (a.createdAt) {
+                    if (typeof a.createdAt.toMillis === 'function') tA = a.createdAt.toMillis();
+                    else if (a.createdAt.seconds) tA = a.createdAt.seconds * 1000;
+                }
+                if (b.createdAt) {
+                    if (typeof b.createdAt.toMillis === 'function') tB = b.createdAt.toMillis();
+                    else if (b.createdAt.seconds) tB = b.createdAt.seconds * 1000;
+                }
+                return tA - tB;
+            });
 
-            data.push(["Date", req.createdDate || ""]);
-            data.push(["Time", req.createdTime || ""]);
-            data.push(["Request Type", req.requestType || "Domain"]);
-            data.push(["Department", req.department || ""]);
-
-            data.push([]);
-
-            data.push(["Coordinator Name", req.coordinator?.name || ""]);
-            data.push(["Coordinator Reg No", req.coordinator?.reg || ""]);
-            data.push(["Coordinator Mobile", req.coordinator?.mobile || ""]);
-
-            data.push([]);
-
+            // Table Headers
             data.push([
+                "S.No",
+                "Date",
+                "Time",
+                "Request Type",
+                "Convenor",
+                "Reg No",
+                "Mobile",
                 "Item No",
                 "Category",
                 "Item Name",
-                "Quantity"
+                "Qty"
             ]);
 
-            (req.items || []).forEach((item, i) => {
+            if (domainRequests.length === 0) {
+                data.push(["-", "-", "-", "-", "-", "-", "-", "-", "-", "No orders placed", 0]);
+            } else {
+                domainRequests.forEach((req, idx) => {
+                    const sNo = idx + 1;
+                    const date = req.createdDate || "";
+                    const time = req.createdTime || "";
+                    const reqType = req.requestType || "Domain";
+                    const convenor = req.coordinator?.name || "";
+                    const regNo = req.coordinator?.reg || "";
+                    const mobile = req.coordinator?.mobile || "";
 
-                data.push([
-                    i + 1,
-                    item.category || "",
-                    item.name || "",
-                    item.quantity || 0
-                ]);
+                    const items = req.items || [];
 
-            });
+                    if (items.length === 0) {
+                        data.push([
+                            sNo,
+                            date,
+                            time,
+                            reqType,
+                            convenor,
+                            regNo,
+                            mobile,
+                            "-",
+                            "-",
+                            "No items listed",
+                            0
+                        ]);
+                    } else {
+                        items.forEach((item, itemIdx) => {
+                            if (itemIdx === 0) {
+                                // First item of the request displays request metadata
+                                data.push([
+                                    sNo,
+                                    date,
+                                    time,
+                                    reqType,
+                                    convenor,
+                                    regNo,
+                                    mobile,
+                                    itemIdx + 1,
+                                    item.category || "",
+                                    item.name || "",
+                                    item.quantity || 0
+                                ]);
+                            } else {
+                                // Subsequent items leave request metadata blank for clean tabular view
+                                data.push([
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    itemIdx + 1,
+                                    item.category || "",
+                                    item.name || "",
+                                    item.quantity || 0
+                                ]);
+                            }
+                        });
+                    }
+
+                    // Blank row spacing between requests
+                    data.push([]);
+                });
+            }
 
             const ws = XLSX.utils.aoa_to_sheet(data);
 
-            // Sheet name (max 31 chars in Excel)
-            let sheetName =
-                (req.department || "Request") + "_" + (index + 1);
+            // Column width settings for Excel formatting
+            ws['!cols'] = [
+                { wch: 6 },  // S.No
+                { wch: 12 }, // Date
+                { wch: 14 }, // Time
+                { wch: 14 }, // Request Type
+                { wch: 20 }, // Convenor
+                { wch: 15 }, // Reg No
+                { wch: 15 }, // Mobile
+                { wch: 8 },  // Item No
+                { wch: 16 }, // Category
+                { wch: 30 }, // Item Name
+                { wch: 8 }   // Qty
+            ];
 
-            sheetName = sheetName.substring(0, 31);
-
-            XLSX.utils.book_append_sheet(
-                wb,
-                ws,
-                sheetName
-            );
-
+            const sheetName = getCleanSheetName(domainName, usedSheetNames);
+            XLSX.utils.book_append_sheet(wb, ws, sheetName);
         });
 
-        XLSX.writeFile(
-            wb,
-            "Purchase_Requests.xlsx"
-        );
-
+        XLSX.writeFile(wb, "Purchase_Requests.xlsx");
     };
 }
 
