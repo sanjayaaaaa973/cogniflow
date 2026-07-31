@@ -920,6 +920,28 @@
         #root {
             width: 100%;
         }
+
+        .logout-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #ef4444;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.25);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .logout-btn:hover {
+            background: #ef4444;
+            color: #ffffff;
+            border-color: #ef4444;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        }
     </style>
 </head>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -947,7 +969,8 @@
     </script>
 
     <script type="text/babel" data-type="module">
-        import { db } from "./firebase.js";
+        import { auth, db } from "./firebase.js";
+        import { signOut } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
         import {
             collection,
             addDoc,
@@ -1332,27 +1355,26 @@
 
         const DOMAINS = [
             'Campus Decoration',
-            'Design & Print',
+            'Design & Printing',
             'Documentation',
-            'Esports',
+            'E-sports and creative techno sports ideas',
             'Events',
             'Finance',
             'General Enquiry',
-            'Guest Care',
-            'Halls and Refreshments',
-            'International Relations',
-            'Official',
-            'Outreach',
+            'Guest Care - Men',
+            'Guest Care - Women',
+            'Halls & Refreshments',
+            'International Participants',
             'Premium Events',
-            'Press and Media',
-            'Pro Events',
-            'Publicity and Marketing',
+            'Press & Media',
+            'Pro-Events',
+            'Publicity & Marketing',
             'Purchase',
-            'RnR',
+            'Registration & Reception',
             'Sales',
-            'Sponsorship and MoUs',
+            'Sponsorship & MoU',
             'Stalls',
-            'Transport and Logistics',
+            'Transport & Logistics',
             'Web & Tech'
         ];
 
@@ -1429,6 +1451,16 @@
                 const storedEmail = localStorage.getItem('userEmail') || '';
                 setUserEmail(storedEmail);
             }, []);
+
+            const handleLogout = async () => {
+                try {
+                    await signOut(auth);
+                } catch (err) {
+                    console.error('Logout error:', err);
+                }
+                localStorage.removeItem('userEmail');
+                window.location.href = 'index.html';
+            };
 
             // ----- Modal -----
             const { showConfirm, showAlert } = useModal();
@@ -1592,9 +1624,8 @@
                 const doc = new jsPDF('p', 'mm', 'a4');
 
                 try {
-                    // ===== LOAD AND DARKEN TEMPLATE =====
+                    // ===== LOAD TEMPLATES =====
                     const templatePaths = ['images/purchase-template.png', 'images/purchase-template.png.png'];
-                    let watermarkAdded = false;
                     let templateImg = null;
 
                     for (const templatePath of templatePaths) {
@@ -1612,20 +1643,21 @@
                         if (templateImg) break;
                     }
 
-                    if (templateImg) {
-                        // Darken the image using canvas (reduce brightness by 50 units)
-                        const darkenedDataUrl = await darkenImage(templateImg, 55);
+                    let page1Template = null;
+                    let page2Template = null;
 
-                        // Add the darkened image as watermark with 0.35 opacity
-                        doc.saveGraphicsState();
-                        doc.setGState(new doc.GState({ opacity: 0.35 }));
-                        doc.addImage(darkenedDataUrl, 'PNG', 0, 0, 210, 297);
-                        doc.restoreGraphicsState();
-                        watermarkAdded = true;
+                    if (templateImg) {
+                        const darkenedDataUrl = await darkenImage(templateImg, 55);
+                        page1Template = darkenedDataUrl;
+                        page2Template = darkenedDataUrl;
                     }
 
-                    if (!watermarkAdded) {
-                        // Fallback: if no template, use a subtle background
+                    if (page1Template) {
+                        doc.saveGraphicsState();
+                        doc.setGState(new doc.GState({ opacity: 0.35 }));
+                        doc.addImage(page1Template, 'PNG', 0, 0, 210, 297);
+                        doc.restoreGraphicsState();
+                    } else {
                         doc.setFillColor(245, 247, 250);
                         doc.rect(0, 0, 210, 297, 'F');
                     }
@@ -1648,12 +1680,10 @@
                     if (payload.requestType === 'Domain') {
                         doc.text('Domain :', 115, y);
                         doc.setFont('helvetica', 'normal');
-                        // TIGHT SPACING: moved from 148 to 145
                         doc.text(payload.department || 'N/A', 145, y);
                     } else {
                         doc.text('Club :', 115, y);
                         doc.setFont('helvetica', 'normal');
-                        // TIGHT SPACING: moved from 138 to 130
                         doc.text(payload.department || 'N/A', 130, y);
                     }
 
@@ -1663,7 +1693,7 @@
                     if (payload.requestType === 'Domain') {
                         // Vertical layout for Domain
                         doc.setFont('helvetica', 'bold');
-                        doc.text('Student Coordinator :', 15, y);
+                        doc.text('Student Organizer :', 15, y);
                         doc.setFont('helvetica', 'normal');
                         doc.text(payload.coordinator?.name || 'N/A', 60, y);
 
@@ -1681,9 +1711,8 @@
 
                     } else {
                         // Horizontal layout for Club
-                        // Left: Student Coordinator
                         doc.setFont('helvetica', 'bold');
-                        doc.text('Student Coordinator', 15, y);
+                        doc.text('Student Organizer', 15, y);
 
                         let yLeft = y + 7;
                         doc.setFont('helvetica', 'bold');
@@ -1703,7 +1732,6 @@
                         doc.setFont('helvetica', 'normal');
                         doc.text(payload.coordinator?.mobile || 'N/A', 35, yLeft);
 
-                        // Right: POC
                         let yRight = y;
                         doc.setFont('helvetica', 'bold');
                         doc.text('POC', 115, yRight);
@@ -1767,7 +1795,37 @@
                                 2: { cellWidth: 80, halign: 'left' },
                                 3: { cellWidth: 30, halign: 'center' },
                             },
-                            margin: { left: 15, right: 15 }
+                            margin: { top: 45, left: 15, right: 15, bottom: 20 },
+                            didDrawPage: function (data) {
+                                const page = doc.internal.getNumberOfPages();
+                                if (page > 1) {
+                                    data.cursor.y = 45;
+                                }
+                                if (page1Template) {
+                                    doc.saveGraphicsState();
+                                    doc.setGState(new doc.GState({ opacity: 0.35 }));
+                                    if (page === 1) {
+                                        doc.addImage(
+                                            page1Template,
+                                            "PNG",
+                                            0,
+                                            0,
+                                            210,
+                                            297
+                                        );
+                                    } else {
+                                        doc.addImage(
+                                            page2Template || page1Template,
+                                            "PNG",
+                                            0,
+                                            0,
+                                            210,
+                                            297
+                                        );
+                                    }
+                                    doc.restoreGraphicsState();
+                                }
+                            }
                         });
                     } else {
                         let tableY = y;
@@ -1790,8 +1848,27 @@
                         });
                     }
 
-                    // ===== SIGNATURES =====
-                    const signY = Math.max(doc.lastAutoTable ? doc.lastAutoTable.finalY + 30 : 230, 230);
+                    // ===== SIGNATURES (DRAWN ON LAST PAGE AFTER TABLE FINISHES) =====
+                    const finalPage = doc.internal.getNumberOfPages();
+                    doc.setPage(finalPage);
+
+                    let lastTableY = doc.lastAutoTable ? doc.lastAutoTable.finalY : y;
+                    let signY = lastTableY + 30;
+
+                    if (signY > 265) {
+                        doc.addPage();
+                        const newFinalPage = doc.internal.getNumberOfPages();
+                        doc.setPage(newFinalPage);
+                        if (page2Template || page1Template) {
+                            doc.saveGraphicsState();
+                            doc.setGState(new doc.GState({ opacity: 0.35 }));
+                            doc.addImage(page2Template || page1Template, "PNG", 0, 0, 210, 297);
+                            doc.restoreGraphicsState();
+                        }
+                        signY = 50;
+                    }
+
+                    signY = Math.max(signY, 230);
 
                     doc.line(15, signY, 60, signY);
                     doc.line(82, signY, 127, signY);
@@ -1810,7 +1887,7 @@
                     doc.text('(PURCHASE)', 104.5, signY + 13, { align: 'center' });
 
                     // Right
-                    doc.text('Convenor', 171.5, signY + 7, { align: 'center' });
+                    doc.text('Co-Convenor', 171.5, signY + 7, { align: 'center' });
 
                     doc.save(`purchase-requisition-${Date.now()}.pdf`);
                 } catch (error) {
@@ -1826,9 +1903,9 @@
                 if (!requestType) { showAlert('Missing Field', 'Please select a request type.', 'error'); return; }
                 if (requestType === 'Domain' && !domain) { showAlert('Missing Field', 'Please select a Domain.', 'error'); return; }
                 if (requestType === 'Club' && !club) { showAlert('Missing Field', 'Please select a Club.', 'error'); return; }
-                if (!coordName.trim()) { showAlert('Missing Field', 'Please enter Student Coordinator Name.', 'error'); return; }
-                if (!coordReg.trim()) { showAlert('Missing Field', 'Please enter Student Coordinator Registration Number.', 'error'); return; }
-                if (!coordMobile.trim()) { showAlert('Missing Field', 'Please enter Student Coordinator Mobile.', 'error'); return; }
+                if (!coordName.trim()) { showAlert('Missing Field', 'Please enter Student Organizer Name.', 'error'); return; }
+                if (!coordReg.trim()) { showAlert('Missing Field', 'Please enter Student Organizer Registration Number.', 'error'); return; }
+                if (!coordMobile.trim()) { showAlert('Missing Field', 'Please enter Student Organizer Mobile.', 'error'); return; }
                 if (requestType === 'Club' && !pocName.trim()) { showAlert('Missing Field', 'Please enter POC Name.', 'error'); return; }
                 if (requestType === 'Club' && !pocReg.trim()) { showAlert('Missing Field', 'Please enter POC Registration Number.', 'error'); return; }
                 if (requestType === 'Club' && !pocMobile.trim()) { showAlert('Missing Field', 'Please enter POC Mobile.', 'error'); return; }
@@ -1902,27 +1979,118 @@
 
                         await generatePDF(payload);
 
+                        let purchaseDetails = '';
+                        const department = payload.department || '';
+                        const coordName = payload.coordinator?.name || '';
+                        const coordReg = payload.coordinator?.reg || '';
+                        const coordMobile = payload.coordinator?.mobile || '';
+                        const pocName = payload.poc?.name || '';
+                        const pocReg = payload.poc?.reg || '';
+                        const pocMobile = payload.poc?.mobile || '';
+
+                        if (payload.requestType === 'Domain') {
+                            purchaseDetails = `
+<table border="1" cellpadding="8" cellspacing="0" style="border-collapse:collapse;width:100%;">
+
+<tr>
+<td><b>Request Type</b></td>
+<td>Domain</td>
+</tr>
+
+<tr>
+<td><b>Domain</b></td>
+<td>${department}</td>
+</tr>
+
+<tr>
+<td><b>Student Organiser</b></td>
+<td>${coordName}</td>
+</tr>
+
+<tr>
+<td><b>Reg No</b></td>
+<td>${coordReg}</td>
+</tr>
+
+<tr>
+<td><b>Mobile</b></td>
+<td>${coordMobile}</td>
+</tr>
+
+</table>
+`;
+                        } else {
+                            purchaseDetails = `
+<table border="1" cellpadding="8" cellspacing="0" style="border-collapse:collapse;width:100%;">
+
+<tr>
+<td><b>Request Type</b></td>
+<td>Club</td>
+</tr>
+
+<tr>
+<td><b>Club</b></td>
+<td>${department}</td>
+</tr>
+
+<tr>
+<td><b>Student Organiser</b></td>
+<td>${coordName}</td>
+</tr>
+
+<tr>
+<td><b>Reg No</b></td>
+<td>${coordReg}</td>
+</tr>
+
+<tr>
+<td><b>Mobile</b></td>
+<td>${coordMobile}</td>
+</tr>
+
+<tr>
+<td><b>POC</b></td>
+<td>${pocName}</td>
+</tr>
+
+<tr>
+<td><b>POC Reg No</b></td>
+<td>${pocReg}</td>
+</tr>
+
+<tr>
+<td><b>POC Mobile</b></td>
+<td>${pocMobile}</td>
+</tr>
+
+</table>
+`;
+                        }
+
                         let itemList = '';
                         payload.items.forEach((item, index) => {
                             itemList += `${index + 1}. ${item.name} (${item.category || 'N/A'}) | Qty: ${item.quantity}\n`;
                         });
 
+                        const recipientEmail = 'sanjaygs2406@gmail.com';
+                        const SERVICE_ID = 'service_1796a5g';
+                        const TEMPLATE_ID = 'template_fwul7bo';
+                        const PUBLIC_KEY = 'sRZ_ixA1Xm913C0Ru';
+
+                        const templateParams = {
+                            to_email: recipientEmail,
+                            purchase_details: purchaseDetails,
+                            item_list: itemList
+                        };
+
+                        console.log("Purchase Details:", purchaseDetails);
+                        console.log("Template Params:", templateParams);
+
                         emailjs.send(
-                            'service_1796a5g',
-                            'template_fwul7bo',
-                            {
-                                request_type: payload.requestType,
-                                department: payload.department,
-                                category: payload.category,
-                                student: payload.coordinator.name,
-                                student_reg: payload.coordinator.reg,
-                                student_mobile: payload.coordinator.mobile,
-                                poc: payload.poc.name,
-                                poc_reg: payload.poc.reg,
-                                poc_mobile: payload.poc.mobile,
-                                item_list: itemList,
-                                to_email: 'sanjaygs2406@gmail.com'
-                            }
+                            SERVICE_ID,
+                            TEMPLATE_ID,
+                            templateParams,
+                            PUBLIC_KEY
                         )
                             .then(() => {
                                 showAlert('Success!', 'PDF downloaded and Email sent successfully.', 'success');
@@ -1980,6 +2148,10 @@
                                     <i className={`bi ${themeIcon}`}></i>
                                     {themeLabel}
                                 </span>
+                            </button>
+                            <button className="logout-btn" onClick={handleLogout} type="button" title="Logout">
+                                <i className="bi bi-box-arrow-right"></i>
+                                <span>Logout</span>
                             </button>
                         </div>
                     </header>
@@ -2043,10 +2215,10 @@
 
                         <hr className="divider" />
 
-                        {/* ===== Student Coordinator ===== */}
+                        {/* ===== Student Organizer ===== */}
                         <div className="section-title">
                             <i className="bi bi-person-badge" />
-                            Student Coordinator
+                            Student Organizer
                         </div>
                         <div className="row row-coord g-3">
                             <div className="col-md-4">
