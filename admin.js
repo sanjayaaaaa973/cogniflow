@@ -213,6 +213,7 @@ window.viewRequest = function (id) {
             <td>${item.category || '-'}</td>
             <td>${item.name || '-'}</td>
             <td>${item.quantity || 0}</td>
+            <td>${item.unit || 'pcs'}</td>
         </tr>
         `;
 
@@ -262,6 +263,8 @@ window.viewRequest = function (id) {
                     <th>Item</th>
 
                     <th>Qty</th>
+
+                    <th>Unit</th>
 
                 </tr>
 
@@ -415,13 +418,14 @@ const generateAdminPDF = async (data) => {
             index + 1,
             item.category || 'N/A',
             item.name,
-            item.quantity
+            item.quantity,
+            item.unit || 'pcs'
         ]);
 
         if (typeof doc.autoTable === 'function') {
             doc.autoTable({
                 startY: y,
-                head: [['Item No', 'Category', 'Item Name', 'Quantity']],
+                head: [['Item No', 'Category', 'Item Name', 'Quantity', 'Unit']],
                 body: rows,
                 theme: 'grid',
                 styles: {
@@ -437,10 +441,11 @@ const generateAdminPDF = async (data) => {
                     halign: 'center',
                 },
                 columnStyles: {
-                    0: { cellWidth: 20, halign: 'center' },
-                    1: { cellWidth: 40, halign: 'left' },
-                    2: { cellWidth: 80, halign: 'left' },
-                    3: { cellWidth: 30, halign: 'center' },
+                    0: { cellWidth: 18, halign: 'center' },
+                    1: { cellWidth: 35, halign: 'left' },
+                    2: { cellWidth: 70, halign: 'left' },
+                    3: { cellWidth: 25, halign: 'center' },
+                    4: { cellWidth: 25, halign: 'center' },
                 },
                 margin: { top: 45, left: 15, right: 15, bottom: 20 },
                 didDrawPage: function (data) {
@@ -479,9 +484,10 @@ const generateAdminPDF = async (data) => {
             doc.setFont('helvetica', 'bold');
             doc.setFontSize(10);
             doc.text('Item No', 15, tableY);
-            doc.text('Category', 35, tableY);
-            doc.text('Item Name', 75, tableY);
-            doc.text('Quantity', 160, tableY);
+            doc.text('Category', 32, tableY);
+            doc.text('Item Name', 68, tableY);
+            doc.text('Quantity', 145, tableY);
+            doc.text('Unit', 175, tableY);
             doc.line(15, tableY + 2, 195, tableY + 2);
             doc.setFont('helvetica', 'normal');
             doc.setFontSize(9);
@@ -489,9 +495,10 @@ const generateAdminPDF = async (data) => {
             rows.forEach((row) => {
                 tableY += 6;
                 doc.text(String(row[0]), 15, tableY);
-                doc.text(String(row[1]), 35, tableY);
-                doc.text(String(row[2]), 75, tableY);
-                doc.text(String(row[3]), 160, tableY);
+                doc.text(String(row[1]), 32, tableY);
+                doc.text(String(row[2]), 68, tableY);
+                doc.text(String(row[3]), 145, tableY);
+                doc.text(String(row[4]), 175, tableY);
             });
         }
 
@@ -500,9 +507,9 @@ const generateAdminPDF = async (data) => {
         doc.setPage(finalPage);
 
         let lastTableY = doc.lastAutoTable ? doc.lastAutoTable.finalY : y;
-        let signY = lastTableY + 30;
+        let signY1 = lastTableY + 20;
 
-        if (signY > 265) {
+        if (signY1 + 45 > 280) {
             doc.addPage();
             const newFinalPage = doc.internal.getNumberOfPages();
             doc.setPage(newFinalPage);
@@ -512,29 +519,37 @@ const generateAdminPDF = async (data) => {
                 doc.addImage(page2Template || page1Template, "PNG", 0, 0, 210, 297);
                 doc.restoreGraphicsState();
             }
-            signY = 50;
+            signY1 = 50;
+        } else {
+            signY1 = Math.max(signY1, 215);
         }
 
-        signY = Math.max(signY, 230);
-
-        doc.line(15, signY, 60, signY);
-        doc.line(82, signY, 127, signY);
-        doc.line(149, signY, 194, signY);
+        const signY2 = signY1 + 25;
 
         doc.setFont('helvetica', 'bold');
-        doc.setFontSize(10);
+        doc.setFontSize(9);
 
-        // Left
-        doc.text('Faculty Organiser', 37.5, signY + 7, { align: 'center' });
         const deptLabel = data.department ? data.department.toUpperCase() : 'N/A';
-        doc.text(`(${deptLabel})`, 37.5, signY + 13, { align: 'center' });
 
-        // Middle
-        doc.text('Faculty Organiser', 104.5, signY + 7, { align: 'center' });
-        doc.text('(PURCHASE)', 104.5, signY + 13, { align: 'center' });
+        // Row 1 (2 Signatures)
+        doc.line(20, signY1, 80, signY1);
+        doc.text('Student Organiser', 50, signY1 + 6, { align: 'center' });
+        doc.text(`(${deptLabel})`, 50, signY1 + 11, { align: 'center' });
 
-        // Right
-        doc.text('Co-Convenor', 171.5, signY + 7, { align: 'center' });
+        doc.line(130, signY1, 190, signY1);
+        doc.text('Faculty Co-ordinator / Organiser', 160, signY1 + 6, { align: 'center' });
+
+        // Row 2 (3 Signatures)
+        doc.line(15, signY2, 60, signY2);
+        doc.text('Faculty Organiser', 37.5, signY2 + 6, { align: 'center' });
+        doc.text('(PURCHASE)', 37.5, signY2 + 11, { align: 'center' });
+
+        doc.line(82.5, signY2, 127.5, signY2);
+        doc.text('Co-Convenor', 105, signY2 + 6, { align: 'center' });
+        doc.text('(PURCHASE)', 105, signY2 + 11, { align: 'center' });
+
+        doc.line(150, signY2, 195, signY2);
+        doc.text('Convenor', 172.5, signY2 + 6, { align: 'center' });
 
         doc.save(`purchase-requisition-${data.department || 'request'}-${Date.now()}.pdf`);
     } catch (error) {
@@ -659,11 +674,12 @@ if (excelBtn) {
                 "Item No",
                 "Category",
                 "Item Name",
-                "Qty"
+                "Qty",
+                "Unit"
             ]);
 
             if (domainRequests.length === 0) {
-                data.push(["-", "-", "-", "-", "-", "-", "-", "-", "-", "No orders placed", 0]);
+                data.push(["-", "-", "-", "-", "-", "-", "-", "-", "-", "No orders placed", 0, "-"]);
             } else {
                 domainRequests.forEach((req, idx) => {
                     const sNo = idx + 1;
@@ -688,7 +704,8 @@ if (excelBtn) {
                             "-",
                             "-",
                             "No items listed",
-                            0
+                            0,
+                            "-"
                         ]);
                     } else {
                         items.forEach((item, itemIdx) => {
@@ -705,7 +722,8 @@ if (excelBtn) {
                                     itemIdx + 1,
                                     item.category || "",
                                     item.name || "",
-                                    item.quantity || 0
+                                    item.quantity || 0,
+                                    item.unit || "pcs"
                                 ]);
                             } else {
                                 // Subsequent items leave request metadata blank for clean tabular view
@@ -720,7 +738,8 @@ if (excelBtn) {
                                     itemIdx + 1,
                                     item.category || "",
                                     item.name || "",
-                                    item.quantity || 0
+                                    item.quantity || 0,
+                                    item.unit || "pcs"
                                 ]);
                             }
                         });
@@ -745,7 +764,8 @@ if (excelBtn) {
                 { wch: 8 },  // Item No
                 { wch: 16 }, // Category
                 { wch: 30 }, // Item Name
-                { wch: 8 }   // Qty
+                { wch: 8 },  // Qty
+                { wch: 10 }  // Unit
             ];
 
             const sheetName = getCleanSheetName(domainName, usedSheetNames);
