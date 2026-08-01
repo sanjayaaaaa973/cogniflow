@@ -653,7 +653,7 @@ if (excelBtn) {
                 "Date",
                 "Time",
                 "Request Type",
-                "Convenor",
+                "Student Organiser",
                 "Reg No",
                 "Mobile",
                 "Item No",

@@ -1884,15 +1884,71 @@
                                 createdDate: new Date().toLocaleDateString("en-IN"),
                                 createdTime: new Date().toLocaleTimeString("en-IN")
                             });
+
                             console.log("Saved to Firestore");
+
+                            // ---------------- GOOGLE SHEETS ----------------
+
+                            console.log("===== BEFORE FETCH =====");
+
+                            try {
+
+                                const response = await fetch(
+                                    "https://script.google.com/macros/s/AKfycbwOaJfVx8F-8j39qBkogoTGKKu8pAy9s9XodoJVAmZIeYcCuG6AH1v1fVkTlyrCG_Y2cQ/exec",
+                                    {
+                                        method: "POST",
+                                        mode: "no-cors",
+                                        headers: {
+                                            "Content-Type": "application/json"
+                                        },
+                                        body: JSON.stringify({
+
+                                            requestType: payload.requestType,
+
+                                            department: payload.department,
+
+                                            club: payload.club || "",
+
+                                            date: new Date().toLocaleDateString("en-IN"),
+
+                                            time: new Date().toLocaleTimeString("en-IN"),
+
+                                            coordinator: payload.coordinator,
+
+                                            poc: payload.poc || {
+                                                name: "",
+                                                reg: "",
+                                                mobile: ""
+                                            },
+
+                                            items: payload.items
+
+                                        })
+                                    }
+                                );
+
+                                console.log("===== AFTER FETCH =====");
+
+                            } catch (e) {
+
+                                console.error(e);
+
+                            }
+
+                            // -----------------------------------------------
+
                         } catch (err) {
+
                             console.error(err);
+
                             showAlert(
                                 "Database Error",
                                 "Unable to save request.",
                                 "error"
                             );
+
                             return;
+
                         }
 
                         await generatePDF(payload);
