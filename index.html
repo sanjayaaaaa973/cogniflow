@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gravitas'26 | Login</title>
+    <title>CogniFlow | Login</title>
 
     <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -13,7 +14,9 @@
     <!-- Google Font (Inter) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap"
+        rel="stylesheet">
 
     <style>
         /* ===== CSS Variables / Themes ===== */
@@ -95,6 +98,7 @@
             opacity: 0.5;
             transition: opacity 0.8s ease;
         }
+
         [data-theme="dark"] #three-canvas {
             opacity: 0.3;
         }
@@ -123,10 +127,19 @@
         }
 
         /* ===== Logo & Brand ===== */
-        .logo {
-            width: 260px;
+        .logo-img {
+            width: 100%;
+            max-width: 290px;
+            height: auto;
             display: block;
-            margin: 0 auto 1.25rem auto;
+            margin: 0 auto 0.5rem auto;
+            mix-blend-mode: screen;
+            filter: drop-shadow(0 0 15px rgba(79, 70, 229, 0.4));
+            transition: transform var(--transition);
+        }
+
+        .logo-img:hover {
+            transform: scale(1.02);
         }
 
         .title {
@@ -170,7 +183,7 @@
             font-weight: 600;
             font-family: var(--font);
             backdrop-filter: blur(4px);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
         }
 
         .theme-toggle:hover {
@@ -204,6 +217,7 @@
         [data-theme="dark"] .theme-toggle .toggle-track {
             background: var(--accent-start);
         }
+
         [data-theme="dark"] .theme-toggle .toggle-track .toggle-thumb {
             transform: translateX(14px);
             background: #fff;
@@ -235,13 +249,13 @@
             transition: all var(--transition);
             font-family: var(--font);
             backdrop-filter: blur(4px);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
             height: 50px;
         }
 
         .form-control:focus {
             border-color: var(--accent-start);
-            box-shadow: 0 0 0 4px var(--accent-light), 0 2px 8px rgba(79,70,229,0.1);
+            box-shadow: 0 0 0 4px var(--accent-light), 0 2px 8px rgba(79, 70, 229, 0.1);
             background: var(--bg-input);
             color: var(--text-primary);
         }
@@ -308,7 +322,7 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 60%);
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 60%);
             opacity: 0;
             transition: opacity 0.4s ease;
             pointer-events: none;
@@ -452,8 +466,13 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
         }
 
         @keyframes slideUp {
@@ -461,6 +480,7 @@
                 opacity: 0;
                 transform: translateY(40px) scale(0.96);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0) scale(1);
@@ -472,41 +492,52 @@
             body {
                 padding: 1rem;
             }
+
             .login-card {
                 padding: 1.75rem 1.25rem;
             }
+
             .logo {
                 width: 200px;
             }
+
             .title {
                 font-size: 1.2rem;
             }
+
             .form-control {
                 height: 44px;
                 font-size: 0.85rem;
             }
+
             .btn-login {
                 height: 44px;
                 font-size: 0.9rem;
             }
+
             .theme-toggle {
                 font-size: 0.7rem;
                 padding: 0.2rem 0.5rem 0.2rem 0.4rem;
             }
+
             .theme-toggle .toggle-track {
                 width: 28px;
                 height: 16px;
             }
+
             .theme-toggle .toggle-track .toggle-thumb {
                 width: 12px;
                 height: 12px;
             }
+
             [data-theme="dark"] .theme-toggle .toggle-track .toggle-thumb {
                 transform: translateX(12px);
             }
+
             .toast-box {
                 padding: 1.5rem 1.25rem;
             }
+
             .toast-box .toast-title {
                 font-size: 1.1rem;
             }
@@ -516,6 +547,7 @@
             .login-card {
                 padding: 1.25rem 0.9rem;
             }
+
             .logo {
                 width: 160px;
             }
@@ -526,9 +558,11 @@
             width: 6px;
             height: 6px;
         }
+
         ::-webkit-scrollbar-track {
             background: var(--bg-body);
         }
+
         ::-webkit-scrollbar-thumb {
             background: var(--accent-start);
             border-radius: 10px;
@@ -537,6 +571,7 @@
 </head>
 
 <script type="module" src="login.js"></script>
+
 <body>
 
     <!-- 3D Background Canvas -->
@@ -570,21 +605,21 @@
         </div>
 
         <!-- Logo & Brand -->
-        <img src="images/gravitas-logo.png" class="logo" alt="Gravitas Logo">
-        <div class="title">Purchase Requisition Portal</div>
-        <div class="subtitle">Authorized Users Only</div>
+        <img src="images/logo.png" class="logo-img" alt="CogniFlow Logo">
+        <div class="subtitle">Personalized & Inclusive Learning</div>
 
         <!-- Login Type -->
         <div class="mb-3 text-start">
             <label class="form-label d-block">Login Type</label>
             <div class="d-flex align-items-center gap-2">
                 <div class="form-check form-check-inline m-0">
-                    <input class="form-check-input" type="radio" name="loginType" id="loginUser" value="user" checked>
-                    <label class="form-check-label" for="loginUser">User</label>
+                    <input class="form-check-input" type="radio" name="loginType" id="loginStudent" value="student"
+                        checked>
+                    <label class="form-check-label" for="loginStudent">Student</label>
                 </div>
                 <div class="form-check form-check-inline ms-3 m-0">
-                    <input class="form-check-input" type="radio" name="loginType" id="loginAdmin" value="admin">
-                    <label class="form-check-label" for="loginAdmin">Admin</label>
+                    <input class="form-check-input" type="radio" name="loginType" id="loginTeacher" value="teacher">
+                    <label class="form-check-label" for="loginTeacher">Teacher</label>
                 </div>
             </div>
         </div>
@@ -594,7 +629,8 @@
             <label class="form-label">Email</label>
             <div class="input-group">
                 <span class="input-group-text"><i class="bi bi-envelope-fill"></i></span>
-                <input type="email" id="email" class="form-control" placeholder="Enter your VIT Email" autocomplete="username">
+                <input type="email" id="email" class="form-control" placeholder="Enter your Email"
+                    autocomplete="username">
             </div>
         </div>
 
@@ -603,7 +639,8 @@
             <label class="form-label">Password</label>
             <div class="input-group">
                 <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
-                <input type="password" id="password" class="form-control" placeholder="Enter Password" autocomplete="current-password">
+                <input type="password" id="password" class="form-control" placeholder="Enter Password"
+                    autocomplete="current-password">
                 <button class="btn btn-outline-secondary" type="button" id="togglePassword">
                     <i class="bi bi-eye"></i>
                 </button>
@@ -616,7 +653,7 @@
             Login
         </button>
 
-        <div class="footer">© 2026 Gravitas'26 • VIT</div>
+        <div class="footer">© 2026 CogniFlow • Personalized Learning Platform</div>
     </div>
 
     <!-- ===== Three.js ===== -->
@@ -688,8 +725,8 @@
             const posArray = new Float32Array(particlesCount * 3);
             for (let i = 0; i < particlesCount * 3; i += 3) {
                 posArray[i] = (Math.random() - 0.5) * 20;
-                posArray[i+1] = (Math.random() - 0.5) * 20;
-                posArray[i+2] = (Math.random() - 0.5) * 20 - 4;
+                posArray[i + 1] = (Math.random() - 0.5) * 20;
+                posArray[i + 2] = (Math.random() - 0.5) * 20 - 4;
             }
             particlesGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
             const particlesMat = new THREE.PointsMaterial({
@@ -816,14 +853,14 @@
             const toastTitle = document.getElementById('toastTitle');
             const toastMessage = document.getElementById('toastMessage');
 
-            window.showToast = function(title, message) {
+            window.showToast = function (title, message) {
                 toastTitle.textContent = title || 'Invalid Credentials';
                 toastMessage.textContent = message || 'Please check your email and password and try again.';
                 overlay.classList.add('active');
                 document.body.style.overflow = 'hidden';
             };
 
-            const hideToast = function() {
+            const hideToast = function () {
                 overlay.classList.remove('active');
                 document.body.style.overflow = '';
             };
@@ -831,14 +868,14 @@
             closeBtn.addEventListener('click', hideToast);
             toastBtn.addEventListener('click', hideToast);
 
-            overlay.addEventListener('click', function(e) {
+            overlay.addEventListener('click', function (e) {
                 if (e.target === overlay) {
                     hideToast();
                 }
             });
 
             // Escape key closes toast
-            document.addEventListener('keydown', function(e) {
+            document.addEventListener('keydown', function (e) {
                 if (e.key === 'Escape' && overlay.classList.contains('active')) {
                     hideToast();
                 }
@@ -848,8 +885,9 @@
         // =============================================================
         // 5. Login Logic (with custom toast)
         // =============================================================
-        
+
     </script>
 
 </body>
+
 </html>

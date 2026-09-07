@@ -1,20 +1,21 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
-
 import { getAuth } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
-
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+import { getVertexAI, getGenerativeModel } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-vertexai-preview.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDCCcEwAiJllweBPcRkBB4ucTSb6_9OrOU",
-  authDomain: "gravitas26.firebaseapp.com",
-  projectId: "gravitas26",
-  storageBucket: "gravitas26.firebasestorage.app",
-  messagingSenderId: "365982186824",
-  appId: "1:365982186824:web:9897df6413acf0612c077d"
+  apiKey: "AIzaSyBimSfKfL8lFRbvuu67_oIORWhl66dbYjU",
+  authDomain: "cogniflow-3435c.firebaseapp.com",
+  projectId: "cogniflow-3435c",
+  storageBucket: "cogniflow-3435c.firebasestorage.app",
+  messagingSenderId: "496888121161",
+  appId: "1:496888121161:web:84e5c683287440a5cdbc98"
 };
 
-const app = initializeApp(firebaseConfig);
+export const app = initializeApp(firebaseConfig);
 
 export const auth = getAuth(app);
-
 export const db = getFirestore(app);
+
+export const vertexAI = getVertexAI(app);
+export const tutorModel = getGenerativeModel(vertexAI, { model: "gemini-1.5-flash" });

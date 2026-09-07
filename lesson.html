@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>CogniFlow | Lesson</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            color: #f5f4ff;
+            background: #090914;
+        }
+
+        body:before {
+            content: "";
+            position: fixed;
+            width: 450px;
+            height: 450px;
+            border-radius: 50%;
+            background: #6845f5;
+            opacity: .15;
+            filter: blur(120px);
+            top: -200px;
+            left: -150px;
+            pointer-events: none;
+        }
+
+        .container {
+            width: min(1100px, 94%);
+            margin: auto;
+            padding: 30px 0 50px;
+        }
+
+        .top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 25px;
+        }
+
+        .back {
+            border: 1px solid #ffffff18;
+            background: #18182b;
+            color: #aaa8c4;
+            padding: 10px 15px;
+            border-radius: 11px;
+            cursor: pointer;
+        }
+
+        .brand {
+            color: #9a86ff;
+            font-size: 21px;
+            font-weight: 800;
+        }
+
+        .card {
+            background: linear-gradient(145deg, #1d1d34, #131324);
+            border: 1px solid #ffffff12;
+            border-radius: 20px;
+            padding: 22px;
+            margin-bottom: 18px;
+        }
+
+        .course-label {
+            color: #9a86ff;
+            font-size: 10px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        h1 {
+            margin-top: 8px;
+            font-size: 29px;
+        }
+
+        .subtitle {
+            color: #aaa8c4;
+            margin-top: 7px;
+            font-size: 13px;
+        }
+
+        .video {
+            height: 390px;
+            display: grid;
+            place-items: center;
+            border-radius: 16px;
+            background:
+                linear-gradient(#0007, #0008),
+                linear-gradient(135deg, #263f66, #171729);
+        }
+
+        .play {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            font-size: 30px;
+            background: linear-gradient(135deg, #6845f5, #9239ee);
+            box-shadow: 0 0 35px #6845f566;
+            cursor: pointer;
+        }
+
+        .lesson-info {
+            margin-top: 20px;
+        }
+
+        .lesson-info h2 {
+            font-size: 19px;
+        }
+
+        .lesson-info p {
+            color: #aaa8c4;
+            font-size: 13px;
+            line-height: 1.7;
+            margin-top: 8px;
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            border: 0;
+            border-radius: 12px;
+            padding: 12px 20px;
+            color: #fff;
+            cursor: pointer;
+            font-weight: bold;
+            background: linear-gradient(90deg, #5744ed, #8c38f2);
+        }
+
+        .btn.secondary {
+            background: #292941;
+            border: 1px solid #ffffff12;
+        }
+
+        .topic {
+            padding: 14px;
+            margin-top: 9px;
+            border-radius: 12px;
+            background: #22223a;
+            display: flex;
+            justify-content: space-between;
+            color: #ddd;
+            font-size: 13px;
+        }
+
+        .topic i {
+            color: #9a86ff;
+        }
+
+        @media(max-width:600px) {
+            .video {
+                height: 250px
+            }
+
+            .actions {
+                flex-direction: column
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="top">
+
+            <button class="back" onclick="location.href='student-dashboard.html'">
+                <i class="bi bi-arrow-left"></i>
+                Dashboard
+            </button>
+
+            <div class="brand"><img src="images/logo.png" alt="CogniFlow Logo" style="height: 34px; width: auto; mix-blend-mode: screen; vertical-align: middle;"></div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="course-label" id="courseLabel">
+                COURSE
+            </div>
+
+            <h1 id="courseTitle">
+                Loading Course...
+            </h1>
+
+            <p class="subtitle">
+                Personalized Lesson Content
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="video">
+
+                <div class="play" id="playBtn">
+                    <i class="bi bi-play-fill"></i>
+                </div>
+
+            </div>
+
+
+            <div class="lesson-info">
+
+                <h2 id="lessonTitle">
+                    Current Lesson
+                </h2>
+
+                <p id="lessonDescription">
+                    Your personalized learning content will appear here.
+                </p>
+
+                <div class="actions">
+
+                    <button class="btn" id="notesBtn">
+                        <i class="bi bi-journal-text"></i>
+                        Notes
+                    </button>
+
+                    <button class="btn secondary" id="resourcesBtn">
+                        <i class="bi bi-folder-fill"></i>
+                        Resources
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h2 style="font-size:17px">
+                Lesson Topics
+            </h2>
+
+            <div class="topic">
+                <span>
+                    <i class="bi bi-check-circle-fill"></i>
+                    Introduction
+                </span>
+                <small>Completed</small>
+            </div>
+
+            <div class="topic">
+                <span>
+                    <i class="bi bi-play-circle-fill"></i>
+                    Current Concept
+                </span>
+                <small>Learning</small>
+            </div>
+
+            <div class="topic">
+                <span>
+                    <i class="bi bi-lock-fill"></i>
+                    Next Concept
+                </span>
+                <small>Locked</small>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        const params =
+            new URLSearchParams(location.search);
+
+        const course =
+            params.get("course") || "uiux";
+
+
+        const courseData = {
+
+            uiux: {
+                label: "UI/UX DESIGN",
+                title: "User Interface and User Experience Design",
+                lesson: "Mental Models and Cognitive Frameworks",
+                description:
+                    "Learn how users think, interact with interfaces and form mental models while using digital products."
+            },
+
+            designpatterns: {
+                label: "DESIGN PATTERNS",
+                title: "Software Design Patterns",
+                lesson: "Introduction to Design Patterns",
+                description:
+                    "Understand reusable software design solutions and how design patterns improve maintainability and flexibility."
+            }
+
+        };
+
+
+        const data =
+            courseData[course] ||
+            courseData.uiux;
+
+
+        document.getElementById("courseLabel")
+            .textContent = data.label;
+
+        document.getElementById("courseTitle")
+            .textContent = data.title;
+
+        document.getElementById("lessonTitle")
+            .textContent = data.lesson;
+
+        document.getElementById("lessonDescription")
+            .textContent = data.description;
+
+
+        document.getElementById("notesBtn")
+            .addEventListener("click", () => {
+
+                location.href =
+                    "notes.html?course=" +
+                    encodeURIComponent(course);
+
+            });
+
+
+        document.getElementById("resourcesBtn")
+            .addEventListener("click", () => {
+
+                location.href =
+                    "resource.html?course=" +
+                    encodeURIComponent(course);
+
+            });
+
+
+        document.getElementById("playBtn")
+            .addEventListener("click", () => {
+
+                alert(
+                    "Video player will be connected to the course video here."
+                );
+
+            });
+
+    </script>
+
+</body>
+
+</html>
