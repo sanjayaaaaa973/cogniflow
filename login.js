@@ -7,7 +7,9 @@ import {
 
 import {
     doc,
-    getDoc
+    getDoc,
+    setDoc,
+    serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 
 
@@ -309,19 +311,33 @@ function initLogin() {
                STEP 6: DASHBOARD
             ============================== */
 
+            /* Sync AALO accessibility preferences chosen at login to Firestore for both Student & Teacher */
+            const storedAALO = localStorage.getItem("aaloProfile");
+            if (storedAALO) {
+                try {
+                    const parsedAalo = JSON.parse(storedAALO);
+                    await setDoc(
+                        doc(db, "adaptiveProfiles", user.uid),
+                        {
+                            uid: user.uid,
+                            accessibility: parsedAalo,
+                            updatedAt: serverTimestamp()
+                        },
+                        { merge: true }
+                    );
+                    console.log("AALO profile successfully synced to Firestore on login.");
+                } catch (syncErr) {
+                    console.warn("Could not sync AALO profile to Firestore:", syncErr);
+                }
+            }
+
             if (actualRole === "student") {
-
                 window.location.href = "splash.html";
-
                 return;
             }
 
-
             if (actualRole === "teacher") {
-
-                window.location.href =
-                    "teacher-dashboard.html";
-
+                window.location.href = "teacher-dashboard.html";
                 return;
             }
 

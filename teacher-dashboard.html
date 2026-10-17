@@ -758,63 +758,6 @@
             font-weight: 800
         }
 
-        .access-panel {
-            max-width: 650px
-        }
-
-        .toggle-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 15px 0;
-            border-bottom: 1px solid var(--border)
-        }
-
-        .toggle {
-            width: 46px;
-            height: 25px;
-            border-radius: 20px;
-            background: #303049;
-            position: relative;
-            cursor: pointer
-        }
-
-        .toggle:after {
-            content: "";
-            position: absolute;
-            width: 19px;
-            height: 19px;
-            border-radius: 50%;
-            background: #fff;
-            top: 3px;
-            left: 3px;
-            transition: .2s
-        }
-
-        .toggle.on {
-            background: #6845f5
-        }
-
-        .toggle.on:after {
-            left: 24px
-        }
-
-        .access-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 18px
-        }
-
-        .notice {
-            padding: 11px 13px;
-            border-radius: 11px;
-            font-size: 11px;
-            background: #6845f512;
-            border: 1px solid #6845f533;
-            color: #c9c1ff;
-            margin-top: 12px
-        }
-
         .error {
             color: #ff9aa2
         }
@@ -827,41 +770,362 @@
             display: none
         }
 
-        body.large-text {
-            font-size: 17px
+        /* =============================================================
+           AALO ACCESSIBILITY SYSTEM (Shared with Student Dashboard)
+           ============================================================= */
+
+        /* Top Dashboard Accessibility Banner */
+        .aalo-dashboard-banner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            padding: 12px 18px;
+            margin-bottom: 24px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, rgba(104, 69, 245, 0.16), rgba(139, 56, 245, 0.08));
+            border: 1px solid rgba(139, 56, 245, 0.35);
+            backdrop-filter: blur(10px);
+            animation: fadeIn 0.4s ease;
         }
 
-        body.large-text h1 {
-            font-size: 34px
+        .aalo-dashboard-banner .aalo-banner-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
-        body.large-text .table td,
-        body.large-text .btn {
-            font-size: 14px
+        .aalo-dashboard-banner .aalo-banner-content i {
+            font-size: 22px;
+            color: #a78bfa;
         }
 
-        body.high-contrast {
-            --bg: #000;
-            --panel: #000;
-            --panel2: #111;
-            --text: #fff;
-            --muted: #eee;
-            --border: #fff
+        .aalo-dashboard-banner strong {
+            display: block;
+            font-size: 14px;
+            color: #fff;
+            margin-bottom: 2px;
         }
 
-        body.high-contrast .card,
-        body.high-contrast .sidebar {
-            background: #000;
-            border-color: #fff
+        .aalo-dashboard-banner p {
+            font-size: 12px;
+            color: #cbd5e1;
+            margin: 0;
         }
 
-        body.readable {
-            letter-spacing: .02em;
-            line-height: 1.8
+        .aalo-dashboard-banner .aalo-banner-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
         }
 
-        body.slow-mode .card {
-            animation: fade .6s ease
+        .aalo-dashboard-banner .aalo-tag {
+            background: rgba(139, 92, 246, 0.35);
+            border: 1px solid rgba(167, 139, 250, 0.5);
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+
+        /* --- 1. HIGH CONTRAST MODE --- */
+        html.aalo-high-contrast,
+        body.aalo-high-contrast {
+            --bg: #000000 !important;
+            --panel: #000000 !important;
+            --panel2: #111111 !important;
+            --text: #ffffff !important;
+            --muted: #ffff00 !important;
+            --border: #ffffff !important;
+            background: #000000 !important;
+            color: #ffffff !important;
+        }
+
+        body.aalo-high-contrast * {
+            text-shadow: none !important;
+        }
+
+        body.aalo-high-contrast .app,
+        body.aalo-high-contrast .main,
+        body.aalo-high-contrast .sidebar,
+        body.aalo-high-contrast .topbar,
+        body.aalo-high-contrast .view,
+        body.aalo-high-contrast .grid {
+            background: #000000 !important;
+            color: #ffffff !important;
+        }
+
+        body.aalo-high-contrast .sidebar {
+            border-right: 2px solid #ffffff !important;
+        }
+
+        body.aalo-high-contrast .topbar {
+            border-bottom: 2px solid #ffffff !important;
+        }
+
+        body.aalo-high-contrast .card {
+            background: #000000 !important;
+            background-image: none !important;
+            color: #ffffff !important;
+            border: 2px solid #ffffff !important;
+            box-shadow: none !important;
+        }
+
+        body.aalo-high-contrast h1,
+        body.aalo-high-contrast h2,
+        body.aalo-high-contrast h3,
+        body.aalo-high-contrast h4,
+        body.aalo-high-contrast p,
+        body.aalo-high-contrast span,
+        body.aalo-high-contrast small,
+        body.aalo-high-contrast strong,
+        body.aalo-high-contrast b,
+        body.aalo-high-contrast label,
+        body.aalo-high-contrast div,
+        body.aalo-high-contrast .page-sub,
+        body.aalo-high-contrast .stat-label,
+        body.aalo-high-contrast .stat-value,
+        body.aalo-high-contrast .nav-title,
+        body.aalo-high-contrast .nav-btn {
+            color: #ffffff !important;
+        }
+
+        body.aalo-high-contrast .stat-value,
+        body.aalo-high-contrast .stat-icon i,
+        body.aalo-high-contrast .aalo-tag,
+        body.aalo-high-contrast .score-val {
+            color: #ffff00 !important;
+            font-weight: 800 !important;
+        }
+
+        body.aalo-high-contrast .nav-btn {
+            border: 1px solid transparent !important;
+        }
+
+        body.aalo-high-contrast .nav-btn:hover,
+        body.aalo-high-contrast .nav-btn.active {
+            background: #222222 !important;
+            border: 2px solid #ffffff !important;
+            color: #ffffff !important;
+        }
+
+        body.aalo-high-contrast .btn,
+        body.aalo-high-contrast button {
+            background: #ffffff !important;
+            color: #000000 !important;
+            font-weight: 900 !important;
+            border: 2px solid #ffffff !important;
+        }
+
+        body.aalo-high-contrast .btn:hover,
+        body.aalo-high-contrast button:hover {
+            background: #ffff00 !important;
+            color: #000000 !important;
+            border-color: #ffff00 !important;
+        }
+
+        body.aalo-high-contrast .table th {
+            background: #111111 !important;
+            color: #ffff00 !important;
+            border-bottom: 2px solid #ffffff !important;
+        }
+
+        body.aalo-high-contrast .table td {
+            border-bottom: 1px solid #ffffff !important;
+            color: #ffffff !important;
+        }
+
+        body.aalo-high-contrast .table tr:hover td {
+            background: #222222 !important;
+        }
+
+        body.aalo-high-contrast input,
+        body.aalo-high-contrast select,
+        body.aalo-high-contrast textarea {
+            background: #000000 !important;
+            color: #ffffff !important;
+            border: 2px solid #ffffff !important;
+        }
+
+        body.aalo-high-contrast .aalo-dashboard-banner {
+            background: #000000 !important;
+            border: 2px solid #ffff00 !important;
+        }
+
+        body.aalo-high-contrast .aalo-dashboard-banner i,
+        body.aalo-high-contrast .aalo-dashboard-banner strong {
+            color: #ffff00 !important;
+        }
+
+        body.aalo-high-contrast .aalo-dashboard-banner p {
+            color: #ffffff !important;
+        }
+
+        body.aalo-high-contrast *:focus-visible {
+            outline: 3px solid #ffff00 !important;
+            outline-offset: 3px !important;
+        }
+
+        /* --- 2. DYSLEXIC LEARNING SUPPORT --- */
+        html.aalo-dyslexia,
+        body.aalo-dyslexia,
+        body.aalo-dyslexia * {
+            font-family: Arial, Verdana, 'Trebuchet MS', sans-serif !important;
+            letter-spacing: 0.05em !important;
+            word-spacing: 0.12em !important;
+        }
+
+        body.aalo-dyslexia p,
+        body.aalo-dyslexia .page-sub,
+        body.aalo-dyslexia li,
+        body.aalo-dyslexia span {
+            text-align: left !important;
+            line-height: 1.95 !important;
+        }
+
+        body.aalo-dyslexia p {
+            margin-bottom: 18px !important;
+        }
+
+        body.aalo-dyslexia h1,
+        body.aalo-dyslexia h2,
+        body.aalo-dyslexia h3,
+        body.aalo-dyslexia h4 {
+            text-align: left !important;
+            line-height: 1.5 !important;
+            letter-spacing: 0.04em !important;
+            border-left: 5px solid #8b38f5 !important;
+            padding-left: 12px !important;
+            margin-bottom: 16px !important;
+        }
+
+        body.aalo-dyslexia strong,
+        body.aalo-dyslexia b,
+        body.aalo-dyslexia .stat-value,
+        body.aalo-dyslexia .badge {
+            background: rgba(139, 56, 245, 0.22) !important;
+            color: #f5f3ff !important;
+            padding: 2px 7px !important;
+            border-radius: 4px !important;
+        }
+
+        body.aalo-dyslexia .card {
+            padding: 24px 26px !important;
+            margin-bottom: 20px !important;
+            line-height: 1.9 !important;
+        }
+
+        /* --- 3. LARGE & EXTRA LARGE TEXT SUPPORT --- */
+        html.aalo-large-text body,
+        body.aalo-large-text {
+            font-size: 115% !important;
+        }
+
+        body.aalo-large-text h1 { font-size: 2.2rem !important; }
+        body.aalo-large-text h2 { font-size: 1.7rem !important; }
+        body.aalo-large-text h3 { font-size: 1.35rem !important; }
+        body.aalo-large-text .nav-btn { font-size: 1.05rem !important; padding: 14px 16px !important; }
+        body.aalo-large-text .stat-value { font-size: 1.7rem !important; }
+        body.aalo-large-text .stat-label { font-size: 0.95rem !important; }
+        body.aalo-large-text .table th, body.aalo-large-text .table td { font-size: 1.05rem !important; }
+        body.aalo-large-text p, body.aalo-large-text .page-sub { font-size: 1.05rem !important; }
+
+        html.aalo-xlarge-text body,
+        body.aalo-xlarge-text {
+            font-size: 130% !important;
+        }
+
+        body.aalo-xlarge-text h1 { font-size: 2.6rem !important; }
+        body.aalo-xlarge-text h2 { font-size: 2.0rem !important; }
+        body.aalo-xlarge-text h3 { font-size: 1.6rem !important; }
+        body.aalo-xlarge-text .nav-btn { font-size: 1.2rem !important; padding: 16px 18px !important; }
+        body.aalo-xlarge-text .stat-value { font-size: 2.1rem !important; }
+        body.aalo-xlarge-text .stat-label { font-size: 1.1rem !important; }
+        body.aalo-xlarge-text .table th, body.aalo-xlarge-text .table td { font-size: 1.2rem !important; }
+        body.aalo-xlarge-text p, body.aalo-xlarge-text .page-sub { font-size: 1.2rem !important; }
+
+        /* --- 4. SLOW LEARNER SUPPORT --- */
+        body.aalo-slow-mode .stat-card,
+        body.aalo-slow-mode .card {
+            transition: transform 0.4s ease !important;
+        }
+
+        /* --- 5. GLOBAL VOICE READER --- */
+        .global-voice-panel {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 9999;
+            animation: slideUp 0.3s ease;
+        }
+
+        .global-voice-main {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(23, 23, 42, 0.95);
+            border: 1px solid rgba(139, 56, 245, 0.4);
+            border-radius: 40px;
+            padding: 8px 16px 8px 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(12px);
+        }
+
+        body.aalo-high-contrast .global-voice-panel,
+        body.aalo-high-contrast .global-voice-main {
+            background: #000000 !important;
+            color: #ffffff !important;
+            border-color: #ffffff !important;
+        }
+
+        .voice-ctrl-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: #6845f5;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .voice-ctrl-btn:hover {
+            transform: scale(1.08);
+            background: #8b38f5;
+        }
+
+        body.aalo-high-contrast .voice-ctrl-btn {
+            background: #ffffff !important;
+            color: #000000 !important;
+            border: 2px solid #ffffff !important;
+        }
+
+        body.aalo-high-contrast .voice-ctrl-btn:hover {
+            background: #ffff00 !important;
+            border-color: #ffff00 !important;
+        }
+
+        .global-voice-info {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+
+        .global-voice-info .voice-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .global-voice-info .voice-status {
+            font-size: 11px;
+            color: #aaa8c4;
         }
 
         @media(max-width:1000px) {
@@ -946,9 +1210,6 @@
                 Students</button>
             <button class="nav-btn" data-view="materials"><i class="bi bi-file-earmark-pdf-fill"></i>UI/UX
                 Materials</button>
-            <div class="nav-title">Accessibility</div>
-            <button class="nav-btn" data-view="accessibility"><i
-                    class="bi bi-universal-access-circle"></i>Accessibility</button>
             <div class="sidebar-bottom"><button class="nav-btn" id="logoutBtn"><i
                         class="bi bi-box-arrow-left"></i>Logout</button></div>
         </aside>
@@ -962,6 +1223,18 @@
                         <div><strong id="teacherName">Teacher</strong><small id="teacherEmail">teacher</small></div>
                     </div>
                 </div>
+            </div>
+
+            <!-- ================= AALO ACCESSIBILITY DASHBOARD BANNER ================= -->
+            <div class="aalo-dashboard-banner" id="aaloDashboardBanner" style="display:none;">
+                <div class="aalo-banner-content">
+                    <i class="bi bi-universal-access-circle"></i>
+                    <div>
+                        <strong>Accessibility Mode Active (Configured at Login)</strong>
+                        <p id="aaloBannerText">Customized visual, layout, and sensory accommodations applied.</p>
+                    </div>
+                </div>
+                <div class="aalo-banner-tags" id="aaloBannerTags"></div>
             </div>
 
             <section class="view active" id="dashboard">
@@ -1172,44 +1445,23 @@
                     </div>
                 </div>
             </section>
-
-            <section class="view" id="accessibility">
-                <h1>Teacher Accessibility</h1>
-                <p class="page-sub">Accessibility support for visually impaired teachers and teachers who prefer easier
-                    reading.</p>
-                <div class="card access-panel">
-                    <div class="toggle-row">
-                        <div><strong>Large Text</strong>
-                            <div class="stat-note">Increase dashboard text size.</div>
-                        </div>
-                        <div class="toggle" id="largeToggle"></div>
-                    </div>
-                    <div class="toggle-row">
-                        <div><strong>High Contrast</strong>
-                            <div class="stat-note">Increase contrast for visual clarity.</div>
-                        </div>
-                        <div class="toggle" id="contrastToggle"></div>
-                    </div>
-                    <div class="toggle-row">
-                        <div><strong>Readable Layout</strong>
-                            <div class="stat-note">Increase spacing and readability.</div>
-                        </div>
-                        <div class="toggle" id="readableToggle"></div>
-                    </div>
-                    <div class="toggle-row">
-                        <div><strong>Slow Visual Mode</strong>
-                            <div class="stat-note">Use slower transitions and less visual movement.</div>
-                        </div>
-                        <div class="toggle" id="slowToggle"></div>
-                    </div>
-                    <div class="access-actions"><button class="btn" id="readPage"><i class="bi bi-volume-up-fill"></i>
-                            Read Dashboard Aloud</button><button class="btn secondary" id="resetAccess">Reset</button>
-                    </div>
-                    <div class="notice">These settings are local to this browser. The student AALO system remains
-                        separate from teacher accessibility.</div>
-                </div>
-            </section>
         </main>
+    </div>
+
+    <!-- GLOBAL AALO VOICE CONTROLLER (Active when voice reading or visual impairment is enabled at login) -->
+    <div id="globalVoiceReader" class="global-voice-panel" style="display:none;">
+        <div class="global-voice-main">
+            <button type="button" id="globalVoiceToggleBtn" class="voice-ctrl-btn" title="Read Page Aloud" aria-label="Read Page Aloud">
+                <i class="bi bi-volume-up-fill" id="globalVoiceIcon"></i>
+            </button>
+            <div class="global-voice-info">
+                <span class="voice-title">AALO Voice Reader</span>
+                <span class="voice-status" id="globalVoiceStatus">Ready to read</span>
+            </div>
+            <button type="button" id="globalVoiceStopBtn" class="voice-ctrl-btn" title="Stop Reading" aria-label="Stop Reading" style="display:none;">
+                <i class="bi bi-stop-fill"></i>
+            </button>
+        </div>
     </div>
     <script type="module">
         import { auth, db } from "./firebase.js";
@@ -1227,6 +1479,7 @@
             query,
             where,
             addDoc,
+            setDoc,
             serverTimestamp,
             deleteDoc
         } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
@@ -1244,7 +1497,15 @@
         document.querySelectorAll('.nav-btn[data-view]').forEach(b => b.addEventListener('click', () => showView(b.dataset.view)));
         document.querySelectorAll('[data-view-go]').forEach(b => b.addEventListener('click', () => showView(b.dataset.viewGo)));
         $('menuBtn').addEventListener('click', () => $('sidebar').classList.toggle('open'));
-        $('logoutBtn').addEventListener('click', async () => { await signOut(auth); location.href = 'index.html' });
+        $('logoutBtn').addEventListener('click', async () => {
+            await signOut(auth);
+            const savedAalo = localStorage.getItem("aaloProfile");
+            localStorage.clear();
+            if (savedAalo) {
+                localStorage.setItem("aaloProfile", savedAalo);
+            }
+            location.href = 'index.html';
+        });
         $('themeBtn').addEventListener('click', () => document.documentElement.classList.toggle('light'));
         $('refreshBtn').addEventListener('click', loadTeacherData);
         $('backStudents').addEventListener('click', () => showView('students'));
@@ -1578,10 +1839,249 @@
             }
         }
 
-        function toggle(id, cls) { $(id).addEventListener('click', () => { $(id).classList.toggle('on'); document.body.classList.toggle(cls, $(id).classList.contains('on')) }) }
-        toggle('largeToggle', 'large-text'); toggle('contrastToggle', 'high-contrast'); toggle('readableToggle', 'readable'); toggle('slowToggle', 'slow-mode'); $('resetAccess').addEventListener('click', () => { ['largeToggle', 'contrastToggle', 'readableToggle', 'slowToggle'].forEach(id => $(id).classList.remove('on'));['large-text', 'high-contrast', 'readable', 'slow-mode'].forEach(c => document.body.classList.remove(c)) }); $('readPage').addEventListener('click', () => { if (!('speechSynthesis' in window)) return alert('Speech is not supported in this browser.'); speechSynthesis.cancel(); const text = document.querySelector('.view.active').innerText; speechSynthesis.speak(new SpeechSynthesisUtterance(text)) });
+        /* =============================================================
+           AALO ACCESSIBILITY CONTROLLER (Shared with Login & Student)
+           ============================================================= */
 
-        onAuthStateChanged(auth, async user => { if (!user) { location.href = 'index.html'; return } currentUser = user; try { const snap = await getDoc(doc(db, 'users', user.uid)); if (!snap.exists() || snap.data().role !== 'teacher') { await signOut(auth); location.href = 'index.html'; return } const d = snap.data(); $('teacherName').textContent = d.name || user.displayName || 'Teacher'; $('teacherEmail').textContent = user.email || d.email || ''; $('avatar').textContent = ($('teacherName').textContent || 'T').charAt(0).toUpperCase(); await loadTeacherData(); await loadMaterials() } catch (e) { console.error('Teacher dashboard auth/data error:', e); showError('Teacher access could not be verified. Ensure the users document has role: "teacher".') } });
+        let aaloProfile = {
+            visual: false,
+            hearing: false,
+            dyslexia: false,
+            slowLearner: false,
+            fontSize: "normal",
+            pace: "normal",
+            voice: false,
+            highContrast: false
+        };
+
+        function applyVisualAdaptation() {
+            const body = document.body;
+            const docEl = document.documentElement;
+            const isHighContrast = !!(aaloProfile.visual || aaloProfile.highContrast);
+            const isLarge = aaloProfile.fontSize === "large" || (aaloProfile.visual && aaloProfile.fontSize !== "xlarge");
+            const isXLarge = aaloProfile.fontSize === "xlarge";
+
+            body.classList.toggle("aalo-high-contrast", isHighContrast);
+            docEl.classList.toggle("aalo-high-contrast", isHighContrast);
+
+            body.classList.toggle("aalo-large-text", isLarge);
+            docEl.classList.toggle("aalo-large-text", isLarge);
+
+            body.classList.toggle("aalo-xlarge-text", isXLarge);
+            docEl.classList.toggle("aalo-xlarge-text", isXLarge);
+        }
+
+        function applyReadingAdaptation() {
+            const isDyslexia = !!aaloProfile.dyslexia;
+            document.body.classList.toggle("aalo-dyslexia", isDyslexia);
+            document.documentElement.classList.toggle("aalo-dyslexia", isDyslexia);
+        }
+
+        function applyLearningPace() {
+            const isSlow = !!(aaloProfile.slowLearner || aaloProfile.pace === "slow");
+            document.body.classList.toggle("aalo-slow-mode", isSlow);
+            document.documentElement.classList.toggle("aalo-slow-mode", isSlow);
+        }
+
+        let isTeacherVoiceSpeaking = false;
+        function applyAALOVoice() {
+            const voiceReader = document.getElementById("globalVoiceReader");
+            const shouldShowVoice = !!(aaloProfile.voice || aaloProfile.visual);
+            if (voiceReader) {
+                voiceReader.style.display = shouldShowVoice ? "flex" : "none";
+            }
+
+            if (!shouldShowVoice && "speechSynthesis" in window) {
+                window.speechSynthesis.cancel();
+            }
+        }
+
+        function speakCurrentTeacherView() {
+            if (!("speechSynthesis" in window)) {
+                alert("Speech synthesis is not supported in this browser.");
+                return;
+            }
+
+            if (isTeacherVoiceSpeaking) {
+                window.speechSynthesis.cancel();
+                isTeacherVoiceSpeaking = false;
+                updateVoiceControls(false);
+                return;
+            }
+
+            const activeView = document.querySelector(".view.active");
+            if (!activeView) return;
+
+            const text = activeView.innerText.trim();
+            if (!text) return;
+
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.rate = aaloProfile.slowLearner || aaloProfile.pace === "slow" ? 0.75 : 0.95;
+            utterance.pitch = 1;
+
+            utterance.onstart = () => {
+                isTeacherVoiceSpeaking = true;
+                updateVoiceControls(true);
+            };
+
+            utterance.onend = utterance.onerror = () => {
+                isTeacherVoiceSpeaking = false;
+                updateVoiceControls(false);
+            };
+
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function updateVoiceControls(speaking) {
+            const statusEl = document.getElementById("globalVoiceStatus");
+            const iconEl = document.getElementById("globalVoiceIcon");
+            const stopBtn = document.getElementById("globalVoiceStopBtn");
+            const toggleBtn = document.getElementById("globalVoiceToggleBtn");
+
+            if (speaking) {
+                if (statusEl) statusEl.textContent = "Reading aloud...";
+                if (iconEl) iconEl.className = "bi bi-pause-fill";
+                if (stopBtn) stopBtn.style.display = "flex";
+                if (toggleBtn) toggleBtn.title = "Pause Reading";
+            } else {
+                if (statusEl) statusEl.textContent = "Ready to read";
+                if (iconEl) iconEl.className = "bi bi-volume-up-fill";
+                if (stopBtn) stopBtn.style.display = "none";
+                if (toggleBtn) toggleBtn.title = "Read Page Aloud";
+            }
+        }
+
+        function updateAALOStatus() {
+            const active = [];
+            if (aaloProfile.visual) {
+                active.push("Visually Impaired");
+            } else {
+                if (aaloProfile.highContrast) active.push("High Contrast");
+                if (aaloProfile.fontSize === "large") active.push("Large Text");
+                if (aaloProfile.fontSize === "xlarge") active.push("Extra Large Text");
+                if (aaloProfile.voice) active.push("Voice Reading");
+            }
+            if (aaloProfile.hearing) active.push("Hearing Impaired");
+            if (aaloProfile.dyslexia) active.push("Dyslexia Support");
+            if (aaloProfile.slowLearner || aaloProfile.pace === "slow") active.push("Slow Pace Support");
+
+            const banner = document.getElementById("aaloDashboardBanner");
+            const bannerTags = document.getElementById("aaloBannerTags");
+            const bannerText = document.getElementById("aaloBannerText");
+
+            if (banner) {
+                if (active.length > 0) {
+                    banner.style.display = "flex";
+                    if (bannerText) {
+                        bannerText.textContent = `Applied from your login settings: ${active.join(" • ")}`;
+                    }
+                    if (bannerTags) {
+                        bannerTags.innerHTML = active.map(t => `<span class="aalo-tag">${t}</span>`).join("");
+                    }
+                } else {
+                    banner.style.display = "none";
+                }
+            }
+        }
+
+        async function loadAALOProfile() {
+            try {
+                // Priority 1: Load fresh profile saved at login in localStorage
+                const cached = localStorage.getItem("aaloProfile");
+                if (cached) {
+                    aaloProfile = { ...aaloProfile, ...JSON.parse(cached) };
+                }
+
+                // Apply to page immediately
+                applyVisualAdaptation();
+                applyReadingAdaptation();
+                applyLearningPace();
+                applyAALOVoice();
+                updateAALOStatus();
+
+                // Priority 2: Sync with Firestore profile if logged in
+                if (currentUser) {
+                    try {
+                        const profileSnap = await getDoc(doc(db, "adaptiveProfiles", currentUser.uid));
+                        if (profileSnap.exists()) {
+                            const data = profileSnap.data();
+                            if (data && data.accessibility) {
+                                aaloProfile = { ...aaloProfile, ...data.accessibility };
+                                applyVisualAdaptation();
+                                applyReadingAdaptation();
+                                applyLearningPace();
+                                applyAALOVoice();
+                                updateAALOStatus();
+                                localStorage.setItem("aaloProfile", JSON.stringify(aaloProfile));
+                            }
+                        }
+                    } catch (fsErr) {
+                        console.warn("Could not fetch remote AALO profile:", fsErr);
+                    }
+                }
+            } catch (err) {
+                console.error("Error loading AALO profile:", err);
+            }
+        }
+
+        // Apply immediately upon script execution
+        try {
+            const initCached = localStorage.getItem("aaloProfile");
+            if (initCached) {
+                aaloProfile = { ...aaloProfile, ...JSON.parse(initCached) };
+                applyVisualAdaptation();
+                applyReadingAdaptation();
+                applyLearningPace();
+                applyAALOVoice();
+                updateAALOStatus();
+            }
+        } catch (e) {}
+
+        const voiceToggleBtn = document.getElementById("globalVoiceToggleBtn");
+        if (voiceToggleBtn) {
+            voiceToggleBtn.addEventListener("click", speakCurrentTeacherView);
+        }
+
+        const voiceStopBtn = document.getElementById("globalVoiceStopBtn");
+        if (voiceStopBtn) {
+            voiceStopBtn.addEventListener("click", () => {
+                if ("speechSynthesis" in window) {
+                    window.speechSynthesis.cancel();
+                    isTeacherVoiceSpeaking = false;
+                    updateVoiceControls(false);
+                }
+            });
+        }
+
+        onAuthStateChanged(auth, async user => {
+            if (!user) {
+                location.href = 'index.html';
+                return;
+            }
+            currentUser = user;
+            try {
+                const snap = await getDoc(doc(db, 'users', user.uid));
+                if (!snap.exists() || snap.data().role !== 'teacher') {
+                    await signOut(auth);
+                    location.href = 'index.html';
+                    return;
+                }
+                const d = snap.data();
+                $('teacherName').textContent = d.name || user.displayName || 'Teacher';
+                $('teacherEmail').textContent = user.email || d.email || '';
+                $('avatar').textContent = ($('teacherName').textContent || 'T').charAt(0).toUpperCase();
+
+                // Apply and sync AALO accessibility profile from login/Firestore
+                await loadAALOProfile();
+
+                await loadTeacherData();
+                await loadMaterials();
+            } catch (e) {
+                console.error('Teacher dashboard auth/data error:', e);
+                showError('Teacher access could not be verified. Ensure the users document has role: "teacher".');
+            }
+        });
     </script>
 </body>
 

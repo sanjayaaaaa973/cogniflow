@@ -9,6 +9,23 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+    <!-- Instant Pre-Render Accessibility Loader -->
+    <script>
+        (function() {
+            try {
+                var p = JSON.parse(localStorage.getItem("aaloProfile") || "null");
+                if (p) {
+                    var el = document.documentElement;
+                    if (p.visual || p.highContrast) el.classList.add("aalo-high-contrast");
+                    if (p.fontSize === "large" || (p.visual && p.fontSize !== "xlarge")) el.classList.add("aalo-large-text");
+                    if (p.fontSize === "xlarge") el.classList.add("aalo-xlarge-text");
+                    if (p.dyslexia) el.classList.add("aalo-dyslexia");
+                    if (p.slowLearner || p.pace === "slow") el.classList.add("aalo-slow-mode");
+                }
+            } catch(e) {}
+        })();
+    </script>
+
     <style>
         /* ============================================================
            CSS VARIABLES / THEMES
@@ -819,6 +836,57 @@
         .quiz-card {
             max-width: 850px;
             margin: auto;
+        }
+
+        .quiz-start-card {
+            max-width: 850px;
+            margin: auto;
+            position: relative;
+        }
+
+        .quiz-info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 16px;
+            margin: 24px 0;
+        }
+
+        .quiz-info-box {
+            padding: 16px 18px;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.25s ease;
+        }
+
+        .quiz-info-box:hover {
+            transform: translateY(-2px);
+            border-color: rgba(99, 102, 241, 0.4);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+        }
+
+        .light .quiz-info-box {
+            background: #f8fafc;
+            border-color: #e2e8f0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+        }
+
+        .light .quiz-info-box:hover {
+            border-color: #6366f1;
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.12);
+        }
+
+        .quiz-rules-banner {
+            padding: 16px 20px;
+            border-radius: 14px;
+            background: rgba(99, 102, 241, 0.08);
+            border: 1px solid rgba(99, 102, 241, 0.25);
+            margin-bottom: 28px;
+        }
+
+        .light .quiz-rules-banner {
+            background: #eef2ff;
+            border-color: #c7d2fe;
         }
 
         .question {
@@ -2327,16 +2395,55 @@
         /* Hearing Support */
         .aalo-transcript {
             margin-top: 15px;
-            padding: 16px;
-            background: rgba(255, 255, 255, .04);
-            border: 1px solid rgba(255, 255, 255, .1);
-            border-radius: 12px;
+            padding: 18px 20px;
+            background: rgba(30, 41, 59, 0.65);
+            border: 1px solid rgba(56, 189, 248, 0.4);
+            border-radius: 14px;
         }
 
-        .aalo-transcript strong {
+        .aalo-transcript-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            color: #38bdf8;
+        }
+
+        .aalo-transcript-badge {
+            background: rgba(56, 189, 248, 0.15);
+            color: #38bdf8;
+            padding: 3px 8px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+        }
+
+        .aalo-caption-alert {
+            background: rgba(56, 189, 248, 0.08);
+            border-left: 3px solid #38bdf8;
+            padding: 8px 12px;
+            font-size: 12px;
+            color: #94a3b8;
+            margin-bottom: 12px;
+            border-radius: 0 6px 6px 0;
+            line-height: 1.5;
+        }
+
+        .aalo-transcript-body strong {
             display: block;
-            margin-bottom: 8px;
-            color: #8b38f5;
+            margin-bottom: 6px;
+            color: #e2e8f0;
+            font-size: 13px;
+        }
+
+        .aalo-transcript-body p {
+            color: #cbd5e1;
+            font-size: 13.5px;
+            line-height: 1.7;
+            margin: 0;
         }
 
         /* Slow Learner Support */
@@ -2487,51 +2594,265 @@
 
         body.aalo-xlarge-text h3 {
             font-size: 1.35rem !important;
+        /* =============================================================
+           AALO COMPREHENSIVE ACCESSIBILITY SYSTEM (ENTIRE WEBSITE)
+        ============================================================= */
+
+        /* --- 1. AALO Active Dashboard Banner --- */
+        .aalo-dashboard-banner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.25), rgba(79, 70, 229, 0.2));
+            border: 1.5px solid rgba(139, 92, 246, 0.6);
+            border-radius: 16px;
+            padding: 14px 20px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.15);
         }
 
+        .aalo-dashboard-banner .aalo-banner-content {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .aalo-dashboard-banner .aalo-banner-content i {
+            font-size: 28px;
+            color: #a78bfa;
+        }
+
+        .aalo-dashboard-banner strong {
+            display: block;
+            font-size: 15px;
+            color: #ffffff;
+            font-weight: 700;
+        }
+
+        .aalo-dashboard-banner p {
+            margin: 2px 0 0;
+            font-size: 12px;
+            color: #d8b4fe;
+        }
+
+        .aalo-dashboard-banner .aalo-banner-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .aalo-dashboard-banner .aalo-tag {
+            background: rgba(139, 92, 246, 0.35);
+            border: 1px solid rgba(167, 139, 250, 0.5);
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+
+        /* --- 2. HIGH CONTRAST MODE (Transforms the entire website) --- */
+        html.aalo-high-contrast,
         body.aalo-high-contrast {
-            filter: none !important;
-            background: #000 !important;
-            color: #fff !important;
+            background: #000000 !important;
+            color: #ffffff !important;
+        }
+
+        body.aalo-high-contrast * {
+            text-shadow: none !important;
         }
 
         body.aalo-high-contrast .app,
         body.aalo-high-contrast .main,
-        body.aalo-high-contrast .card,
         body.aalo-high-contrast .sidebar,
-        body.aalo-high-contrast .topbar {
-            background: #000 !important;
-            color: #fff !important;
+        body.aalo-high-contrast .topbar,
+        body.aalo-high-contrast .view,
+        body.aalo-high-contrast .hero,
+        body.aalo-high-contrast .grid {
+            background: #000000 !important;
+            color: #ffffff !important;
         }
 
         body.aalo-high-contrast .card,
-        body.aalo-high-contrast .nav-btn,
-        body.aalo-high-contrast input,
-        body.aalo-high-contrast select {
-            border-color: #fff !important;
+        body.aalo-high-contrast .card.welcome,
+        body.aalo-high-contrast .card.stat-card,
+        body.aalo-high-contrast .card.progress-ring,
+        body.aalo-high-contrast .course,
+        body.aalo-high-contrast .lesson-card,
+        body.aalo-high-contrast .ai-chat-box,
+        body.aalo-high-contrast .modal-content,
+        body.aalo-high-contrast .panel {
+            background: #000000 !important;
+            background-image: none !important;
+            color: #ffffff !important;
+            border: 2px solid #ffffff !important;
+            box-shadow: none !important;
         }
 
+        body.aalo-high-contrast h1,
+        body.aalo-high-contrast h2,
+        body.aalo-high-contrast h3,
+        body.aalo-high-contrast h4,
         body.aalo-high-contrast p,
-        body.aalo-high-contrast small,
         body.aalo-high-contrast span,
-        body.aalo-high-contrast label {
-            color: #fff !important;
+        body.aalo-high-contrast small,
+        body.aalo-high-contrast strong,
+        body.aalo-high-contrast b,
+        body.aalo-high-contrast label,
+        body.aalo-high-contrast div,
+        body.aalo-high-contrast .page-sub,
+        body.aalo-high-contrast .stat-label,
+        body.aalo-high-contrast .stat-value,
+        body.aalo-high-contrast .nav-title,
+        body.aalo-high-contrast .nav-btn {
+            color: #ffffff !important;
         }
 
-        body.aalo-dyslexia {
-            font-family: Arial, Verdana, sans-serif !important;
+        body.aalo-high-contrast .stat-value span,
+        body.aalo-high-contrast .percent,
+        body.aalo-high-contrast .link,
+        body.aalo-high-contrast .aalo-tag {
+            color: #ffff00 !important;
+            font-weight: 800 !important;
         }
 
-        body.aalo-dyslexia .lesson-text,
-        body.aalo-dyslexia .lesson-text p,
-        body.aalo-dyslexia li {
-            letter-spacing: .045em !important;
-            word-spacing: .10em !important;
+        body.aalo-high-contrast .nav-btn {
+            border: 1px solid transparent !important;
+        }
+
+        body.aalo-high-contrast .nav-btn:hover,
+        body.aalo-high-contrast .nav-btn.active {
+            background: #222222 !important;
+            border: 2px solid #ffffff !important;
+            color: #ffffff !important;
+        }
+
+        body.aalo-high-contrast .primary,
+        body.aalo-high-contrast button.primary,
+        body.aalo-high-contrast .btn-primary {
+            background: #ffffff !important;
+            color: #000000 !important;
+            font-weight: 900 !important;
+            border: 2px solid #ffffff !important;
+        }
+
+        body.aalo-high-contrast .primary:hover {
+            background: #ffff00 !important;
+            color: #000000 !important;
+            border-color: #ffff00 !important;
+        }
+
+        body.aalo-high-contrast .aalo-dashboard-banner {
+            background: #000000 !important;
+            border: 2px solid #ffff00 !important;
+        }
+
+        body.aalo-high-contrast .aalo-dashboard-banner i,
+        body.aalo-high-contrast .aalo-dashboard-banner strong {
+            color: #ffff00 !important;
+        }
+
+        body.aalo-high-contrast .aalo-dashboard-banner p {
+            color: #ffffff !important;
+        }
+
+        body.aalo-high-contrast .bar {
+            background: #333333 !important;
+            border: 1px solid #ffffff !important;
+        }
+
+        body.aalo-high-contrast .bar span {
+            background: #ffff00 !important;
+        }
+
+        body.aalo-high-contrast *:focus-visible {
+            outline: 3px solid #ffff00 !important;
+            outline-offset: 3px !important;
+        }
+
+        /* --- 3. DYSLEXIC LEARNING SUPPORT (Affects the ENTIRE dashboard) --- */
+        html.aalo-dyslexia,
+        body.aalo-dyslexia,
+        body.aalo-dyslexia * {
+            font-family: Arial, Verdana, 'Trebuchet MS', sans-serif !important;
+            letter-spacing: 0.05em !important;
+            word-spacing: 0.12em !important;
+        }
+
+        body.aalo-dyslexia p,
+        body.aalo-dyslexia .page-sub,
+        body.aalo-dyslexia li,
+        body.aalo-dyslexia span {
+            text-align: left !important;
+            line-height: 1.95 !important;
+        }
+
+        body.aalo-dyslexia p {
+            margin-bottom: 18px !important;
+        }
+
+        body.aalo-dyslexia h1,
+        body.aalo-dyslexia h2,
+        body.aalo-dyslexia h3,
+        body.aalo-dyslexia h4 {
+            text-align: left !important;
+            line-height: 1.5 !important;
+            letter-spacing: 0.04em !important;
+            border-left: 5px solid #8b38f5 !important;
+            padding-left: 12px !important;
+            margin-bottom: 16px !important;
+        }
+
+        body.aalo-dyslexia strong,
+        body.aalo-dyslexia b,
+        body.aalo-dyslexia .stat-value,
+        body.aalo-dyslexia .badge {
+            background: rgba(139, 56, 245, 0.22) !important;
+            color: #f5f3ff !important;
+            padding: 2px 7px !important;
+            border-radius: 4px !important;
+        }
+
+        body.aalo-dyslexia .card {
+            padding: 24px 26px !important;
+            margin-bottom: 20px !important;
             line-height: 1.9 !important;
         }
 
-        body.aalo-slow-mode .lesson-text {
-            line-height: 1.9 !important;
+        /* --- 4. LARGE & EXTRA LARGE TEXT SUPPORT --- */
+        html.aalo-large-text body,
+        body.aalo-large-text {
+            font-size: 115% !important;
+        }
+
+        body.aalo-large-text h1 { font-size: 2.2rem !important; }
+        body.aalo-large-text h2 { font-size: 1.7rem !important; }
+        body.aalo-large-text h3 { font-size: 1.35rem !important; }
+        body.aalo-large-text .nav-btn { font-size: 1.05rem !important; padding: 14px 16px !important; }
+        body.aalo-large-text .stat-value { font-size: 1.7rem !important; }
+        body.aalo-large-text .stat-label { font-size: 0.95rem !important; }
+        body.aalo-large-text p, body.aalo-large-text .page-sub { font-size: 1.05rem !important; }
+
+        html.aalo-xlarge-text body,
+        body.aalo-xlarge-text {
+            font-size: 130% !important;
+        }
+
+        body.aalo-xlarge-text h1 { font-size: 2.6rem !important; }
+        body.aalo-xlarge-text h2 { font-size: 2.0rem !important; }
+        body.aalo-xlarge-text h3 { font-size: 1.6rem !important; }
+        body.aalo-xlarge-text .nav-btn { font-size: 1.2rem !important; padding: 16px 18px !important; }
+        body.aalo-xlarge-text .stat-value { font-size: 2.1rem !important; }
+        body.aalo-xlarge-text .stat-label { font-size: 1.1rem !important; }
+        body.aalo-xlarge-text p, body.aalo-xlarge-text .page-sub { font-size: 1.2rem !important; }
+
+        /* --- 5. SLOW LEARNER SUPPORT --- */
+        body.aalo-slow-mode .stat-card,
+        body.aalo-slow-mode .card {
+            transition: transform 0.4s ease !important;
         }
 
         body.aalo-slow-mode .aalo-chunk {
@@ -2631,8 +2952,8 @@
 
         .global-voice-actions {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 6px;
         }
 
         .global-voice-action {
@@ -2707,6 +3028,68 @@
                 font-size: 20px;
             }
         }
+
+        /* ============================================================
+           QUIZ 2-MINUTE TIMER STYLES
+           ============================================================ */
+        .quiz-timer-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 18px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .quiz-timer-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            color: var(--text);
+        }
+
+        .quiz-timer-badge {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 19px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            padding: 4px 14px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .quiz-timer-badge.timer-normal {
+            color: #10b981;
+            background: rgba(16, 185, 129, 0.12);
+            border: 1px solid rgba(16, 185, 129, 0.35);
+        }
+
+        .quiz-timer-badge.timer-warning {
+            color: #f59e0b !important;
+            background: rgba(245, 158, 11, 0.18) !important;
+            border: 1px solid #f59e0b !important;
+            box-shadow: 0 0 14px rgba(245, 158, 11, 0.35);
+        }
+
+        .quiz-timer-badge.timer-danger {
+            color: #ef4444 !important;
+            background: rgba(239, 68, 68, 0.22) !important;
+            border: 1px solid #ef4444 !important;
+            box-shadow: 0 0 18px rgba(239, 68, 68, 0.5);
+            animation: timerPulse 0.8s ease-in-out infinite alternate;
+        }
+
+        @keyframes timerPulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.06); }
+        }
     </style>
 </head>
 
@@ -2757,12 +3140,6 @@
                 <i class="bi bi-trophy-fill"></i> Achievements
             </button>
 
-            <div class="nav-title">Profile</div>
-
-            <button class="nav-btn" id="accessBtn">
-                <i class="bi bi-universal-access-circle"></i> Accessibility
-            </button>
-
             <div class="sidebar-bottom">
                 <button class="nav-btn" id="logoutBtn">
                     <i class="bi bi-box-arrow-right"></i> Logout
@@ -2808,6 +3185,18 @@
             <!-- ================= DASHBOARD ================= -->
 
             <section class="view active" id="dashboard">
+
+                <!-- AALO Active Accessibility Status Banner -->
+                <div class="aalo-dashboard-banner" id="aaloDashboardBanner" style="display:none;">
+                    <div class="aalo-banner-content">
+                        <i class="bi bi-universal-access-circle"></i>
+                        <div>
+                            <strong id="aaloBannerTitle">Accessibility Mode Active</strong>
+                            <p id="aaloBannerDescription">Your custom learning accessibility settings are applied across the entire website. To change them, please log out to the login page.</p>
+                        </div>
+                    </div>
+                    <div class="aalo-banner-tags" id="aaloBannerTags"></div>
+                </div>
 
                 <h1 id="welcomeTitle">Hi, Student 👋</h1>
                 <p class="page-sub">Welcome back. Continue your personalized learning journey.</p>
@@ -3177,15 +3566,19 @@
                         </div>
 
                         <div id="aaloTranscript" class="aalo-transcript" style="display:none">
-
-                            <strong>Lesson Transcript</strong>
-
-                            <p id="transcriptText">
-                                This lesson explains mental models,
-                                user expectations and interaction patterns
-                                in interface design.
-                            </p>
-
+                            <div class="aalo-transcript-header">
+                                <span><i class="bi bi-badge-cc-fill"></i> Lesson Transcript & Captions</span>
+                                <span class="aalo-transcript-badge">Text Alternative Active</span>
+                            </div>
+                            <div class="aalo-caption-alert">
+                                <i class="bi bi-info-circle-fill"></i> Closed captions and written text alternatives are automatically enabled for this lesson. Spoken audio is provided as text below.
+                            </div>
+                            <div class="aalo-transcript-body">
+                                <strong>Lesson Transcript:</strong>
+                                <p id="transcriptText">
+                                    "Welcome to Mental Models & Cognitive Frameworks. In this lesson, we explore how users form mental models based on previous experiences, real-world metaphors, and consistent interface feedback. We will cover conceptual design, user expectations, mapping, and error prevention strategies."
+                                </p>
+                            </div>
                         </div>
 
 
@@ -3347,7 +3740,75 @@
                     Adaptive assessment based on your current learning level.
                 </p>
 
-                <div class="card quiz-card" id="quizCard">
+                <!-- START QUIZ INTRO CARD -->
+                <div class="card quiz-card quiz-start-card" id="quizStartCard">
+
+                    <div style="display:flex;align-items:center;gap:18px;margin-bottom:20px;flex-wrap:wrap;">
+                        <div style="width:54px;height:54px;border-radius:14px;background:rgba(99,102,241,0.18);border:1px solid rgba(99,102,241,0.35);display:flex;align-items:center;justify-content:center;color:#818cf8;font-size:26px;flex-shrink:0;">
+                            <i class="bi bi-mortarboard-fill"></i>
+                        </div>
+                        <div>
+                            <h2 style="font-size:22px;font-weight:700;margin:0 0 5px 0;color:var(--text, #fff);">Adaptive UI/UX Assessment</h2>
+                            <p style="margin:0;font-size:14px;color:var(--muted, #94a3b8);line-height:1.5;">Personalized evaluation powered by Reinforcement Learning</p>
+                        </div>
+                    </div>
+
+                    <div class="quiz-info-grid">
+                        <div class="quiz-info-box">
+                            <div style="font-size:12px;font-weight:700;color:var(--muted,#94a3b8);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:8px;display:flex;align-items:center;gap:7px;">
+                                <i class="bi bi-stopwatch-fill" style="color:#10b981;font-size:16px;"></i> Total Time
+                            </div>
+                            <div style="font-size:20px;font-weight:800;color:var(--text,#fff);letter-spacing:0.3px;">2 Minutes</div>
+                            <div style="font-size:12.5px;color:var(--muted,#94a3b8);margin-top:5px;line-height:1.4;">120-second countdown for the entire quiz</div>
+                        </div>
+
+                        <div class="quiz-info-box">
+                            <div style="font-size:12px;font-weight:700;color:var(--muted,#94a3b8);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:8px;display:flex;align-items:center;gap:7px;">
+                                <i class="bi bi-ui-checks" style="color:#6366f1;font-size:16px;"></i> Questions
+                            </div>
+                            <div style="font-size:20px;font-weight:800;color:var(--text,#fff);letter-spacing:0.3px;">10 Questions</div>
+                            <div style="font-size:12.5px;color:var(--muted,#94a3b8);margin-top:5px;line-height:1.4;">Multiple-choice questions with dynamic difficulty</div>
+                        </div>
+
+                        <div class="quiz-info-box">
+                            <div style="font-size:12px;font-weight:700;color:var(--muted,#94a3b8);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:8px;display:flex;align-items:center;gap:7px;">
+                                <i class="bi bi-lock-fill" style="color:#f59e0b;font-size:16px;"></i> Session Mode
+                            </div>
+                            <div style="font-size:20px;font-weight:800;color:var(--text,#fff);letter-spacing:0.3px;">Continuous</div>
+                            <div style="font-size:12.5px;color:var(--muted,#94a3b8);margin-top:5px;line-height:1.4;">No stop or pause option once started</div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-rules-banner">
+                        <div style="display:flex;align-items:flex-start;gap:14px;">
+                            <i class="bi bi-info-circle-fill" style="color:#818cf8;font-size:20px;margin-top:2px;flex-shrink:0;"></i>
+                            <div style="font-size:13.5px;line-height:1.6;color:var(--text,#fff);">
+                                Click <strong>Start Quiz</strong> below when you are ready to begin. The 2-minute timer will start immediately and run continuously without stopping until all questions are completed or time expires.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="display:flex;justify-content:center;margin-top:12px;margin-bottom:8px;">
+                        <button class="quiz-submit-btn" id="startQuizBtn" style="padding:15px 36px;font-size:16px;font-weight:700;border-radius:12px;cursor:pointer;display:inline-flex;align-items:center;gap:10px;">
+                            <span>Start Quiz</span>
+                            <i class="bi bi-play-circle-fill" style="font-size:18px;"></i>
+                        </button>
+                    </div>
+
+                </div>
+
+                <div class="card quiz-card" id="quizCard" style="display:none">
+
+                    <!-- 2-MINUTE QUIZ COUNTDOWN TIMER -->
+                    <div class="quiz-timer-container" id="quizTimerContainer" style="display:flex !important;justify-content:space-between !important;align-items:center !important;width:100% !important;padding:12px 18px !important;background:rgba(255,255,255,0.035) !important;border:1px solid rgba(255,255,255,0.08) !important;border-radius:12px !important;margin-bottom:20px !important;box-sizing:border-box !important;">
+                        <div class="quiz-timer-label" style="display:flex !important;align-items:center !important;gap:10px !important;font-size:14px !important;font-weight:600 !important;color:var(--text, #fff) !important;">
+                            <i class="bi bi-stopwatch-fill" id="timerIcon" style="font-size:18px;color:#10b981;transition:color 0.3s ease;"></i>
+                            <span>Time Remaining</span>
+                        </div>
+                        <div id="quizTimer" class="quiz-timer-badge timer-normal" style="font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace !important;font-size:20px !important;font-weight:800 !important;letter-spacing:1.5px !important;padding:4px 14px !important;border-radius:8px !important;color:#10b981;background:rgba(16,185,129,0.14);border:1px solid rgba(16,185,129,0.35);transition:all 0.3s ease !important;display:inline-block !important;">
+                            02:00
+                        </div>
+                    </div>
 
                     <div style="display:flex;justify-content:space-between;align-items:center">
 
@@ -3407,17 +3868,22 @@
 
                     <div class="result-header">
 
-                        <div class="result-icon">
+                        <div class="result-icon" id="resultIcon">
                             ✓
                         </div>
 
                         <div>
-                            <h2>Assessment Complete</h2>
-                            <p>Your adaptive learning analysis is ready.</p>
+                            <h2 id="resultTitle">Assessment Complete</h2>
+                            <p id="resultSubtitle">Your adaptive learning analysis is ready.</p>
                         </div>
 
                     </div>
 
+                    <!-- TIMEOUT FAILURE NOTICE -->
+                    <div id="timeoutAlertBox" style="display:none;background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.35);color:#fca5a5;padding:12px 16px;border-radius:10px;margin-bottom:18px;font-size:14px;font-weight:600;align-items:center;gap:10px;">
+                        <i class="bi bi-clock-history" style="font-size:18px;color:#ef4444;"></i>
+                        <span>Time is up! Your quiz attempt has failed.</span>
+                    </div>
 
                     <div class="result-stats">
 
@@ -3432,8 +3898,8 @@
                         </div>
 
                         <div class="result-stat">
-                            <span>Confidence</span>
-                            <strong id="finalConfidence">60%</strong>
+                            <span>Time Taken</span>
+                            <strong id="finalTime">01:24</strong>
                         </div>
 
                         <div class="result-stat">
@@ -3466,6 +3932,14 @@
                     <div id="firebaseStatus" class="firebase-status">
                     </div>
 
+                    <!-- RETAKE QUIZ ACTION -->
+                    <div style="margin-top:24px;display:flex;justify-content:flex-end;">
+                        <button class="quiz-submit-btn" id="restartAssessment">
+                            <i class="bi bi-arrow-clockwise"></i>
+                            <span>Retake Quiz</span>
+                        </button>
+                    </div>
+
                 </div>
 
             </section>
@@ -3485,7 +3959,7 @@
                             <div>
                                 <h3>Quiz Attempts</h3>
                                 <p class="chart-subtitle">
-                                    Your score across every adaptive quiz attempt
+                                    Your score and completion timing across every adaptive quiz attempt
                                 </p>
                             </div>
                             <span class="badge" id="attemptCountBadge">0 ATTEMPTS</span>
@@ -3600,11 +4074,11 @@
                         <span class="ai-status" id="aiStatus">
                             <span class="ai-status-dot"></span>AI Tutor
                         </span>
+                        <button class="ai-small-btn" id="configureAI" title="API Key settings">
+                            <i class="bi bi-gear-wide-connected"></i> Key
+                        </button>
                         <button class="ai-small-btn" id="clearChat" title="Clear conversation">
                             <i class="bi bi-trash3"></i> Clear
-                        </button>
-                        <button class="ai-small-btn" id="configureAI" title="Configure AI">
-                            <i class="bi bi-gear"></i>
                         </button>
                     </div>
                 </div>
@@ -3722,6 +4196,182 @@
         } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 
         /* =========================================
+           AALO ACCESSIBILITY ENGINE (INITIALIZED IMMEDIATELY)
+        ========================================= */
+        let aaloProfile = {
+            visual: false,
+            hearing: false,
+            dyslexia: false,
+            slowLearner: false,
+            fontSize: "normal",
+            pace: "normal",
+            voice: false,
+            highContrast: false
+        };
+
+        function applyVisualAdaptation() {
+            const body = document.body;
+            const docEl = document.documentElement;
+            const isHighContrast = !!(aaloProfile.visual || aaloProfile.highContrast);
+            const isLarge = aaloProfile.fontSize === "large" || (aaloProfile.visual && aaloProfile.fontSize !== "xlarge");
+            const isXLarge = aaloProfile.fontSize === "xlarge";
+
+            body.classList.toggle("aalo-high-contrast", isHighContrast);
+            docEl.classList.toggle("aalo-high-contrast", isHighContrast);
+
+            body.classList.toggle("aalo-large-text", isLarge);
+            docEl.classList.toggle("aalo-large-text", isLarge);
+
+            body.classList.toggle("aalo-xlarge-text", isXLarge);
+            docEl.classList.toggle("aalo-xlarge-text", isXLarge);
+        }
+
+        function applyReadingAdaptation() {
+            const isDyslexia = !!aaloProfile.dyslexia;
+            document.body.classList.toggle("aalo-dyslexia", isDyslexia);
+            document.documentElement.classList.toggle("aalo-dyslexia", isDyslexia);
+        }
+
+        function applyHearingAdaptation() {
+            const transcript = document.getElementById("aaloTranscript");
+            if (transcript) {
+                transcript.style.display = aaloProfile.hearing ? "block" : "none";
+            }
+        }
+
+        function applyLearningPace() {
+            const isSlow = !!(aaloProfile.slowLearner || aaloProfile.pace === "slow");
+            document.body.classList.toggle("aalo-slow-mode", isSlow);
+            document.documentElement.classList.toggle("aalo-slow-mode", isSlow);
+        }
+
+        function applyAALOVoice() {
+            const voiceReader = document.getElementById("globalVoiceReader");
+            const shouldShowVoice = !!(aaloProfile.voice || aaloProfile.visual);
+            if (voiceReader) {
+                voiceReader.style.display = shouldShowVoice ? "flex" : "none";
+            }
+
+            const oldButton = document.getElementById("aaloVoiceButton");
+            if (oldButton) oldButton.remove();
+
+            if (!shouldShowVoice) {
+                if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+                return;
+            }
+
+            if (!("speechSynthesis" in window)) return;
+
+            const lessonCard = document.querySelector(".lesson-text");
+            if (lessonCard) {
+                const button = document.createElement("button");
+                button.id = "aaloVoiceButton";
+                button.className = "aalo-voice-button";
+                button.type = "button";
+                button.innerHTML = '<i class="bi bi-volume-up-fill"></i> Read Lesson Aloud';
+                button.addEventListener("click", speakCurrentLesson);
+                lessonCard.insertBefore(button, lessonCard.firstChild);
+            }
+        }
+
+        function speakCurrentLesson() {
+            if (!("speechSynthesis" in window)) return;
+            window.speechSynthesis.cancel();
+            const heading = document.getElementById("lessonHeading")?.innerText || "";
+            const description = document.getElementById("lessonDescription")?.innerText || "";
+            const text = (heading + ". " + description).trim();
+            if (!text) return;
+
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.rate = aaloProfile.slowLearner || aaloProfile.pace === "slow" ? 0.72 : 0.95;
+            utterance.pitch = 1;
+            utterance.volume = 1;
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function updateAALOStatus() {
+            const active = [];
+            if (aaloProfile.visual) {
+                active.push("Visually Impaired");
+            } else {
+                if (aaloProfile.highContrast) active.push("High Contrast");
+                if (aaloProfile.fontSize === "large") active.push("Large Text");
+                if (aaloProfile.fontSize === "xlarge") active.push("Extra Large Text");
+                if (aaloProfile.voice) active.push("Voice Reading");
+            }
+            if (aaloProfile.hearing) active.push("Hearing Impaired (Transcripts)");
+            if (aaloProfile.dyslexia) active.push("Dyslexia Support");
+            if (aaloProfile.slowLearner || aaloProfile.pace === "slow") active.push("Slow Learning");
+
+            const banner = document.getElementById("aaloDashboardBanner");
+            const bannerTags = document.getElementById("aaloBannerTags");
+            if (banner) {
+                if (active.length > 0) {
+                    banner.style.display = "flex";
+                    if (bannerTags) {
+                        bannerTags.innerHTML = active.map(t => `<span class="aalo-tag">${t}</span>`).join("");
+                    }
+                } else {
+                    banner.style.display = "none";
+                }
+            }
+
+            const status = document.getElementById("aaloStatus");
+            if (status) {
+                status.textContent = active.length ? active.join(" • ") : "Default learning mode";
+            }
+        }
+
+        async function loadAALOProfile() {
+            try {
+                // Priority: Load fresh preferences selected at login from localStorage
+                const cached = localStorage.getItem("aaloProfile");
+                if (cached) {
+                    aaloProfile = { ...aaloProfile, ...JSON.parse(cached) };
+                }
+
+                // Apply to page immediately
+                applyVisualAdaptation();
+                applyReadingAdaptation();
+                applyHearingAdaptation();
+                applyLearningPace();
+                applyAALOVoice();
+                updateAALOStatus();
+
+                // Sync latest profile to Firestore
+                if (currentUser) {
+                    try {
+                        await setDoc(
+                            doc(db, "adaptiveProfiles", currentUser.uid),
+                            {
+                                uid: currentUser.uid,
+                                accessibility: aaloProfile,
+                                updatedAt: serverTimestamp()
+                            },
+                            { merge: true }
+                        );
+                    } catch(fsErr) {
+                        console.warn("Firestore profile sync warning:", fsErr);
+                    }
+                }
+            } catch (error) {
+                console.error("Error loading AALO profile:", error);
+            }
+        }
+
+        // Apply immediately upon script execution
+        try {
+            const initCached = localStorage.getItem("aaloProfile");
+            if (initCached) {
+                aaloProfile = { ...aaloProfile, ...JSON.parse(initCached) };
+                applyVisualAdaptation();
+                applyReadingAdaptation();
+                applyHearingAdaptation();
+                applyLearningPace();
+            }
+        } catch(e) {}
+
+        /* =========================================
            ADAPTIVE RL ASSESSMENT STATE
         ========================================= */
 
@@ -3743,6 +4393,120 @@
         let currentDifficulty = 1;
 
         let qTable = {};
+
+        /* =========================================
+           QUIZ 2-MINUTE COUNTDOWN TIMER STATE & LOGIC
+           120 seconds total for entire quiz attempt
+        ========================================= */
+
+        const QUIZ_TIME_LIMIT_MS = 120 * 1000;
+        let quizTimerInterval = null;
+        let quizDeadline = null;
+        let quizStartTime = null;
+        let isQuizActive = false;
+        let isAssessmentFinished = false;
+        let assessmentTimedOut = false;
+
+        function updateQuizTimerDisplay(remainingMs) {
+            const timerEl = document.getElementById("quizTimer");
+            if (!timerEl) return;
+
+            const totalSeconds = Math.max(0, Math.ceil(remainingMs / 1000));
+            const mins = Math.floor(totalSeconds / 60);
+            const secs = totalSeconds % 60;
+            const formatted = `${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
+
+            timerEl.textContent = formatted;
+
+            // Visual feedback: Normal (>30s) -> Warning (<=30s) -> Danger pulse (<=10s)
+            timerEl.classList.remove("timer-normal", "timer-warning", "timer-danger");
+            const icon = document.getElementById("timerIcon");
+
+            if (totalSeconds <= 10) {
+                timerEl.classList.add("timer-danger");
+                timerEl.style.color = "#ef4444";
+                timerEl.style.backgroundColor = "rgba(239, 68, 68, 0.22)";
+                timerEl.style.borderColor = "#ef4444";
+                if (icon) icon.style.color = "#ef4444";
+            } else if (totalSeconds <= 30) {
+                timerEl.classList.add("timer-warning");
+                timerEl.style.color = "#f59e0b";
+                timerEl.style.backgroundColor = "rgba(245, 158, 11, 0.2)";
+                timerEl.style.borderColor = "#f59e0b";
+                if (icon) icon.style.color = "#f59e0b";
+            } else {
+                timerEl.classList.add("timer-normal");
+                timerEl.style.color = "#10b981";
+                timerEl.style.backgroundColor = "rgba(16, 185, 129, 0.14)";
+                timerEl.style.borderColor = "rgba(16, 185, 129, 0.35)";
+                if (icon) icon.style.color = "#10b981";
+            }
+        }
+
+        function startQuizTimer() {
+            stopQuizTimer();
+            const initialRemaining = Math.max(0, (quizDeadline || Date.now()) - Date.now());
+            updateQuizTimerDisplay(initialRemaining);
+
+            quizTimerInterval = setInterval(() => {
+                const remaining = quizDeadline - Date.now();
+                if (remaining <= 0) {
+                    updateQuizTimerDisplay(0);
+                    stopQuizTimer();
+                    handleQuizTimeout();
+                } else {
+                    updateQuizTimerDisplay(remaining);
+                }
+            }, 500);
+        }
+
+        function stopQuizTimer() {
+            if (quizTimerInterval) {
+                clearInterval(quizTimerInterval);
+                quizTimerInterval = null;
+            }
+        }
+
+        function clearQuizSessionState() {
+            try {
+                sessionStorage.removeItem("cogniflow_quiz_active");
+                sessionStorage.removeItem("cogniflow_quiz_deadline");
+                sessionStorage.removeItem("cogniflow_quiz_start_time");
+            } catch (e) {}
+        }
+
+        async function handleQuizTimeout() {
+            if (isAssessmentFinished) return;
+            isAssessmentFinished = true;
+            isQuizActive = false;
+            assessmentTimedOut = true;
+
+            stopQuizTimer();
+            clearQuizSessionState();
+
+            // Disable all option buttons and submit button
+            const optionBtns = document.querySelectorAll("#optionsContainer button.option");
+            optionBtns.forEach(btn => {
+                btn.disabled = true;
+                btn.style.pointerEvents = "none";
+                btn.style.opacity = "0.5";
+            });
+
+            const subBtn = document.getElementById("submitQuiz");
+            if (subBtn) {
+                subBtn.disabled = true;
+                subBtn.style.pointerEvents = "none";
+                subBtn.style.opacity = "0.5";
+            }
+
+            const fb = document.getElementById("feedback");
+            if (fb) {
+                fb.textContent = "Time is up! Your quiz attempt has failed.";
+                fb.style.color = "#ef4444";
+            }
+
+            await finishAdaptiveAssessment(true);
+        }
 
 
         /* ==============================
@@ -3829,6 +4593,13 @@
 
             }
 
+            // If student refreshed the page during an active quiz attempt, restore quiz view
+            try {
+                if (sessionStorage.getItem("cogniflow_quiz_active") === "true") {
+                    openView("quiz");
+                }
+            } catch (e) {}
+
         });
 
 
@@ -3889,7 +4660,36 @@
 
             if (id === "quiz") {
 
-                startAdaptiveQuiz();
+                let savedActive = false;
+                let savedDeadline = 0;
+                try {
+                    savedActive = sessionStorage.getItem("cogniflow_quiz_active") === "true";
+                    savedDeadline = parseInt(sessionStorage.getItem("cogniflow_quiz_deadline") || "0", 10);
+                } catch (e) {}
+
+                const hasOngoingQuiz = (isQuizActive || savedActive) &&
+                    (quizDeadline || savedDeadline) &&
+                    Date.now() < (quizDeadline || savedDeadline) &&
+                    !isAssessmentFinished &&
+                    !assessmentTimedOut &&
+                    adaptiveQuestions.length > 0;
+
+                const startCard = document.getElementById("quizStartCard");
+                const qCard = document.getElementById("quizCard");
+                const resCard = document.getElementById("quizResult");
+
+                if (hasOngoingQuiz) {
+                    if (startCard) startCard.style.display = "none";
+                    if (resCard) resCard.style.display = "none";
+                    if (qCard) qCard.style.display = "block";
+                    startQuizTimer();
+                } else if (isAssessmentFinished || assessmentTimedOut) {
+                    if (startCard) startCard.style.display = "none";
+                    if (qCard) qCard.style.display = "none";
+                    if (resCard) resCard.style.display = "block";
+                } else {
+                    showQuizStartScreen();
+                }
 
             }
 
@@ -4335,10 +5135,70 @@
 
 
         // ==========================================
+        // SHOW QUIZ START SCREEN
+        // ==========================================
+
+        function showQuizStartScreen() {
+            isQuizActive = false;
+            stopQuizTimer();
+            clearQuizSessionState();
+
+            const startCard = document.getElementById("quizStartCard");
+            const qCard = document.getElementById("quizCard");
+            const resCard = document.getElementById("quizResult");
+
+            if (startCard) startCard.style.display = "block";
+            if (qCard) qCard.style.display = "none";
+            if (resCard) resCard.style.display = "none";
+
+            updateQuizTimerDisplay(QUIZ_TIME_LIMIT_MS);
+        }
+
+
+        // ==========================================
         // START ASSESSMENT
         // ==========================================
 
-        function startAdaptiveQuiz() {
+        function startAdaptiveQuiz(forceFresh = false) {
+
+            // Check if there is an active session deadline from a page refresh or in-memory
+            let savedActive = false;
+            let savedDeadline = 0;
+            try {
+                savedActive = sessionStorage.getItem("cogniflow_quiz_active") === "true";
+                savedDeadline = parseInt(sessionStorage.getItem("cogniflow_quiz_deadline") || "0", 10);
+            } catch (e) {}
+
+            const now = Date.now();
+
+            if (!forceFresh && (isQuizActive || savedActive) && (quizDeadline || savedDeadline)) {
+                const targetDeadline = quizDeadline || savedDeadline;
+                if (now >= targetDeadline) {
+                    handleQuizTimeout();
+                    return;
+                }
+                // If already active with questions loaded in memory, don't reset state
+                if (isQuizActive && adaptiveQuestions.length > 0 && !assessmentTimedOut && !isAssessmentFinished) {
+                    return;
+                }
+                // Preserve deadline across reload without resetting 2-minute limit
+                quizDeadline = targetDeadline;
+                const savedStart = parseInt(sessionStorage.getItem("cogniflow_quiz_start_time") || "0", 10);
+                quizStartTime = savedStart > 0 ? savedStart : (quizDeadline - QUIZ_TIME_LIMIT_MS);
+            } else {
+                // Fresh 2-minute limit for the entire quiz attempt
+                quizDeadline = now + QUIZ_TIME_LIMIT_MS;
+                quizStartTime = now;
+                try {
+                    sessionStorage.setItem("cogniflow_quiz_active", "true");
+                    sessionStorage.setItem("cogniflow_quiz_deadline", String(quizDeadline));
+                    sessionStorage.setItem("cogniflow_quiz_start_time", String(quizStartTime));
+                } catch (e) {}
+            }
+
+            isQuizActive = true;
+            isAssessmentFinished = false;
+            assessmentTimedOut = false;
 
             currentQuestionIndex = 0;
             selectedAnswer = null;
@@ -4351,11 +5211,17 @@
 
             addNextAdaptiveQuestion();
 
+            const startCard = document.getElementById("quizStartCard");
+            if (startCard) startCard.style.display = "none";
+
             const resCard = document.getElementById("quizResult");
             if (resCard) resCard.style.display = "none";
 
             const qCard = document.getElementById("quizCard");
             if (qCard) qCard.style.display = "block";
+
+            // Start countdown timer
+            startQuizTimer();
 
             renderAdaptiveQuestion();
         }
@@ -4399,6 +5265,10 @@
         // ==========================================
 
         function renderAdaptiveQuestion() {
+
+            if (assessmentTimedOut || isAssessmentFinished) {
+                return;
+            }
 
             const question =
                 adaptiveQuestions[currentQuestionIndex];
@@ -4450,6 +5320,8 @@
 
                     button.onclick = () => {
 
+                        if (assessmentTimedOut || isAssessmentFinished) return;
+
                         document
                             .querySelectorAll(".option")
                             .forEach(btn =>
@@ -4478,6 +5350,11 @@
         // ==========================================
 
         async function handleAdaptiveAnswer() {
+
+            if (assessmentTimedOut || isAssessmentFinished) {
+                alert("Time is up! Your quiz attempt has failed.");
+                return;
+            }
 
             if (selectedAnswer === null) {
                 alert("Please select an answer.");
@@ -4670,6 +5547,10 @@
 
                     answers: result.answers,
 
+                    timedOut: Boolean(result.timedOut),
+                    status: result.status || (result.timedOut ? "failed" : "completed"),
+                    timeTakenSeconds: result.timeTakenSeconds != null ? result.timeTakenSeconds : null,
+
                     createdAt: serverTimestamp()
                 };
 
@@ -4701,7 +5582,17 @@
         // FINAL RESULT
         // ==========================================
 
-        async function finishAdaptiveAssessment() {
+        async function finishAdaptiveAssessment(isTimeout = false) {
+
+            // Prevent duplicate executions and double saving
+            if (isAssessmentFinished && !isTimeout) {
+                return;
+            }
+            isAssessmentFinished = true;
+            isQuizActive = false;
+
+            stopQuizTimer();
+            clearQuizSessionState();
 
             const total = assessmentAnswers.length;
 
@@ -4768,20 +5659,15 @@
 
             let level;
 
-            if (score < 50) {
-
+            if (isTimeout) {
+                level = "FAILED — Time Expired";
+            } else if (score < 50) {
                 level = "NEEDS REINFORCEMENT";
-
             } else if (score < 70) {
-
                 level = "DEVELOPING";
-
             } else if (score < 85) {
-
                 level = "STRONG";
-
             } else {
-
                 level = "ADVANCED";
             }
 
@@ -4790,21 +5676,22 @@
             // RESULT OBJECT
             // ==========================================
 
+            const elapsedMs = quizStartTime ? (Date.now() - quizStartTime) : 0;
+            const timeTakenSeconds = isTimeout
+                ? 120
+                : Math.min(120, Math.max(1, Math.round(elapsedMs / 1000)));
+
             const result = {
-
                 score: score,
-
                 confidence: confidence,
-
                 level: level,
-
                 correct: correct,
-
                 total: total,
-
                 topicStats: topics,
-
-                answers: assessmentAnswers
+                answers: assessmentAnswers,
+                timedOut: Boolean(isTimeout),
+                status: isTimeout ? "failed" : "completed",
+                timeTakenSeconds: timeTakenSeconds
             };
 
 
@@ -4818,6 +5705,35 @@
             const qResult = document.getElementById("quizResult");
             if (qResult) qResult.style.display = "block";
 
+            // Update Header & Icons based on timeout status
+            const resIcon = document.getElementById("resultIcon");
+            const resTitle = document.getElementById("resultTitle");
+            const resSub = document.getElementById("resultSubtitle");
+            const timeoutBox = document.getElementById("timeoutAlertBox");
+
+            if (isTimeout) {
+                if (resIcon) {
+                    resIcon.innerHTML = `<i class="bi bi-clock-history" style="color:#ef4444;font-size:26px;"></i>`;
+                    resIcon.style.background = "rgba(239, 68, 68, 0.15)";
+                    resIcon.style.border = "1px solid rgba(239, 68, 68, 0.4)";
+                }
+                if (resTitle) resTitle.textContent = "FAILED — Time Expired";
+                if (resSub) resSub.textContent = "Time is up! Your quiz attempt has failed.";
+                if (timeoutBox) {
+                    timeoutBox.style.display = "flex";
+                }
+            } else {
+                if (resIcon) {
+                    resIcon.textContent = "✓";
+                    resIcon.style.background = "";
+                    resIcon.style.border = "";
+                }
+                if (resTitle) resTitle.textContent = "Assessment Complete";
+                if (resSub) resSub.textContent = "Your adaptive learning analysis is ready.";
+                if (timeoutBox) {
+                    timeoutBox.style.display = "none";
+                }
+            }
 
             const fScore = document.getElementById("finalScore");
             if (fScore) fScore.textContent = `${score}%`;
@@ -4828,8 +5744,26 @@
             const fConf = document.getElementById("finalConfidence");
             if (fConf) fConf.textContent = `${confidence}%`;
 
+            const fTime = document.getElementById("finalTime");
+            if (fTime) {
+                const m = Math.floor(timeTakenSeconds / 60);
+                const s = timeTakenSeconds % 60;
+                fTime.textContent = isTimeout ? "02:00 (Expired)" : `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+            }
+
             const fLevel = document.getElementById("finalLevel");
-            if (fLevel) fLevel.textContent = level;
+            if (fLevel) {
+                fLevel.textContent = level;
+                if (isTimeout) {
+                    fLevel.style.color = "#ef4444";
+                    fLevel.style.borderColor = "#ef4444";
+                    fLevel.style.backgroundColor = "rgba(239, 68, 68, 0.18)";
+                } else {
+                    fLevel.style.color = "";
+                    fLevel.style.borderColor = "";
+                    fLevel.style.backgroundColor = "";
+                }
+            }
 
 
             // ==========================================
@@ -5707,7 +6641,12 @@
 
                     await signOut(auth);
 
+                    // Preserve AALO accessibility profile so the student can modify it on the login page
+                    const savedAalo = localStorage.getItem("aaloProfile");
                     localStorage.clear();
+                    if (savedAalo) {
+                        localStorage.setItem("aaloProfile", savedAalo);
+                    }
 
                     window.location.href =
                         "index.html";
@@ -5771,6 +6710,14 @@
 
         window.handleAdaptiveAnswer = handleAdaptiveAnswer;
         window.startAdaptiveQuiz = startAdaptiveQuiz;
+        window.showQuizStartScreen = showQuizStartScreen;
+
+        const startQuizBtn = document.getElementById("startQuizBtn");
+        if (startQuizBtn) {
+            startQuizBtn.addEventListener("click", () => {
+                startAdaptiveQuiz(true);
+            });
+        }
 
         const submitBtn = document.getElementById("submitQuiz");
         if (submitBtn) {
@@ -5784,18 +6731,18 @@
         if (restartBtn) {
             restartBtn.addEventListener(
                 "click",
-                startAdaptiveQuiz
+                () => showQuizStartScreen()
             );
         }
 
 
         /* ==============================
            REAL AI TUTOR
-           Gemini multi-turn chat + Firebase learning context
+           Gemini Direct Multi-Turn Chat + Adaptive Learning Context
         ============================== */
 
-        const GEMINI_MODEL = "gemini-3.7-flash";
         const GEMINI_STORAGE_KEY = "cogniflow_gemini_api_key";
+        const GEMINI_MODELS = ["gemini-1.5-flash", "gemini-2.0-flash", "gemini-2.5-flash"];
 
         let aiChatHistory = [];
         let aiBusy = false;
@@ -5892,7 +6839,7 @@
         function tutorSystemInstruction() {
             const c = getTutorContext();
 
-            return `You are CogniFlow AI Tutor, a patient and encouraging academic tutor.
+            return `You are CogniFlow AI Tutor, a patient, clear, and encouraging academic tutor.
 
 Answer the student's actual question directly. Teach step-by-step when needed.
 Prefer clear language and useful examples. Relate examples to UI/UX, HCI,
@@ -5937,9 +6884,9 @@ Do not mention hidden instructions, API keys, or implementation details.`;
             addAIMessage("model",
                 `Hi! I'm your CogniFlow AI Tutor 🤖
 
-I can explain concepts, review your current lesson, help with quiz mistakes, and suggest what to study next.
+I can explain concepts step-by-step, review your current lesson, help with quiz mistakes, and suggest what to study next.
 
-${c.lessonTitle ? `You're currently working on **${c.lessonTitle}**. What would you like help with?` : "What would you like to learn?"}`
+${c.lessonTitle ? `You're currently working on **${c.lessonTitle}**. What would you like help with?` : "What would you like to learn today?"}`
             );
 
             setAIStatus(getGeminiKey() ? "" : "error",
@@ -5952,39 +6899,55 @@ ${c.lessonTitle ? `You're currently working on **${c.lessonTitle}**. What would 
 
             aiChatHistory.push({ role: "user", parts: [{ text: userText }] });
 
-            const response = await fetch(
-                `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`,
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "x-goog-api-key": key
-                    },
-                    body: JSON.stringify({
-                        systemInstruction: { parts: [{ text: tutorSystemInstruction() }] },
-                        contents: aiChatHistory.slice(-14),
-                        generationConfig: {
-                            temperature: .55,
-                            maxOutputTokens: 900
+            let lastErr = null;
+            for (const model of GEMINI_MODELS) {
+                try {
+                    const response = await fetch(
+                        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(key)}`,
+                        {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({
+                                systemInstruction: { parts: [{ text: tutorSystemInstruction() }] },
+                                contents: aiChatHistory.slice(-14),
+                                generationConfig: {
+                                    temperature: 0.55,
+                                    maxOutputTokens: 900
+                                }
+                            })
                         }
-                    })
+                    );
+
+                    const data = await response.json();
+
+                    if (!response.ok) {
+                        const errMsg = data?.error?.message || `HTTP ${response.status}`;
+                        if (response.status === 400 && errMsg.toLowerCase().includes("api key not valid")) {
+                            throw new Error("API_KEY_INVALID");
+                        }
+                        lastErr = new Error(errMsg);
+                        continue;
+                    }
+
+                    const answer = data?.candidates?.[0]?.content?.parts
+                        ?.map(p => p.text || "").join("").trim();
+
+                    if (!answer) {
+                        lastErr = new Error("Empty response from AI");
+                        continue;
+                    }
+
+                    aiChatHistory.push({ role: "model", parts: [{ text: answer }] });
+                    return answer;
+                } catch (e) {
+                    if (e.message === "API_KEY_INVALID") throw e;
+                    lastErr = e;
                 }
-            );
-
-            const data = await response.json();
-
-            if (!response.ok) {
-                console.error("Gemini API error:", data);
-                throw new Error(data?.error?.message || `HTTP ${response.status}`);
             }
 
-            const answer = data?.candidates?.[0]?.content?.parts
-                ?.map(p => p.text || "").join("").trim();
-
-            if (!answer) throw new Error("The AI returned an empty response.");
-
-            aiChatHistory.push({ role: "model", parts: [{ text: answer }] });
-            return answer;
+            throw lastErr || new Error("Could not connect to Gemini AI.");
         }
 
         async function sendMessage() {
@@ -6025,9 +6988,14 @@ ${c.lessonTitle ? `You're currently working on **${c.lessonTitle}**. What would 
                 console.error("AI Tutor:", error);
 
                 const typing = document.getElementById("aiTypingMessage");
-                const message = error.message === "NO_API_KEY"
-                    ? "Your AI Tutor is not connected yet. Click the gear icon and add your Gemini API key."
-                    : "I couldn't connect to the AI service right now. Please check the AI key and try again.";
+                let message = "I couldn't connect to the AI service right now. Please check your API key and try again.";
+                if (error.message === "NO_API_KEY") {
+                    message = "Your AI Tutor is not connected yet. Click the 'Key' button above and paste your Gemini API key.";
+                } else if (error.message === "API_KEY_INVALID") {
+                    message = "The Gemini API key appears to be invalid. Please click 'Key' and enter a valid API key from Google AI Studio.";
+                } else if (error.message) {
+                    message = `Error: ${error.message}. Please check your API key or connection.`;
+                }
 
                 if (typing) {
                     typing.id = "";
@@ -6036,7 +7004,7 @@ ${c.lessonTitle ? `You're currently working on **${c.lessonTitle}**. What would 
                     addAIMessage("model", message);
                 }
 
-                setAIStatus("error", error.message === "NO_API_KEY" ? "AI key needed" : "Connection issue");
+                setAIStatus("error", error.message === "NO_API_KEY" ? "AI key needed" : "API issue");
             } finally {
                 aiBusy = false;
                 if (send) send.disabled = false;
@@ -6059,11 +7027,10 @@ ${c.lessonTitle ? `You're currently working on **${c.lessonTitle}**. What would 
             box.innerHTML = `
                 <h3>Connect CogniFlow AI Tutor</h3>
                 <p>
-                    Enter your Gemini API key for this demo. It is stored only in
-                    this browser. For production, move the AI request to a secure backend.
+                    Paste your Google Gemini API key below. It is stored in your browser's local storage and used directly for real-time tutoring without needing any backend server.
                 </p>
                 <input id="geminiKeyInput" type="password" autocomplete="off"
-                       placeholder="Paste Gemini API key">
+                       placeholder="Paste Gemini API key (AIzaSy...)">
                 <div class="ai-config-actions">
                     <button class="ai-small-btn" id="cancelAIConfig">Cancel</button>
                     <button class="primary" id="saveAIConfig">Save & Connect</button>
@@ -7359,7 +8326,10 @@ ${c.lessonTitle ? `You're currently working on **${c.lessonTitle}**. What would 
                         correct: Number(data.correct || 0),
                         total: Number(data.total || 0),
                         topicStats: data.topicStats || {},
-                        createdAt: data.createdAt || null
+                        createdAt: data.createdAt || null,
+                        timedOut: Boolean(data.timedOut),
+                        status: data.status || (data.timedOut ? "failed" : "completed"),
+                        timeTakenSeconds: data.timeTakenSeconds != null ? Number(data.timeTakenSeconds) : null
                     });
 
                 });
@@ -7431,7 +8401,53 @@ ${c.lessonTitle ? `You're currently working on **${c.lessonTitle}**. What would 
 
 
         /* ==========================================
-           QUIZ ATTEMPTS BAR CHART
+           QUIZ ATTEMPT TIMING FORMATTERS
+        ========================================== */
+
+        function formatAttemptTime(attempt) {
+            const ts = attempt?.createdAt;
+            let d = null;
+            if (ts?.toDate) d = ts.toDate();
+            else if (ts?.toMillis) d = new Date(ts.toMillis());
+            else if (ts instanceof Date) d = ts;
+            else if (typeof ts === "string" || typeof ts === "number") {
+                const parsed = new Date(ts);
+                if (!isNaN(parsed.getTime())) d = parsed;
+            }
+
+            if (!d) return "";
+            return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        }
+
+        function formatAttemptDateTime(attempt) {
+            const ts = attempt?.createdAt;
+            let d = null;
+            if (ts?.toDate) d = ts.toDate();
+            else if (ts?.toMillis) d = new Date(ts.toMillis());
+            else if (ts instanceof Date) d = ts;
+            else if (typeof ts === "string" || typeof ts === "number") {
+                const parsed = new Date(ts);
+                if (!isNaN(parsed.getTime())) d = parsed;
+            }
+
+            if (!d) return "Recently";
+            return d.toLocaleDateString([], { month: 'short', day: 'numeric' }) + ', ' +
+                   d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        }
+
+        function formatDuration(seconds) {
+            if (seconds == null || isNaN(seconds)) return null;
+            const m = Math.floor(seconds / 60);
+            const s = seconds % 60;
+            if (m > 0) {
+                return `${m}m ${String(s).padStart(2, '0')}s`;
+            }
+            return `${s}s`;
+        }
+
+
+        /* ==========================================
+           QUIZ ATTEMPTS BAR CHART (WITH TIMING)
         ========================================== */
 
         function drawAttemptChart(attempts) {
@@ -7441,131 +8457,112 @@ ${c.lessonTitle ? `You're currently working on **${c.lessonTitle}**. What would 
 
             if (!canvas) return;
 
-
             if (attemptChart) {
-
                 attemptChart.destroy();
-
             }
 
+            // X-axis: 2-line labels with Attempt # and completion time (e.g. "Attempt 15" \n "1:05 PM")
+            const labels = attempts.map((attempt, index) => {
+                const timeStr = formatAttemptTime(attempt);
+                if (timeStr) {
+                    return [`Attempt ${index + 1}`, timeStr];
+                }
+                return `Attempt ${index + 1}`;
+            });
 
-            const labels =
-                attempts.map(
-                    (_, index) => `Attempt ${index + 1}`
-                );
+            const scores = attempts.map(attempt => attempt.score);
 
+            const backgroundColors = attempts.map(a =>
+                a.timedOut ? "rgba(239, 83, 96, 0.75)" : "rgba(76, 141, 255, 0.85)"
+            );
 
-            const scores =
-                attempts.map(
-                    attempt => attempt.score
-                );
+            attemptChart = new Chart(canvas, {
+                type: "bar",
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: "Quiz Score",
+                        data: scores,
+                        backgroundColor: backgroundColors,
+                        borderRadius: 8,
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: "#aaa8c4"
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                title: function (items) {
+                                    if (!items.length) return "";
+                                    const idx = items[0].dataIndex;
+                                    const a = attempts[idx];
+                                    const dateStr = formatAttemptDateTime(a);
+                                    return `Attempt ${idx + 1} • ${dateStr}`;
+                                },
+                                label: function (context) {
+                                    const idx = context.dataIndex;
+                                    const a = attempts[idx];
+                                    const lines = [
+                                        ` Score: ${a.score}% (${a.correct}/${a.total || 10} correct)`
+                                    ];
 
-
-            attemptChart =
-                new Chart(canvas, {
-
-                    type: "bar",
-
-                    data: {
-
-                        labels: labels,
-
-                        datasets: [{
-
-                            label: "Quiz Score",
-
-                            data: scores,
-
-                            borderRadius: 8,
-
-                            borderWidth: 0
-
-                        }]
-
-                    },
-
-                    options: {
-
-                        responsive: true,
-
-                        maintainAspectRatio: false,
-
-                        plugins: {
-
-                            legend: {
-
-                                labels: {
-
-                                    color: "#aaa8c4"
-
-                                }
-
-                            },
-
-                            tooltip: {
-
-                                callbacks: {
-
-                                    label: function (context) {
-
-                                        return ` Score: ${context.raw}%`;
-
+                                    if (a.timeTakenSeconds != null) {
+                                        const dur = formatDuration(a.timeTakenSeconds);
+                                        lines.push(` Time Taken: ${dur} ${a.timedOut ? '(Timed Out)' : '/ 2m limit'}`);
+                                    } else if (a.timedOut) {
+                                        lines.push(` Time Taken: 2m 00s (Time Expired)`);
                                     }
 
-                                }
+                                    const timeStr = formatAttemptTime(a);
+                                    if (timeStr) {
+                                        lines.push(` Completed At: ${timeStr}`);
+                                    }
 
+                                    if (a.status) {
+                                        lines.push(` Status: ${a.status.toUpperCase()}`);
+                                    }
+
+                                    return lines;
+                                }
                             }
-
-                        },
-
-                        scales: {
-
-                            x: {
-
-                                ticks: {
-
-                                    color: "#aaa8c4"
-
-                                },
-
-                                grid: {
-
-                                    display: false
-
-                                }
-
-                            },
-
-                            y: {
-
-                                min: 0,
-
-                                max: 100,
-
-                                ticks: {
-
-                                    color: "#aaa8c4",
-
-                                    callback: value =>
-                                        value + "%"
-
-                                },
-
-                                grid: {
-
-                                    color:
-                                        "rgba(255,255,255,.06)"
-
-                                }
-
-                            }
-
                         }
-
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                color: "#aaa8c4",
+                                maxRotation: 0,
+                                autoSkip: true,
+                                maxTicksLimit: 15,
+                                font: {
+                                    size: 11
+                                }
+                            },
+                            grid: {
+                                display: false
+                            }
+                        },
+                        y: {
+                            min: 0,
+                            max: 100,
+                            ticks: {
+                                color: "#aaa8c4",
+                                callback: value => value + "%"
+                            },
+                            grid: {
+                                color: "rgba(255,255,255,.06)"
+                            }
+                        }
                     }
-
-                });
-
+                }
+            });
         }
 
 
@@ -7795,415 +8792,7 @@ ${c.lessonTitle ? `You're currently working on **${c.lessonTitle}**. What would 
 
         }
 
-        /* ==========================================
-           AALO ENGINE
-        ========================================== */
-
-        let aaloProfile = {
-            visual: false,
-            hearing: false,
-            dyslexia: false,
-            slowLearner: false,
-            fontSize: "normal",
-            pace: "normal",
-            voice: false,
-            highContrast: false
-        };
-
-
-        /* ==========================================
-           OPEN AALO
-        ========================================== */
-
-        document
-            .getElementById("accessBtn")
-            .addEventListener("click", () => {
-
-                document
-                    .getElementById("aaloOverlay")
-                    .classList.add("active");
-
-            });
-
-
-        /* ==========================================
-           CLOSE AALO
-        ========================================== */
-
-        document
-            .getElementById("closeAalo")
-            .addEventListener("click", () => {
-
-                document
-                    .getElementById("aaloOverlay")
-                    .classList.remove("active");
-
-            });
-
-
-        /* ==========================================
-           APPLY AALO
-        ========================================== */
-
-        document
-            .getElementById("saveAalo")
-            .addEventListener("click", applyAALO);
-
-
-        async function applyAALO() {
-            const get = id => document.getElementById(id);
-
-            aaloProfile.visual = !!get("visualNeed")?.checked;
-            aaloProfile.hearing = !!get("hearingNeed")?.checked;
-            aaloProfile.dyslexia = !!get("dyslexiaNeed")?.checked;
-            aaloProfile.slowLearner = !!get("slowNeed")?.checked;
-            aaloProfile.fontSize = get("aaloFontSize")?.value || "normal";
-            aaloProfile.pace = get("aaloPace")?.value || "normal";
-            aaloProfile.voice = !!get("aaloVoice")?.checked;
-            aaloProfile.highContrast = !!get("aaloContrast")?.checked;
-
-            // Apply every accessibility mode immediately to the page.
-            applyVisualAdaptation();
-            applyReadingAdaptation();
-            applyHearingAdaptation();
-            applyLearningPace();
-            applyAALOVoice();
-            updateAALOStatus();
-            refreshAALOLessonContent();
-
-            // Save the student's accessibility profile in Firestore.
-            await saveAALOProfile();
-
-            // Re-run ACFO so accessibility preferences can affect the next activity.
-            if (typeof updateACFODashboard === "function" && currentUser) {
-                try {
-                    await updateACFODashboard();
-                } catch (error) {
-                    console.error("AALO → ACFO update error:", error);
-                }
-            }
-
-            const overlay = get("aaloOverlay");
-            if (overlay) overlay.classList.remove("active");
-
-            console.log("AALO applied:", { ...aaloProfile });
-
-            // Give the student clear feedback even after the panel closes.
-            showAALOToast("Accessibility settings applied");
-        }
-
-        function applyVisualAdaptation() {
-            const body = document.body;
-
-            body.classList.toggle(
-                "aalo-high-contrast",
-                aaloProfile.visual || aaloProfile.highContrast
-            );
-
-            body.classList.toggle(
-                "aalo-large-text",
-                aaloProfile.visual || aaloProfile.fontSize === "large"
-            );
-
-            body.classList.toggle(
-                "aalo-xlarge-text",
-                aaloProfile.fontSize === "xlarge"
-            );
-        }
-
-        function applyReadingAdaptation() {
-            document.body.classList.toggle(
-                "aalo-dyslexia",
-                aaloProfile.dyslexia
-            );
-        }
-
-        function applyHearingAdaptation() {
-            const transcript = document.getElementById("aaloTranscript");
-            if (transcript) {
-                transcript.style.display = aaloProfile.hearing ? "block" : "none";
-            }
-        }
-
-        function applyLearningPace() {
-            document.body.classList.toggle(
-                "aalo-slow-mode",
-                aaloProfile.slowLearner || aaloProfile.pace === "slow"
-            );
-        }
-
-        function applyAALOVoice() {
-            const oldButton = document.getElementById("aaloVoiceButton");
-            if (oldButton) oldButton.remove();
-
-            if (!aaloProfile.voice) {
-                if ("speechSynthesis" in window) window.speechSynthesis.cancel();
-                return;
-            }
-
-            if (!("speechSynthesis" in window)) {
-                showAALOToast("Voice reading is not supported by this browser");
-                return;
-            }
-
-            const lessonCard = document.querySelector(".lesson-text");
-            if (!lessonCard) return;
-
-            const button = document.createElement("button");
-            button.id = "aaloVoiceButton";
-            button.className = "aalo-voice-button";
-            button.type = "button";
-            button.innerHTML = '<i class="bi bi-volume-up-fill"></i> Read Lesson Aloud';
-            button.addEventListener("click", speakCurrentLesson);
-            lessonCard.insertBefore(button, lessonCard.firstChild);
-        }
-
-        function speakCurrentLesson() {
-            if (!("speechSynthesis" in window)) return;
-
-            window.speechSynthesis.cancel();
-
-            const heading = document.getElementById("lessonHeading")?.innerText || "";
-            const description = document.getElementById("lessonDescription")?.innerText || "";
-            const text = (heading + ". " + description).trim();
-            if (!text) return;
-
-            const utterance = new SpeechSynthesisUtterance(text);
-            utterance.rate = aaloProfile.slowLearner || aaloProfile.pace === "slow" ? 0.72 : 0.95;
-            utterance.pitch = 1;
-            utterance.volume = 1;
-            window.speechSynthesis.speak(utterance);
-        }
-
-        function refreshAALOLessonContent() {
-            const description = document.getElementById("lessonDescription");
-            const lessonCard = document.querySelector(".lesson-text");
-            if (!description || !lessonCard) return;
-
-            const original = description.dataset.aaloOriginalText || description.innerText.trim();
-            description.dataset.aaloOriginalText = original;
-
-            const oldPractice = document.getElementById("aaloPractice");
-            if (oldPractice) oldPractice.remove();
-
-            const slowMode = aaloProfile.slowLearner || aaloProfile.pace === "slow";
-
-            if (slowMode) {
-                const sentences = original
-                    .split(/(?<=[.!?])\s+/)
-                    .map(s => s.trim())
-                    .filter(Boolean);
-
-                const chunks = sentences.length ? sentences : [original];
-
-                description.innerHTML = chunks.map((sentence, index) =>
-                    `<span class="aalo-chunk"><small>LEARNING STEP ${index + 1}</small><span>${sentence}</span></span>`
-                ).join("");
-
-                const practice = document.createElement("div");
-                practice.id = "aaloPractice";
-                practice.className = "aalo-practice";
-                practice.innerHTML = `
-            <div class="aalo-practice-title">
-                <i class="bi bi-lightbulb-fill"></i> Quick Practice
-            </div>
-            <p>Which approach helps a learner understand a concept more easily?</p>
-            <div class="aalo-practice-options">
-                <button type="button" data-answer="wrong">Show everything at once</button>
-                <button type="button" data-answer="correct">Break the concept into smaller steps</button>
-                <button type="button" data-answer="wrong">Remove all explanations</button>
-            </div>
-            <div class="aalo-practice-feedback" id="aaloPracticeFeedback"></div>
-        `;
-
-                practice.querySelectorAll("[data-answer]").forEach(button => {
-                    button.addEventListener("click", () => {
-                        const feedback = document.getElementById("aaloPracticeFeedback");
-                        const correct = button.dataset.answer === "correct";
-                        feedback.textContent = correct
-                            ? "✓ Correct. Smaller steps reduce cognitive load."
-                            : "Try again. Think about breaking the concept into smaller steps.";
-                        feedback.className = "aalo-practice-feedback " + (correct ? "correct" : "retry");
-                    });
-                });
-
-                lessonCard.appendChild(practice);
-            } else {
-                description.textContent = original;
-            }
-        }
-
-
-        function showAALOToast(message) {
-            let toast = document.getElementById("aaloToast");
-            if (!toast) {
-                toast = document.createElement("div");
-                toast.id = "aaloToast";
-                toast.className = "aalo-toast";
-                document.body.appendChild(toast);
-            }
-            toast.textContent = message;
-            toast.classList.add("show");
-            clearTimeout(window.__aaloToastTimer);
-            window.__aaloToastTimer = setTimeout(() => toast.classList.remove("show"), 2200);
-        }
-
-        function getAALORecommendation(
-            score,
-            topicScore,
-            profile
-        ) {
-
-            if (profile.slowLearner) {
-
-                return {
-                    activity: "Concept Chunk",
-                    difficulty: "EASY",
-                    reason:
-                        "AALO detected a slower learning pace. "
-                        + "Content is divided into smaller learning chunks."
-                };
-
-            }
-
-
-            if (profile.dyslexia) {
-
-                return {
-                    activity: "Simplified Concept",
-                    difficulty: "EASY",
-                    reason:
-                        "AALO is using simplified reading content "
-                        + "and reduced visual complexity."
-                };
-
-            }
-
-
-            if (profile.visual) {
-
-                return {
-                    activity: "Audio Supported Lesson",
-                    difficulty: "EASY",
-                    reason:
-                        "AALO provides voice-supported learning "
-                        + "for improved accessibility."
-                };
-
-            }
-
-
-            if (profile.hearing) {
-
-                return {
-                    activity: "Caption Supported Lesson",
-                    difficulty: "EASY",
-                    reason:
-                        "AALO provides captions and transcript-based learning."
-                };
-
-            }
-
-
-            return null;
-        }
-
-
-        function updateAALOStatus() {
-
-            const active = [];
-
-            if (aaloProfile.visual)
-                active.push("Visual Support");
-
-            if (aaloProfile.hearing)
-                active.push("Hearing Support");
-
-            if (aaloProfile.dyslexia)
-                active.push("Dyslexia Support");
-
-            if (aaloProfile.slowLearner)
-                active.push("Slow Learning");
-
-            if (aaloProfile.voice)
-                active.push("Voice");
-
-            if (aaloProfile.highContrast)
-                active.push("High Contrast");
-
-
-            const status =
-                document.getElementById("aaloStatus");
-
-            if (!status) return;
-
-
-            status.textContent =
-                active.length
-                    ? active.join(" • ")
-                    : "Default learning mode";
-        }
-
-
-        async function saveAALOProfile() {
-            if (!currentUser) return;
-            try {
-                await setDoc(
-                    doc(db, "adaptiveProfiles", currentUser.uid),
-                    {
-                        uid: currentUser.uid,
-                        accessibility: aaloProfile,
-                        updatedAt: serverTimestamp()
-                    },
-                    { merge: true }
-                );
-                console.log("AALO profile saved successfully.");
-            } catch (error) {
-                console.error("Error saving AALO profile:", error);
-            }
-        }
-
-
-        async function loadAALOProfile() {
-            if (!currentUser) return;
-            try {
-                const snap = await getDoc(doc(db, "adaptiveProfiles", currentUser.uid));
-                if (snap.exists()) {
-                    const data = snap.data();
-                    if (data && data.accessibility) {
-                        aaloProfile = { ...aaloProfile, ...data.accessibility };
-
-                        const visualNeed = document.getElementById("visualNeed");
-                        const hearingNeed = document.getElementById("hearingNeed");
-                        const dyslexiaNeed = document.getElementById("dyslexiaNeed");
-                        const slowNeed = document.getElementById("slowNeed");
-                        const aaloFontSize = document.getElementById("aaloFontSize");
-                        const aaloPace = document.getElementById("aaloPace");
-                        const aaloVoice = document.getElementById("aaloVoice");
-                        const aaloContrast = document.getElementById("aaloContrast");
-
-                        if (visualNeed) visualNeed.checked = !!aaloProfile.visual;
-                        if (hearingNeed) hearingNeed.checked = !!aaloProfile.hearing;
-                        if (dyslexiaNeed) dyslexiaNeed.checked = !!aaloProfile.dyslexia;
-                        if (slowNeed) slowNeed.checked = !!aaloProfile.slowLearner;
-                        if (aaloFontSize) aaloFontSize.value = aaloProfile.fontSize || "normal";
-                        if (aaloPace) aaloPace.value = aaloProfile.pace || "normal";
-                        if (aaloVoice) aaloVoice.checked = !!aaloProfile.voice;
-                        if (aaloContrast) aaloContrast.checked = !!aaloProfile.highContrast;
-
-                        applyVisualAdaptation();
-                        applyReadingAdaptation();
-                        applyHearingAdaptation();
-                        applyLearningPace();
-                        applyAALOVoice();
-                        refreshAALOLessonContent();
-                        updateAALOStatus();
-                    }
-                }
-            } catch (error) {
-                console.error("Error loading AALO profile:", error);
-            }
-        }
+        /* AALO engine is initialized at top of module */
 
         // =========================
         // GLOBAL STUDENT DIAGNOSTICS
@@ -8338,11 +8927,31 @@ ${c.lessonTitle ? `You're currently working on **${c.lessonTitle}**. What would 
             updateGlobalVoiceButton();
         }
 
+        let globalVoicePause = null;
+        let globalVoicePaused = false;
+
+        function togglePauseGlobalVoice() {
+            if (!("speechSynthesis" in window)) return;
+            if (globalVoicePaused) {
+                window.speechSynthesis.resume();
+                globalVoicePaused = false;
+                if (globalVoicePause) globalVoicePause.innerHTML = '<i class="bi bi-pause-fill"></i> Pause';
+                if (globalVoiceStatus) globalVoiceStatus.textContent = "Voice reading resumed.";
+            } else if (window.speechSynthesis.speaking) {
+                window.speechSynthesis.pause();
+                globalVoicePaused = true;
+                if (globalVoicePause) globalVoicePause.innerHTML = '<i class="bi bi-play-circle-fill"></i> Resume';
+                if (globalVoiceStatus) globalVoiceStatus.textContent = "Voice reading paused.";
+            }
+        }
+
         function stopGlobalVoice() {
             if ("speechSynthesis" in window) window.speechSynthesis.cancel();
             globalVoiceReading = false;
+            globalVoicePaused = false;
             globalVoiceChunks = [];
             globalVoiceIndex = 0;
+            if (globalVoicePause) globalVoicePause.innerHTML = '<i class="bi bi-pause-fill"></i> Pause';
             if (globalVoiceStatus) globalVoiceStatus.textContent = "Reading stopped.";
             updateGlobalVoiceButton();
         }
@@ -8366,6 +8975,8 @@ ${c.lessonTitle ? `You're currently working on **${c.lessonTitle}**. What would 
             globalVoiceChunks = splitVoiceText(text);
             globalVoiceIndex = 0;
             globalVoiceReading = true;
+            globalVoicePaused = false;
+            if (globalVoicePause) globalVoicePause.innerHTML = '<i class="bi bi-pause-fill"></i> Pause';
 
             if (globalVoicePage) globalVoicePage.textContent = pageName;
             if (globalVoiceStatus) globalVoiceStatus.textContent = "Reading " + pageName + " aloud…";
@@ -8376,6 +8987,7 @@ ${c.lessonTitle ? `You're currently working on **${c.lessonTitle}**. What would 
             globalVoiceMain = document.getElementById("globalVoiceMain");
             globalVoicePanel = document.getElementById("globalVoicePanel");
             globalVoiceRead = document.getElementById("globalVoiceRead");
+            globalVoicePause = document.getElementById("globalVoicePause");
             globalVoiceStop = document.getElementById("globalVoiceStop");
             globalVoiceStatus = document.getElementById("globalVoiceStatus");
             globalVoicePage = document.getElementById("globalVoicePage");
@@ -8392,6 +9004,7 @@ ${c.lessonTitle ? `You're currently working on **${c.lessonTitle}**. What would 
             });
 
             if (globalVoiceRead) globalVoiceRead.addEventListener("click", readCurrentPageAloud);
+            if (globalVoicePause) globalVoicePause.addEventListener("click", togglePauseGlobalVoice);
             if (globalVoiceStop) globalVoiceStop.addEventListener("click", stopGlobalVoice);
 
             // Keep the floating reader synchronized with SPA-style navigation.
@@ -8423,156 +9036,11 @@ ${c.lessonTitle ? `You're currently working on **${c.lessonTitle}**. What would 
 
     </script>
 
-    <!-- ================= AALO PANEL ================= -->
-
-    <div class="aalo-overlay" id="aaloOverlay">
-
-        <div class="aalo-panel">
-
-            <div class="aalo-header">
-                <div>
-                    <h2>AALO</h2>
-                    <p>Accessibility-Aware Learning Orchestrator</p>
-                </div>
-
-                <button id="closeAalo" class="aalo-close">
-                    ×
-                </button>
-            </div>
-
-
-            <div class="aalo-section">
-
-                <h3>Choose your learning needs</h3>
-
-                <label class="aalo-option">
-                    <input type="checkbox" id="visualNeed">
-                    <span>
-                        <b>Visually Impaired</b>
-                        <small>
-                            High contrast, larger text and voice support
-                        </small>
-                    </span>
-                </label>
-
-
-                <label class="aalo-option">
-                    <input type="checkbox" id="hearingNeed">
-                    <span>
-                        <b>Hearing Impaired</b>
-                        <small>
-                            Captions and text transcripts
-                        </small>
-                    </span>
-                </label>
-
-
-                <label class="aalo-option">
-                    <input type="checkbox" id="dyslexiaNeed">
-                    <span>
-                        <b>Dyslexic Learning Support</b>
-                        <small>
-                            Dyslexia-friendly reading layout
-                        </small>
-                    </span>
-                </label>
-
-
-                <label class="aalo-option">
-                    <input type="checkbox" id="slowNeed">
-                    <span>
-                        <b>Slow Learning Pace</b>
-                        <small>
-                            Smaller chunks and additional practice
-                        </small>
-                    </span>
-                </label>
-
-            </div>
-
-
-            <div class="aalo-section">
-
-                <h3>Additional controls</h3>
-
-                <div class="aalo-control">
-                    <label>Text Size</label>
-
-                    <select id="aaloFontSize">
-                        <option value="normal">Normal</option>
-                        <option value="large">Large</option>
-                        <option value="xlarge">Extra Large</option>
-                    </select>
-                </div>
-
-
-                <div class="aalo-control">
-
-                    <label>Learning Pace</label>
-
-                    <select id="aaloPace">
-
-                        <option value="normal">
-                            Normal
-                        </option>
-
-                        <option value="slow">
-                            Slow
-                        </option>
-
-                    </select>
-
-                </div>
-
-
-                <label class="aalo-switch">
-
-                    <input type="checkbox" id="aaloVoice">
-
-                    <span>
-                        Voice Reading
-                    </span>
-
-                </label>
-
-
-                <label class="aalo-switch">
-
-                    <input type="checkbox" id="aaloContrast">
-
-                    <span>
-                        High Contrast
-                    </span>
-
-                </label>
-
-            </div>
-
-
-            <div class="aalo-preview">
-
-                <span>AALO Status</span>
-
-                <strong id="aaloStatus">
-                    Default learning mode
-                </strong>
-
-            </div>
-
-
-            <button class="primary aalo-save" id="saveAalo">
-
-                Apply Accessibility Settings
-
-            </button>
-
-        </div>
-
-    </div>
+    <!-- ================= AALO PANEL REMOVED FROM DASHBOARD (MANAGED ON LOGIN PAGE) ================= -->
 
 
     <!-- ================= GLOBAL PAGE VOICE READER ================= -->
-    <div class="global-voice-reader" id="globalVoiceReader">
+    <div class="global-voice-reader" id="globalVoiceReader" style="display:none;">
         <div class="global-voice-panel" id="globalVoicePanel" aria-live="polite">
             <div class="global-voice-title">
                 <span><i class="bi bi-universal-access-circle"></i> Page Voice Support</span>
@@ -8584,6 +9052,9 @@ ${c.lessonTitle ? `You're currently working on **${c.lessonTitle}**. What would 
             <div class="global-voice-actions">
                 <button class="global-voice-action" id="globalVoiceRead" type="button">
                     <i class="bi bi-play-fill"></i> Read Page
+                </button>
+                <button class="global-voice-action" id="globalVoicePause" type="button">
+                    <i class="bi bi-pause-fill"></i> Pause
                 </button>
                 <button class="global-voice-action" id="globalVoiceStop" type="button">
                     <i class="bi bi-stop-fill"></i> Stop

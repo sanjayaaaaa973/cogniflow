@@ -1,0 +1,16 @@
+# Dependencies
+node_modules/
+
+# Environment Variables & Secrets (CRITICAL: Never commit API keys!)
+.env
+.env.local
+.env.*.local
+*.env
+
+# Vercel
+.vercel/
+
+# Logs & temp files
+*.log
+.DS_Store
+Thumbs.db
